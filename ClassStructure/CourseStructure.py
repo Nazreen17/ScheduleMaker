@@ -56,6 +56,7 @@ class AClass(ACourse):
         self._links = None
         self._seats = None
         self._capacity = None
+        self._prof = None
         self._instruction = None
         self._campus = None
         self._building = None
@@ -169,6 +170,14 @@ class AClass(ACourse):
             raise TypeError
 
     @property
+    def prof(self):
+        return self._prof
+
+    @prof.setter
+    def prof(self, prof):
+        self._prof = str(prof)
+
+    @property
     def instruction(self):
         return self._instruction
 
@@ -223,6 +232,7 @@ class AClass(ACourse):
                 "Time=" + class_time_str + "\n" +
                 "Links=" + links_str + "\n" +
                 "Seats=" + str(self._seats) + "\n" +
+                "Prof=" + str(self._prof) + "\n" +
                 "Instruction=" + str(self._instruction) + "\n" +
                 "Campus=" + str(self._campus) + "\n" +
                 "Building=" + str(self._building) + "\n" +

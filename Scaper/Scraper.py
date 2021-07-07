@@ -11,6 +11,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException
 
 from constants import OTU_COURSE_WEBSITE, CHROMEDRIVER_PATH, TERM, TERM_ID, WEEKDAYS, SLEEP_GENERAL, SLEEP_NEXT_CLASS, \
     SLEEP_TEXT_INPUT, SLEEP_DETAIL_POPUP_TAB, SLEEP_DETAIL_POPUP_TAB_TEXT
@@ -133,7 +134,7 @@ def __create_class_obj(driver, fac, uid, row):
     class_obj.capacity = seats_and_capacity[1]
 
     # DO NOT SWITCH RIGHT AND LEFT SIDE DATA PULLING (VERY SENSITIVE TO ORDER) vvv
-    __open_meet_times_tab(driver)  # open class time tab
+    class_obj.prof = __get_prof_and_expand(driver)  # open class time tab
 
     no_bork.sleep(SLEEP_DETAIL_POPUP_TAB_TEXT)
     # class time tab: right side
@@ -161,7 +162,7 @@ def __create_class_obj(driver, fac, uid, row):
     return class_obj
 
 
-def __open_meet_times_tab(driver):
+def __get_prof_and_expand(driver):
     no_bork.sleep(SLEEP_DETAIL_POPUP_TAB)
     driver.find_element_by_id("facultyMeetingTimes").click()  # open class meet times
 
@@ -171,7 +172,12 @@ def __open_meet_times_tab(driver):
     if collapsed_meet_clicks_count > 2:  # first "Instructor:Instructor not available" is open by default
         for click_row in range(3, collapsed_meet_clicks_count + 1, 2):  # increment 2
             driver.find_element_by_xpath(
-                '//*[@id="classDetailsContentDetailsDiv"]/div/div[' + str(click_row) + ']').click()
+                '//*[@id="classDetailsContentDetailsDiv"]/div/div[' + str(click_row) + ']/span/label').click()
+    try:
+        return driver.find_element_by_xpath('//*[@id="classDetailsContentDetailsDiv"]/div/div[3]/span/span[1]/a').text
+        # assume the first prof is the head prof for all meet times
+    except NoSuchElementException:
+        return "Unknown"
 
 
 def __get_seats_and_capacity(driver):

@@ -45,22 +45,21 @@ class ACourse:
 
 
 class AClass(ACourse):
-    def __init__(self, fac, uid):
-        # crn=int, class_type=str, title=str, section=int, class_time=list, links=list, seats=int, capacity=int,
-        # instruction=str, campus=str, building=str, room=str
-        self._crn = None
-        self._class_type = None
-        self._title = None
-        self._section = None
-        self._class_time = None
-        self._links = None
-        self._seats = None
-        self._capacity = None
-        self._prof = None
-        self._instruction = None
-        self._campus = None
-        self._building = None
-        self._room = None
+    def __init__(self, fac, uid, crn=None, class_type=None, title=None, section=None, class_time=None, links=None,
+                 seats=None, capacity=None, prof=None, instruction=None, campus=None, building=None, room=None):
+        self._crn = crn
+        self._class_type = class_type
+        self._title = title
+        self._section = section
+        self._class_time = class_time
+        self._links = links
+        self._seats = seats
+        self._capacity = capacity
+        self._prof = prof
+        self._instruction = instruction
+        self._campus = campus
+        self._building = building
+        self._room = room
         super().__init__(fac, uid)
 
     def get_course(self):
@@ -118,7 +117,7 @@ class AClass(ACourse):
             raise TypeError
         if isinstance(class_time, list):
             for inner_tuple in class_time:
-                if not isinstance(inner_tuple, tuple):
+                if not isinstance(inner_tuple, tuple) and not isinstance(inner_tuple, list):
                     raise TypeError
                 if len(inner_tuple) != 2:
                     raise ValueError("Expected tuple len = 2; (start_datetime, end_datetime)")
@@ -165,7 +164,7 @@ class AClass(ACourse):
     @capacity.setter
     def capacity(self, capacity):
         if isinstance(capacity, str) or isinstance(capacity, int):
-            self._seats = int(capacity)
+            self._capacity = int(capacity)
         else:
             raise TypeError
 
@@ -232,6 +231,7 @@ class AClass(ACourse):
                 "Time=" + class_time_str + "\n" +
                 "Links=" + links_str + "\n" +
                 "Seats=" + str(self._seats) + "\n" +
+                "Capacity=" + str(self._capacity) + "\n" +
                 "Prof=" + str(self._prof) + "\n" +
                 "Instruction=" + str(self._instruction) + "\n" +
                 "Campus=" + str(self._campus) + "\n" +
@@ -241,3 +241,59 @@ class AClass(ACourse):
 
     def __str__(self):
         return self.get_raw_str()
+
+
+class AClassEncoder:
+    """
+    def default(self, o):
+         if isinstance(o, AClass):
+             return {
+                     "Actor": {
+                              "Name": o.get_actor().get_name(),
+                              "Age": o.get_actor().get_age()
+                              },
+                     "Movie": {
+                              "Title": o.get_movie().get_title(),
+                              "Gross": o.get_movie().get_gross(),
+                              "Year": o.get_movie().get_year()
+                              }
+                     }
+         return json.JSONEncoder.default(self, o)
+    """
+
+    @staticmethod
+    def default(obj):
+        if isinstance(obj, datetime):
+            return obj.isoformat()
+        if isinstance(obj, int):
+            return obj
+        else:
+            return obj.__dict__
+
+
+class AClassDecoder(json.JSONDecoder):
+    def __init__(self, *args, **kwargs):
+        json.JSONDecoder.__init__(self, object_hook=self.object_hook, *args, **kwargs)
+
+    @staticmethod
+    def object_hook(dct):
+        class_obj = AClass(dct["_fac"], dct["_uid"])
+        class_obj.crn = dct["_crn"]
+        class_obj.class_type = dct["_class_type"]
+        class_obj.title = dct["_title"]
+        class_obj.section = dct["_section"]
+
+        class_time = []
+        for inner_list in dct["_class_time"]:
+            class_time.append((datetime.fromisoformat(inner_list[0]), datetime.fromisoformat(inner_list[1])))
+        class_obj.class_time = class_time  # datetime.fromisoformat()
+
+        class_obj.links = dct["_links"]
+        class_obj.seats = dct["_seats"]
+        class_obj.capacity = dct["_capacity"]
+        class_obj.prof = dct["_prof"]
+        class_obj.instruction = dct["_instruction"]
+        class_obj.campus = dct["_campus"]
+        class_obj.building = dct["_building"]
+        class_obj.room = dct["_room"]
+        return class_obj

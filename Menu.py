@@ -1,4 +1,4 @@
-from Structure.CourseStructure import ACourse
+from ClassStructure.CourseStructure import ACourse
 from constants import STOP_CODES
 
 

@@ -12,13 +12,13 @@ def update_course_json(course_obj_list):
 
 def __write_class_objs(file_name, class_obj_list):
     file_name = file_name if file_name[-5:] == ".json" else file_name + ".json"  # ensure .json file type in file_name
-    file_name = file_name if file_name[:15] == "../JSONCourses/" else "../JSONCourses/" + file_name  # ensure proper filepath
+    file_name = file_name if file_name[:12] == "JSONCourses/" else "JSONCourses/" + file_name  # ensure proper filepath
 
     try:
         with open(file_name, "w") as write_file:
             json.dump(class_obj_list, write_file, indent=4, default=AClassEncoder.default)
     except FileNotFoundError:
-        with open(file_name[15:], "w") as write_file:
+        with open(file_name[12:], "w") as write_file:
             json.dump(class_obj_list, write_file, indent=4, default=AClassEncoder.default)
 
 

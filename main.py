@@ -23,7 +23,7 @@ def main():
     elif current_mode == valid_modes[1]:  # generate courses
         print("\tMODE =", valid_modes[1].upper())
         all_schedules_list = generate(get_courses_list())
-        file_name = input("Enter a filename.txt to save schedules to > ")
+        file_name = input("Enter a filename.json to save schedules to > ")
         save_schedule_json(file_name, all_schedules_list)
     elif current_mode == valid_modes[2]:  # optimize
         print("\tMODE =", valid_modes[2].upper())

@@ -65,8 +65,11 @@ def scrape_course_class_objs(course_obj):
         row_count = len(driver.find_elements_by_xpath('//*[@id="table1"]/tbody/tr'))
         for row in range(1, 1 + row_count):  # range(1, 1 + row_count)
             no_bork.sleep(SLEEP_NEXT_CLASS)
-            print("\tReading", str(course_obj.fac).upper(), str(course_obj.uid).upper(),
-                  "-> Page #" + str(page_count) + ", Class #" + str(row + (page_count * 10) - 10))
+            """
+            print("\tReading", str(course_obj.fac).upper(), str(course_obj.uid).upper(), "-> Page #" + str(page_count) +
+                  ", Class #" + str(row + (page_count * 10) - 10))
+            # progress test print
+            """
             class_list.append(__create_class_obj(driver, fac, uid, row))
             if row >= row_count:
                 no_bork.sleep(SLEEP_NEXT_CLASS)  # wait to check for next page button

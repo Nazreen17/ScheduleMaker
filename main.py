@@ -1,8 +1,8 @@
 from Menu import get_courses_list
-from JSONCourses.DBv1CoursesFileManip import update_course_file
-from DBv1Schedules.ScheduleGeneration import generate
-from DBv1Schedules.DBv1ScheduleFileManip import schedules_write
-from DBv1Optimized.ScheduleOptimization import optimize
+from JSONCourses.JSONCoursesManip import update_course_json
+from JSONMaxSchedules.ScheduleGeneration import generate
+from JSONMaxSchedules.JSONSchedulesManip import save_schedule_json
+# from Optimizations.
 
 
 def main():
@@ -19,16 +19,15 @@ def main():
 
     if current_mode == valid_modes[0]:  # update DB
         print("\tMODE =", valid_modes[0].upper())
-        update_course_file(get_courses_list())
+        update_course_json(get_courses_list())
     elif current_mode == valid_modes[1]:  # generate courses
         print("\tMODE =", valid_modes[1].upper())
-        courses_list = get_courses_list()
-        all_schedules_list = generate(courses_list)
+        all_schedules_list = generate(get_courses_list())
         file_name = input("Enter a filename.txt to save schedules to > ")
-        schedules_write(file_name, all_schedules_list, courses_list)
+        save_schedule_json(file_name, all_schedules_list)
     elif current_mode == valid_modes[2]:  # optimize
         print("\tMODE =", valid_modes[2].upper())
-        optimize()
+        # optimize()
 
 
 if __name__ == "__main__":

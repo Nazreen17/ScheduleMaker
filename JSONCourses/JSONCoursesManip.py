@@ -1,13 +1,16 @@
 import json
 
+import time
 from Scaper.Scraper import scrape_course_class_objs
 from ClassStructure.CourseStructure import AClassDecoder, AClassEncoder
 
 
 def update_course_json(course_obj_list):
     for course_obj in course_obj_list:
+        start = time.time()
         class_obj_list = scrape_course_class_objs(course_obj)  # scrape all classes per course
         __write_class_objs((course_obj.fac + course_obj.uid), class_obj_list)
+        print("\tUpdated:", course_obj.fac + course_obj.uid + ".json (" + str(round(time.time() - start, 2)), "sec)")
 
 
 def __write_class_objs(file_name, class_obj_list):
@@ -28,13 +31,13 @@ def extract_class_list(file_name):
 
 def __read_class_objs(file_name):
     file_name = file_name if file_name[-5:] == ".json" else file_name + ".json"  # ensure .json file type in file_name
-    file_name = file_name if file_name[:15] == "../JSONCourses/" else "../JSONCourses/" + file_name  # ensure proper filepath
+    file_name = file_name if file_name[:12] == "JSONCourses/" else "JSONCourses/" + file_name  # ensure proper filepath
 
     try:
         with open(file_name, "r") as reading_file:
             class_obj_list = json.load(reading_file, cls=AClassDecoder)
     except FileNotFoundError:
-        with open(file_name[15:], "r") as reading_file:
+        with open(file_name[12:], "r") as reading_file:
             class_obj_list = json.load(reading_file, cls=AClassDecoder)
 
     return class_obj_list

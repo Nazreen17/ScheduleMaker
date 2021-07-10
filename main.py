@@ -2,7 +2,7 @@ from Menu import get_courses_list
 from JSONCourses.JSONCoursesManip import update_course_json
 from JSONMaxSchedules.ScheduleGeneration import generate
 from JSONMaxSchedules.JSONSchedulesManip import save_schedule_json
-# from Optimizations.
+from Optimizations import Optimize
 
 
 def main():
@@ -23,11 +23,18 @@ def main():
     elif current_mode == valid_modes[1]:  # generate courses
         print("\tMODE =", valid_modes[1].upper())
         all_schedules_list = generate(get_courses_list())
-        file_name = input("Enter a filename.json to save schedules to > ")
-        save_schedule_json(file_name, all_schedules_list)
+        template_file_name = input("Enter a filename.json to save schedules to > ")
+        save_schedule_json(template_file_name, all_schedules_list)
     elif current_mode == valid_modes[2]:  # optimize
         print("\tMODE =", valid_modes[2].upper())
-        # optimize()
+        use_template = input("Use a premade max template (Yes/No) > ")
+        use_template = True if use_template[0] is "y" else False
+        if use_template is True:
+            template_file_name = input("Enter a filename.json to use as a template > ")
+        else:  # don't use template
+            pass
+
+        # Optimize()
 
 
 if __name__ == "__main__":

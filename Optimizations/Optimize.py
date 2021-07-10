@@ -1,0 +1,2 @@
+from ClassStructure.MaxSchedulesStructure import MaxSchedule
+

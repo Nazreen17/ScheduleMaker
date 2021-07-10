@@ -15,7 +15,7 @@ from selenium.common.exceptions import NoSuchElementException
 
 from constants import OTU_COURSE_WEBSITE, CHROMEDRIVER_PATH, TERM, TERM_ID, WEEKDAYS, SLEEP_GENERAL, SLEEP_NEXT_CLASS, \
     SLEEP_TEXT_INPUT, SLEEP_DETAIL_POPUP_TAB, SLEEP_DETAIL_POPUP_TAB_TEXT
-from ClassStructure.CourseStructure import AClass
+from ClassStructure.CourseClassStructure import AClass
 
 
 def scrape_course_class_objs(course_obj):

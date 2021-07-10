@@ -1,8 +1,8 @@
 import json
-
 import time
+
 from Scaper.Scraper import scrape_course_class_objs
-from ClassStructure.CourseStructure import AClassDecoder, AClassEncoder
+from ClassStructure.CourseClassStructure import AClassDecoder, AClassEncoder
 
 
 def update_course_json(course_obj_list):

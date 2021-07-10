@@ -178,7 +178,7 @@ def __optimize_day_off(option, best_case_option, int_day_off):
 
 def __print_class_info(class_obj):
     """
-    Ripped the code from CourseStructure.py, for some reason I cant call the class's methods?
+    Ripped the code from CourseClassStructure.py, for some reason I cant call the class's methods?
     :param class_obj:
     :return:
     """

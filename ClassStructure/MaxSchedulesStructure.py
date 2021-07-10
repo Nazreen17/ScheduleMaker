@@ -1,7 +1,7 @@
 import json
 from datetime import datetime
 
-from ClassStructure.CourseStructure import AClass
+from ClassStructure.CourseClassStructure import AClass
 
 
 class MaxSchedule:

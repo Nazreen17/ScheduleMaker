@@ -1,4 +1,4 @@
-from ClassStructure.CourseStructure import AClass
+from ClassStructure.CourseClassStructure import AClass
 
 
 class TermSchedule:

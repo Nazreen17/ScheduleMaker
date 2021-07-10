@@ -1,8 +1,8 @@
+import time
+
 from ClassStructure.MaxSchedulesStructure import MaxSchedule
 from JSONCourses.JSONCoursesManip import extract_class_list
 from ClassStructure.FlipClock import FlipClock
-
-import time
 
 
 def generate(courses_list):

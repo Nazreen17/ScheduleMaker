@@ -15,12 +15,20 @@ def generate(courses_list):
     courses_2d_list = __cut(courses_2d_list)
     # courses_2d_list = [[AClass list from Course 1], [AClass list from Course 2], etc], 0 seats left removed/cut
 
-    print("\tRunning flip clock combinations...")
     main_schedules_list = __flip_clock_combinations(courses_2d_list)
+    print("\tGenerated", len(main_schedules_list), "CRN coded schedules (" + str(round(time.time() - start, 2)), "sec)")
 
-    print("\tGenerated", len(main_schedules_list), "schedules (" + str(round(time.time() - start, 2)), "sec)")
+    main_schedules_list = __crn_clean_up(main_schedules_list)
+    # converting MaxSchedule to a clear list of CRN codes
 
     return main_schedules_list
+
+
+def __crn_clean_up(main_schedules_list):
+    extracted_crn = []
+    for max_schedule_obj in main_schedules_list:
+        extracted_crn.append(max_schedule_obj.crn_list)
+    return extracted_crn
 
 
 def __cut(courses_2d_list):
@@ -35,7 +43,7 @@ def __flip_clock_combinations(courses_2d_list):
     all_combinations = []
     clock = FlipClock(courses_2d_list)
 
-    print("\t\tMaximum", str(clock.shift_max), "possible flip clock combinations")
+    print("\tMaximum", str(clock.shift_max), "possible flip clock combinations")
 
     for shift_count in range(clock.shift_max):
         temp_schedule = MaxSchedule()

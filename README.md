@@ -2,9 +2,11 @@
 Daniel Jeon
 
 ##General About
+
 **Current Python Version: 3.7.9**
 
 ##Imported Modules
+
 - Pillow (8.3.1)
   - .png schedule creation
 - selenium (3.141.0)

@@ -6,8 +6,13 @@ class DualShiftOptimizerStructure(ABC):
         self._name = name
         self._description = description
         self._max_schedules = max_schedule_list
-        self._result = result
         self._optimal = optimal
+        self._result = result
+        """
+        WARNING! ATTRIBUTES RUN IN ORDER ^^^
+        PUT RESULT AFTER optimal, UPDATE TIES AFTER optimize() TO MATCH _ties ATTRIBUTE
+        (Or stop being lazy and make updater method)
+        """
 
     @property
     def name(self):

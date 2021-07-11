@@ -10,17 +10,22 @@ class EndEarly(DualShiftOptimizerStructure):
         self._description = "Get the schedules that average end the earliest end times each class day"
         self._max_schedules = schedule_list
         self._ties = 0
-        self._result = "Total ties: " + str(self._ties)
         self._optimal = self.optimize()
+        self._result = "Total ties: " + str(self._ties)
+        """
+        WARNING! ATTRIBUTES RUN IN ORDER ^^^
+        PUT RESULT AFTER optimal, UPDATE TIES AFTER optimize() TO MATCH _ties ATTRIBUTE
+        (Or stop being lazy and make updater method)
+        """
         super().__init__(name=self._name, description=self._description, max_schedule_list=self._max_schedules,
                          result=self._result, optimal=self._optimal)
 
     def optimize(self):
-        optimized_best = TermSchedule(self._max_schedules[0])  # initialized first element as the best case
+        best = TermSchedule(self._max_schedules[0])  # initialized first element as the best case
         for crn_list_i in range(1, len(self._max_schedules)):  # cycle all in schedule list
-            loop_current = TermSchedule(self._max_schedules[crn_list_i])
-            optimized_best = self.__compare_for_best(optimized_best, loop_current)
-        return optimized_best
+            current = TermSchedule(self._max_schedules[crn_list_i])
+            best = self.__compare_for_best(best, current)
+        return best
 
     @staticmethod
     def __generate_week_list(schedule_obj):

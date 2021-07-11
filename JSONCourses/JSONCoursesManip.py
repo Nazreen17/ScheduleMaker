@@ -37,7 +37,11 @@ def __read_class_objs(file_name):
         with open(file_name, "r") as reading_file:
             class_obj_list = json.load(reading_file, cls=AClassDecoder)
     except FileNotFoundError:
-        with open(file_name[12:], "r") as reading_file:
-            class_obj_list = json.load(reading_file, cls=AClassDecoder)
+        try:
+            with open(file_name[12:], "r") as reading_file:
+                class_obj_list = json.load(reading_file, cls=AClassDecoder)
+        except FileNotFoundError:
+            with open("..//JSONCourses/" + file_name[12:], "r") as reading_file:
+                class_obj_list = json.load(reading_file, cls=AClassDecoder)
 
     return class_obj_list

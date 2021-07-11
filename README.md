@@ -1,11 +1,11 @@
 # ScheduleMaker
 Daniel Jeon
 
-##General About
+## General About
 
 **Current Python Version: 3.7.9**
 
-##Imported Modules
+## Imported Modules
 
 - Pillow (8.3.1)
   - .png schedule creation

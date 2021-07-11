@@ -1,6 +1,6 @@
 import json
 
-from ClassStructure.MaxSchedulesStructure import TermScheduleDecoder
+from ClassStructure.MaxSchedulesStructure import MaxScheduleDecoder
 from ClassStructure.CourseClassStructure import AClassEncoder
 
 
@@ -33,9 +33,9 @@ def __read_schedule_objs(file_name):
 
     try:
         with open(file_name, "r") as reading_file:
-            class_obj_list = json.load(reading_file, cls=TermScheduleDecoder)
+            class_obj_list = json.load(reading_file, cls=MaxScheduleDecoder)
     except FileNotFoundError:
         with open(file_name[17:], "r") as reading_file:
-            class_obj_list = json.load(reading_file, cls=TermScheduleDecoder)
+            class_obj_list = json.load(reading_file, cls=MaxScheduleDecoder)
 
     return class_obj_list

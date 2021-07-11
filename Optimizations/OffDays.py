@@ -81,8 +81,3 @@ class OffDay(DualShiftOptimizerStructure):
             end = datetime(1, 1, 1, element[1].hour, element[1].second)
             delta += end - start
         return delta.time()
-
-
-test = OffDay([[40288, 40311, 42751, 43335, 40363], [40288, 40311, 42751, 43335, 40366], [40288, 40311, 42751, 43337, 40363]], "monday")
-print(test.result)
-# print(test.optimal)

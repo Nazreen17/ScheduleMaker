@@ -2,7 +2,6 @@ from ClassStructure.SingleScheduleStructure import TermSchedule
 
 from PIL import Image, ImageDraw, ImageFont
 
-
 COLUMN_SIZE = 200
 ROW_SIZE = 80
 HEADER_FONT = ImageFont.truetype('roboto-mono/RobotoMono-Bold.ttf', 32)
@@ -10,9 +9,12 @@ BODY_FONT = ImageFont.truetype('roboto-mono/RobotoMono-Medium.ttf', 20)
 WEEKDAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
 
 BLUE = (157, 162, 233)
+PEACH = (255, 223, 182)
 MOSS = (171, 210, 172)
 UBE = (208, 178, 241)
-COLOUR_MIX = [BLUE, MOSS, UBE]
+APRICOT = (254, 200, 173)
+CRYSTAL = (157, 220, 224)
+COLOUR_MIX = [BLUE, PEACH, MOSS, UBE, APRICOT, CRYSTAL]
 
 
 def draw_schedule(schedule_obj):

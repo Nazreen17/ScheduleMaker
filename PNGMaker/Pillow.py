@@ -1,3 +1,5 @@
+from ClassStructure.SingleScheduleStructure import TermSchedule
+
 from PIL import Image, ImageDraw, ImageFont
 
 
@@ -55,8 +57,8 @@ def __draw_class(img, class_obj, block_colour):
 
     for class_time in class_obj.class_time:
         if class_time is not None:
-            x_1_cord = COLUMN_SIZE * (class_time[0].weekday() + 1)
-            x_2_cord = COLUMN_SIZE * (class_time[0].weekday() + 2)
+            x_1_cord = COLUMN_SIZE * (class_time[0].weekday() + 2)  # shift weekday indexes (sunday=0) + legend col
+            x_2_cord = COLUMN_SIZE * (class_time[0].weekday() + 3)
             y_1_cord = (((class_time[0].hour - 8) + class_time[0].minute / 60) + 1) * ROW_SIZE
             y_2_cord = (((class_time[1].hour - 8) + class_time[1].minute / 60) + 1) * ROW_SIZE
 
@@ -68,14 +70,3 @@ def __draw_class(img, class_obj, block_colour):
             d.text((x_1_cord + 10, y_1_cord + 5 + BODY_FONT.size), text, font=BODY_FONT, fill="black")
             text = str(class_obj.title)[:15 - 4] + " " + str(class_obj.class_type)[:3]
             d.text((x_1_cord + 10, y_1_cord + 5 + (BODY_FONT.size * 2)), text, font=BODY_FONT, fill="black")
-
-
-# TODO TEST CODE
-from ClassStructure.CourseClassStructure import AClass
-from ClassStructure.SingleScheduleStructure import TermSchedule
-from datetime import datetime
-
-time = [[datetime(2021, 7, 10, 8), datetime(2021, 7, 10, 10)], [datetime(2021, 7, 11, 8), datetime(2021, 7, 11, 9)]]
-passer = TermSchedule([AClass(fac="FAC", uid="1000U", title="YOINK CLASS", class_time=time, crn=1234, class_type="Laboritory")])
-
-draw_schedule(passer)

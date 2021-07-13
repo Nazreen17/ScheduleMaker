@@ -4,7 +4,7 @@ from datetime import datetime
 from ClassStructure.CourseClassStructure import AClass
 
 
-class MaxSchedule:
+class MaxTemplate:
     def __init__(self, crn_list=None, class_times_list=None):
         if isinstance(crn_list, list):
             for crn in crn_list:

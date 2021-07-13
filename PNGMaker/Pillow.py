@@ -1,4 +1,4 @@
-from ClassStructure.SingleScheduleStructure import TermSchedule
+from ClassStructure.TermScheduleStructure import TermSchedule
 
 from PIL import Image, ImageDraw, ImageFont
 

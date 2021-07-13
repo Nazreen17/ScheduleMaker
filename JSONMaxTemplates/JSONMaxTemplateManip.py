@@ -1,6 +1,6 @@
 import json
 
-from ClassStructure.MaxSchedulesStructure import MaxScheduleDecoder
+from ClassStructure.MaxTemplateStructure import MaxScheduleDecoder
 from ClassStructure.CourseClassStructure import AClassEncoder
 
 
@@ -11,7 +11,7 @@ def save_schedule_json(file_name, all_schedules_list):
 
 def __write_schedule_objs(file_name, all_schedules_list):
     file_name = file_name if file_name[-5:] == ".json" else file_name + ".json"  # ensure .json file type in file_name
-    file_name = file_name if file_name[:17] == "JSONMaxSchedules/" else "JSONMaxSchedules/" + file_name
+    file_name = file_name if file_name[:17] == "JSONMaxTemplates/" else "JSONMaxTemplates/" + file_name
     # ensure proper filepath
 
     try:
@@ -28,7 +28,7 @@ def extract_schedule_list(file_name):
 
 def __read_schedule_objs(file_name):
     file_name = file_name if file_name[-5:] == ".json" else file_name + ".json"  # ensure .json file type in file_name
-    file_name = file_name if file_name[:17] == "JSONMaxSchedules/" else "JSONMaxSchedules/" + file_name
+    file_name = file_name if file_name[:17] == "JSONMaxTemplates/" else "JSONMaxTemplates/" + file_name
     # ensure proper filepath
 
     try:

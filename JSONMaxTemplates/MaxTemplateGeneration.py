@@ -1,6 +1,6 @@
 import time
 
-from ClassStructure.MaxSchedulesStructure import MaxSchedule
+from ClassStructure.MaxTemplateStructure import MaxTemplate
 from JSONCourses.JSONCoursesManip import extract_class_list
 from ClassStructure.FlipClock import FlipClock
 
@@ -46,7 +46,7 @@ def __flip_clock_combinations(courses_2d_list):
     print("\tMaximum", str(clock.shift_max), "possible flip clock combinations")
 
     for shift_count in range(clock.shift_max):
-        temp_schedule = MaxSchedule()
+        temp_schedule = MaxTemplate()
         loop_continue = True
         inner_list_index = 0
         while loop_continue:

@@ -1,7 +1,7 @@
 from Menu import get_courses_list
 from JSONCourses.JSONCoursesManip import update_course_json
-from JSONMaxSchedules.ScheduleGeneration import generate
-from JSONMaxSchedules.JSONSchedulesManip import save_schedule_json
+from JSONMaxTemplates.MaxTemplateGeneration import generate
+from JSONMaxTemplates.JSONMaxTemplateManip import save_schedule_json
 from Optimizations import Optimize
 
 

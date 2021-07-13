@@ -1,5 +1,5 @@
 from Optimizations.Optimize import DualShiftOptimizerStructure
-from ClassStructure.SingleScheduleStructure import TermSchedule
+from ClassStructure.TermScheduleStructure import TermSchedule
 
 from datetime import datetime
 

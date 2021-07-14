@@ -7,7 +7,7 @@ Daniel Jeon
 
 ## Packages (& Versions) Used
 
-###External Libraries
+**External Libraries**
 - Pillow (8.3.1)
   - .png schedule creation
 - selenium (3.141.0)
@@ -17,7 +17,7 @@ Daniel Jeon
   - class object mapping to SQL database
 - mysql-connector-python (8.0.25)
 
-###General Libraries
+**General Libraries**
 - time
   - prevent selenium from borking
 - json

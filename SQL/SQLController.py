@@ -23,8 +23,9 @@ def check_add_faculty(fac):
     temp_cursor = server_connection(host_name=SQL_HOST, user_name=SQL_USER, user_password=SQL_PASS).cursor()
 
     if __table_exists(fac):
-        temp_cursor.execute("CREATE TABLE fac (id INT AUTO_INCREMENT PRIMARY KEY, crn INTEGER (10), uid VARCHAR(10), "
-                            "seats INTEGER (5), data VARCHAR(2500))")
+        temp_cursor.execute(
+            f"CREATE TABLE '{fac}' (id INT AUTO_INCREMENT PRIMARY KEY, crn INTEGER (10), uid VARCHAR(10), "
+            "seats INTEGER (5), class_type VARCHAR(10), json_data VARCHAR(2500))")
 
     temp_cursor.close()
     return False
@@ -33,11 +34,7 @@ def check_add_faculty(fac):
 def __table_exists(table_name):
     temp_cursor = server_connection(host_name=SQL_HOST, user_name=SQL_USER, user_password=SQL_PASS).cursor()
 
-    temp_cursor.execute("""
-        SELECT COUNT(*)
-        FROM information_schema.tables
-        WHERE table_name = '{0}'
-        """.format(table_name.replace('\'', '\'\'')))
+    temp_cursor.execute(f"SELECT COUNT(*) FROM information_schema.tables WHERE table_name = '{table_name}'")
     if temp_cursor.fetchone()[0] == 1:
         temp_cursor.close()
         return True
@@ -47,5 +44,20 @@ def __table_exists(table_name):
 
 
 def update_class(class_obj):
-    if isinstance(class_obj, AClass):
-        pass
+    if not isinstance(class_obj, AClass):
+        return
+    if not __table_exists(class_obj.fac):
+        check_add_faculty(class_obj.fac)
+
+    temp_cursor = server_connection(host_name=SQL_HOST, user_name=SQL_USER, user_password=SQL_PASS).cursor()
+
+    temp_cursor.execute(f"SELECT EXISTS(SELECT 1 FROM '{class_obj.fac}' WHERE crn = '{class_obj.crn}')")
+    # Select an existing row with matching crn
+
+    # TODO Still need to finish logic, saving for backup sake. Check if class row exists, add or update as needed
+
+    temp_cursor.execute(f"INSERT INTO '{class_obj.fac}' (crn, uid, seats, class_type, json_data) "
+                        "VALUES (class_obj.crn, class_boj.uid, class_obj.seats, class_obj.class_type, ext_data)")
+
+    temp_cursor.close()
+    return False

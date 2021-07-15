@@ -1,7 +1,9 @@
-from Optimizations.Optimize import DualShiftOptimizerStructure
-from ClassStructure.TermScheduleStructure import TermSchedule
+#!/usr/bin/env python
 
 from datetime import datetime
+
+from Optimizations.Optimize import DualShiftOptimizerStructure
+from ClassStructure.TermScheduleStructure import TermSchedule
 
 
 class OffDay(DualShiftOptimizerStructure):

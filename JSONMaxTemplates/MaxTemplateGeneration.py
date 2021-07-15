@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import time
 
 from ClassStructure.MaxTemplateStructure import MaxTemplate

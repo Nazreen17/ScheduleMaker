@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 class FlipClock:
     def __init__(self, list_2d):
         self._clock = []

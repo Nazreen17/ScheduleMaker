@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from ClassStructure.CourseClassStructure import ACourse
 from constants import STOP_CODES
 

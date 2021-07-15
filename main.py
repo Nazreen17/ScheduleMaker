@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from Menu import get_courses_list
 from JSONCourses.JSONCoursesManip import update_course_json
 from JSONMaxTemplates.MaxTemplateGeneration import generate

@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import mysql.connector
 
 from ClassStructure.CourseClassStructure import AClass

@@ -246,23 +246,6 @@ class AClass(ACourse):
 
 
 class AClassEncoder:
-    """
-    def default(self, o):
-         if isinstance(o, AClass):
-             return {
-                     "Actor": {
-                              "Name": o.get_actor().get_name(),
-                              "Age": o.get_actor().get_age()
-                              },
-                     "Movie": {
-                              "Title": o.get_movie().get_title(),
-                              "Gross": o.get_movie().get_gross(),
-                              "Year": o.get_movie().get_year()
-                              }
-                     }
-         return json.JSONEncoder.default(self, o)
-    """
-
     @staticmethod
     def default(obj):
         if isinstance(obj, datetime):

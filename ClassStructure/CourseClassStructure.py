@@ -5,9 +5,15 @@ import json
 
 
 class ACourse:
-    def __init__(self, fac, uid):
-        self._fac = fac.upper()
-        self._uid = uid.upper()
+    def __init__(self, fac=None, uid=None, combined=None):
+        if combined is None:
+            self._fac = fac.upper()
+            self._uid = uid.upper()
+        elif isinstance(combined, str):
+            for i in range(len(combined)):
+                if combined[i].isdigit():  # i is now the index of first digit
+                    self._fac = combined[:i].upper()  # faculty
+                    self._uid = combined[i:].upper()  # course uni id num thing
 
     @property
     def fac(self):

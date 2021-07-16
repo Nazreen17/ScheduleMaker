@@ -31,7 +31,6 @@ setup(
     # Dependencies the library needs in order to run.
     install_requires=[
         "Pillow",
-        "selenium",
         "discord",
         "SQLAlchemy",
         "mysql-connector-python"

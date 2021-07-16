@@ -32,6 +32,7 @@ setup(
     install_requires=[
         "Pillow",
         "selenium",
+        "discord",
         "SQLAlchemy",
         "mysql-connector-python"
     ],

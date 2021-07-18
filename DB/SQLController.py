@@ -3,7 +3,7 @@
 import mysql.connector
 
 from ClassStructure.CourseClassStructure import AClass
-from JSONCourses.JSONCoursesManip import convert_to_json_str
+from DB.JSONCoursesManip import convert_to_json_str
 from redacted import SQL_HOST, SQL_USER, SQL_PASS
 
 

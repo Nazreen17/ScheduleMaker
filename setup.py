@@ -39,7 +39,7 @@ setup(
     # Here are the packages I want build.
     packages=find_namespace_packages(
         where=["ClassStructure", "JSONCourses", "JSONCourses.*", "JSONMaxTemplates", "Optimizations", "PNGMaker",
-               "PNGMaker.*", "Scraper", "SQL"]
+               "PNGMaker.*", "Scraper", "DB"]
     ),
 
     # This program requires some package data, such as font files, so include them

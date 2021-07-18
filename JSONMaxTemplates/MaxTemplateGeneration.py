@@ -3,7 +3,7 @@
 import time
 
 from ClassStructure.MaxTemplateStructure import MaxTemplate
-from JSONCourses.JSONCoursesManip import extract_class_list
+from DB.JSONCoursesManip import extract_class_list
 from ClassStructure.FlipClock import FlipClock
 
 

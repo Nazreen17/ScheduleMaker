@@ -3,7 +3,7 @@
 import os
 
 from ClassStructure.CourseClassStructure import AClass
-from JSONCourses.JSONCoursesManip import extract_class_list
+from DB.JSONCoursesManip import extract_class_list
 
 
 class TermSchedule:

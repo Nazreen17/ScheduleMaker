@@ -111,7 +111,7 @@ class AClass(ACourse):
     @section.setter
     def section(self, section):
         if isinstance(section, str) or isinstance(section, int):
-            self._section = int(section)
+            self._section = str(section)
         else:
             raise TypeError
 

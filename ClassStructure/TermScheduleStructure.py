@@ -2,8 +2,7 @@
 
 import os
 
-from ClassStructure.CourseClassStructure import AClass
-from DB.JSONCoursesManip import extract_class_list
+from ClassStructure.CourseClassStructure import AClass, extract_from_json_str
 
 
 class TermSchedule:
@@ -72,7 +71,7 @@ class TermSchedule:
         json_files = [pos_json for pos_json in os.listdir(path_to_json) if pos_json.endswith('.json')]
 
         for json_file in json_files:
-            temp = extract_class_list(json_file)
+            temp = extract_from_json_str(json_file)
             for a_class in temp:
                 if a_class.crn == crn:
                     return a_class

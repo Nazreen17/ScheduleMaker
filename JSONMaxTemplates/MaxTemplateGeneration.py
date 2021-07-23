@@ -3,7 +3,7 @@
 import time
 
 from ClassStructure.MaxTemplateStructure import MaxTemplate
-from DB.JSONCoursesManip import extract_class_list
+from ClassStructure.CourseClassStructure import extract_from_json_str
 from ClassStructure.FlipClock import FlipClock
 
 
@@ -13,7 +13,7 @@ def generate(courses_list):
     courses_2d_list = []
 
     for course in courses_list:
-        courses_2d_list.append(extract_class_list(course.fac + course.uid))
+        courses_2d_list.append(extract_from_json_str(course.fac + course.uid))
     courses_2d_list = __cut(courses_2d_list)
     # courses_2d_list = [[AClass list from Course 1], [AClass list from Course 2], etc], 0 seats left removed/cut
 

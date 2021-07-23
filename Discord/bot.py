@@ -6,6 +6,10 @@ from discord.ext import commands
 from redacted import CLIENT_TOKEN
 from BotConstants import PREFIX
 
+
+# CLIENT_TOKEN = STR Discord dev bot token
+
+
 client = commands.Bot(command_prefix=PREFIX)
 
 

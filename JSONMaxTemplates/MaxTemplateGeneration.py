@@ -3,22 +3,22 @@
 import time
 
 from ClassStructure.MaxTemplateStructure import MaxTemplate
-from ClassStructure.CourseClassStructure import extract_from_json_str
 from ClassStructure.FlipClock import FlipClock
+from DB.SQLCoursePullController import pull_class
 
 
-def generate(courses_list):
+def generate(course_obj_list):
     start = time.time()
 
     courses_2d_list = []
 
-    for course in courses_list:
-        courses_2d_list.append(extract_from_json_str(course.fac + course.uid))
+    for course_obj in course_obj_list:
+        courses_2d_list.append(pull_class(course_obj.fac, course_obj.uid))
     courses_2d_list = __cut(courses_2d_list)
-    # courses_2d_list = [[AClass list from Course 1], [AClass list from Course 2], etc], 0 seats left removed/cut
+    # now courses_2d_list = [[AClass list from Course 1], [AClass list from Course 2], etc], 0 seats left removed/cut
 
     main_schedules_list = __flip_clock_combinations(courses_2d_list)
-    print("\tGenerated", len(main_schedules_list), "CRN coded schedules (" + str(round(time.time() - start, 2)), "sec)")
+    print(f"\tGenerated {len(main_schedules_list)} CRN simplified schedules ({str(round(time.time() - start, 2))} sec)")
 
     main_schedules_list = __crn_clean_up(main_schedules_list)
     # converting MaxSchedule to a clear list of CRN codes
@@ -45,7 +45,7 @@ def __flip_clock_combinations(courses_2d_list):
     all_combinations = []
     clock = FlipClock(courses_2d_list)
 
-    print("\tMaximum", str(clock.shift_max), "possible flip clock combinations")
+    print(f"\tMaximum {str(clock.shift_max)} possible flip clock combinations")
 
     for shift_count in range(clock.shift_max):
         temp_schedule = MaxTemplate()

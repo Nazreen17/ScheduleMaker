@@ -2,7 +2,6 @@
 
 import time
 
-from ClassStructure.TermScheduleStructure import TermSchedule
 from ClassStructure.MaxTemplateStructure import MaxTemplate
 from ClassStructure.FlipClock import FlipClock
 from DB.SQLCoursePullController import pull_class
@@ -17,44 +16,35 @@ def generate(course_obj_list):
     # Third dimension element = a single option of the parent course
 
     for course_obj in course_obj_list:
-        all_classes = pull_class(fac=course_obj.fac, uid=course_obj.uid, seats=1)
+        all_course_classes = pull_class(fac=course_obj.fac, uid=course_obj.uid, seats=1)
 
-        lectures_list = []
-        for class_obj in all_classes:
+        course_2d_sublist = []
+
+        for class_obj in all_course_classes:
             if class_obj.class_type == "Lecture":
-                lectures_list.append(class_obj)
 
-        course_options = []
-        for lecture_obj in lectures_list:
+                if len(class_obj.links) > 0:  # The lecture class has at least 1 linked secondary class option
+                    for found_option_list in class_obj.links:  # Loop through each lecture's linked options
+                        option = [class_obj.crn] + found_option_list  # Create a combined option list
+                        course_2d_sublist.append(option)  # Add the combined option list to the course 2d list
 
-            for option_list in lecture_obj.links:  # Loop through each lecture's linked options
-                temp_option_list = [lecture_obj]
-                for link_crn in option_list:  # Loop through each crn code in the linked option
-                    temp_option_list.append(__find_by_crn(all_classes, link_crn))
+                else:  # The lecture class has no linked secondary class options
+                    course_2d_sublist.append([class_obj.crn])  # Add the single lecture type to the course 2d list
 
-                course_options.append(temp_option_list)
-
-        list_3d.append(course_options)
+            list_3d.append(course_2d_sublist)
     # Example list_3d =
     # [
-    #  [ [Course 1, Option 1 Classes], [Course 1, Option 2 Classes] ],
-    #  [ [Course 2, Option 1 Classes], [Course 2, Option 2 Classes], [Course 2, Option 3 Classes] ],
+    #  [ [Course 1, Option 1 CRN Codes], [Course 1, Option 2 CRN Codes] ],
+    #  [ [Course 2, Option 1 CRN Codes], [Course 2, Option 2 CRN Codes], [Course 2, Option 3 CRN Codes] ],
     # ... etc
     # ]
 
     main_schedules_list = __flip_clock_combinations(list_3d)
     print(f"\tGenerated {len(main_schedules_list)} CRN simplified schedules ({str(round(time.time() - start, 2))} sec)")
 
-    main_schedules_list = __crn_clean_up(main_schedules_list)
-    # converting MaxSchedule to a clear list of CRN codes
+    main_schedules_list = __crn_clean_up(main_schedules_list)  # converting MaxSchedule to a clear list of CRN codes
 
     return main_schedules_list
-
-
-def __find_by_crn(full_list, crn):
-    for class_obj in full_list:
-        if class_obj.crn == crn:
-            return class_obj
 
 
 def __flip_clock_combinations(list_3d):

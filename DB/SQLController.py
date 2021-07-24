@@ -2,7 +2,7 @@
 
 import mysql.connector
 
-from ClassStructure.CourseClassStructure import AClass, extract_from_json_str
+from ClassStructure.CourseClassStructure import extract_from_json_str
 from redacted import SQL_HOST, SQL_USERNAME, SQL_PASSWORD, SQL_DB
 
 
@@ -28,13 +28,13 @@ def __server_connection():
     return db_connection
 
 
-def pull_class(fac, uid, crn=None):
+def pull_class(fac_str, uid_str, crn_int=None):
     """
-    :param fac:
+    :param fac_str:
     STR faculty value, used to find the table
-    :param uid:
+    :param uid_str:
     STR uid value, used to find records of all classes
-    :param crn:
+    :param crn_int:
     INT crn value, used to find a single class
     :return:
     Returns a list of AClass objects
@@ -44,13 +44,14 @@ def pull_class(fac, uid, crn=None):
     connection = __server_connection()
     temp_cursor = connection.cursor(buffered=True)
 
-    temp_cursor.execute(f"SELECT COUNT(*) FROM information_schema.tables WHERE table_name='{fac}'")  # check for table
+    temp_cursor.execute(f"SELECT COUNT(*) FROM information_schema.tables WHERE table_name='{fac_str}'")
+    # check that a table matching fac_str exists
 
     if temp_cursor.fetchone()[0] == 1:  # fac table exists
-        if crn is None:
-            temp_cursor.execute(f"SELECT json_data FROM {fac} WHERE uid='{uid}'")
+        if crn_int is None:
+            temp_cursor.execute(f"SELECT json_data FROM {fac_str} WHERE uid='{uid_str}'")
         else:
-            temp_cursor.execute(f"SELECT json_data FROM {fac} WHERE crn={crn}")
+            temp_cursor.execute(f"SELECT json_data FROM {fac_str} WHERE crn={crn_int}")
 
         json_strings = temp_cursor.fetchall()
 

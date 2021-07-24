@@ -1,13 +1,20 @@
 #!/usr/bin/env python
 
 class FlipClock:
-    def __init__(self, list_2d):
+    # The FlipClock represents the index of each option (kinda confusing here is example):
+    # [0, 0, 1, 3] -> In this example, there are 4 clock digits, each digit represents a course and further the index
+    # of the course option. So we could say that course 3 (index 3 of clock) is on option index 1.
+    # All clocks start at initial values of all 0. [0, 0, 0, etc]
+    def __init__(self, list_3d):
         self._clock = []
         self._limits = []
         self._shift_max = 0
-        for inner_list_index in range(len(list_2d)):
-            self._clock.append(0)
-            self._limits.append(len(list_2d[inner_list_index]))
+        for course_index in range(len(list_3d)):
+            self._clock.append(0)  # Clock starts at all zeros [0, 0, 0, etc]
+            self._limits.append(len(list_3d[course_index][0]))
+            # The clock assumes that all options have equal num of classes, thus take length of option 1 (index 0)
+            # For example, we assume that each lecture has 2 linked classes (say 1 lab, 1 tutorial) per option,
+            # so we can just take the length of option 1 (index 0) to get the max number of classes per option
 
     @property
     def clock(self):

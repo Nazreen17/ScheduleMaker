@@ -28,14 +28,18 @@ def __server_connection():
     return db_connection
 
 
-def pull_class(fac_str, uid_str, crn_int=None):
+def pull_class(fac, uid, class_type=None, crn=None, seats=None):
     """
-    :param fac_str:
+    :param fac:
     STR faculty value, used to find the table
-    :param uid_str:
-    STR uid value, used to find records of all classes
-    :param crn_int:
-    INT crn value, used to find a single class
+    :param uid:
+    STR uid value, used to find all classes matching the general course uid
+    :param class_type:
+    STR class_type value, used to find a instances of a specific class type (Lecture, Tutorial, Laboratory)
+    :param crn:
+    INT crn value, used to find a single class by crn
+    :param seats:
+    INT seats value, used to set the minimum seats required
     :return:
     Returns a list of AClass objects
     """
@@ -44,14 +48,16 @@ def pull_class(fac_str, uid_str, crn_int=None):
     connection = __server_connection()
     temp_cursor = connection.cursor(buffered=True)
 
-    temp_cursor.execute(f"SELECT COUNT(*) FROM information_schema.tables WHERE table_name='{fac_str}'")
+    temp_cursor.execute(f"SELECT COUNT(*) FROM information_schema.tables WHERE table_name='{fac}'")
     # check that a table matching fac_str exists
 
     if temp_cursor.fetchone()[0] == 1:  # fac table exists
-        if crn_int is None:
-            temp_cursor.execute(f"SELECT json_data FROM {fac_str} WHERE uid='{uid_str}'")
-        else:
-            temp_cursor.execute(f"SELECT json_data FROM {fac_str} WHERE crn={crn_int}")
+        query = f"SELECT json_data FROM {fac} WHERE uid='{uid}'"
+        query += f" AND class_type='{class_type}'" if class_type is not None else ""
+        query += f" AND crn={crn}" if crn is not None else ""
+        query += f" AND seats >= {seats}" if seats is not None else ""
+
+        temp_cursor.execute(query)
 
         json_strings = temp_cursor.fetchall()
 

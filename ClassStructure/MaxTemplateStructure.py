@@ -10,7 +10,7 @@ class MaxTemplate:
     def __init__(self, crn_list=None, class_times_list=None):
         if isinstance(crn_list, list):
             for crn in crn_list:
-                if not isinstance(crn, str):
+                if not isinstance(crn, int):
                     raise TypeError
             self._crn_list = crn_list
         elif crn_list is None:

@@ -2,75 +2,48 @@
 
 import mysql.connector
 
-from ClassStructure.CourseClassStructure import AClass
-from DB.JSONCoursesManip import convert_to_json_str
-from redacted import SQL_HOST, SQL_USER, SQL_PASS
+from ClassStructure.CourseClassStructure import AClass, extract_from_json_str
+from redacted import SQL_HOST, SQL_USERNAME, SQL_PASSWORD, SQL_DB
 
 
-def server_connection(host_name, user_name, user_password):
+# SQL_HOST = STR mariadb/mysql server host ipv4 address
+# SQL_USERNAME = STR user with permissions granted
+# SQL_PASSWORD = STR user password
+# SQL_DB = STR PainMaker data base name on the server
+
+
+def __server_connection():
     db_connection = None
     try:
         db_connection = mysql.connector.connect(
-            host=host_name,
-            user=user_name,
-            passwd=user_password
+            host=SQL_HOST,
+            user=SQL_USERNAME,
+            passwd=SQL_PASSWORD,
+            database=SQL_DB
         )
-        print("MySQL Database connection successful")
+        # print(f'\n\tSuccessfully connected to mysql DB "{SQL_DB}" AS "{SQL_USERNAME}"')  # TEST CODE
     except Exception as err:
-        print(f"Error: '{err}'")
+        print(f"\n\tError: '{err}'")
 
     return db_connection
 
 
-def check_add_faculty(fac):
-    connection = server_connection(host_name=SQL_HOST, user_name=SQL_USER, user_password=SQL_PASS)
-    temp_cursor = connection.cursor()
+def pull_class(fac, uid, crn=None):
+    all_classes_list = []
 
-    if __table_exists(fac):
-        temp_cursor.execute(
-            f"CREATE TABLE '{fac}' (id INT AUTO_INCREMENT PRIMARY KEY, crn INTEGER (10), uid VARCHAR(10), "
-            "seats INTEGER (5), class_type VARCHAR(10), json_data VARCHAR(2500))")
+    connection = __server_connection()
+    temp_cursor = connection.cursor(buffered=True)
 
-    connection.commit()
+    if crn is None:
+        temp_cursor.execute(f"SELECT json_data FROM {fac} WHERE uid='{uid}'")
+    else:
+        temp_cursor.execute(f"SELECT json_data FROM {fac} WHERE crn={crn}")
 
-    temp_cursor.close()
-    return False
+    json_strings = temp_cursor.fetchall()
 
+    if len(json_strings) != 0:  # Class exists
+        for json_str in json_strings:
+            # TODO vvv Check this out, json_str is always a tuple with json_data in index 0, rest of tuple is empty
+            all_classes_list.append(extract_from_json_str(json_str[0]))
 
-def __table_exists(table_name):
-    temp_cursor = server_connection(host_name=SQL_HOST, user_name=SQL_USER, user_password=SQL_PASS).cursor()
-
-    temp_cursor.execute(f"SELECT COUNT(*) FROM information_schema.tables WHERE table_name = '{table_name}'")
-    if temp_cursor.fetchone()[0] == 1:
-        temp_cursor.close()
-        return True
-
-    temp_cursor.close()
-    return False
-
-
-def update_class(class_obj):
-    if not isinstance(class_obj, AClass):
-        return
-    if not __table_exists(class_obj.fac):
-        check_add_faculty(class_obj.fac)
-
-    connection = server_connection(host_name=SQL_HOST, user_name=SQL_USER, user_password=SQL_PASS)
-    temp_cursor = connection.cursor()
-
-    temp_cursor.execute(f"SELECT EXISTS(SELECT 1 FROM '{class_obj.fac}' WHERE crn = '{class_obj.crn}')")
-    # Select an existing row with matching crn
-
-    row_count = temp_cursor.rowcount
-
-    if row_count == 0:  # class does not exist on a record yet
-        temp_cursor.execute(f"INSERT INTO '{class_obj.fac}' (crn, uid, seats, class_type, json_data) "
-                            "VALUES (class_obj.crn, class_boj.uid, class_obj.seats, class_obj.class_type, ext_data)")
-    else:  # class exists, only update seats and json extended data
-        temp_cursor.execute(f"UPDATE '{class_obj.fac}' SET seats = '{class_obj.seats}', "
-                            f"json_data = '{convert_to_json_str(class_obj)}' WHERE crn = '{class_obj.crn}'")
-
-    connection.commit()
-
-    temp_cursor.close()
-    return False
+    return all_classes_list

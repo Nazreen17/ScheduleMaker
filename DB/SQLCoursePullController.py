@@ -60,4 +60,6 @@ def pull_class(fac_str, uid_str, crn_int=None):
                 # TODO vvv Check this out, json_str is always a tuple with json_data in index 0, rest of tuple is empty
                 all_classes_list.append(extract_from_json_str(json_str[0]))
 
+    temp_cursor.close()
+
     return all_classes_list

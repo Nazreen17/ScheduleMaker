@@ -40,8 +40,6 @@ class FlipClock:
             if self._clock[last_index] == self._limits[last_index]:
                 self._clock[last_index] = 0
                 self._clock[last_index - 1] += 1
-        if self._clock == self.__check_limit():
-            print("\tWARNING! Clock hit max!")
 
     def __check_limit(self):
         check_limit = []

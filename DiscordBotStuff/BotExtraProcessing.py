@@ -5,10 +5,15 @@ from ClassStructure.CourseClassStructure import ACourse
 
 def get_clean_courses_list(course_bot_input):
     """
+    :param course_bot_input:
+    A List/Tuple of Course inputs or a single Course input (Math1010u, MATH 1010 U, etc) all auto corrected later
     :return:
-    a list of Course objects
+    A list of Course objects
     """
     all_courses_list = []
+
+    if not isinstance(course_bot_input, list) and not isinstance(course_bot_input, tuple):
+        course_bot_input = [course_bot_input]
 
     for possible_course in course_bot_input:
         new_course_obj = __get_course_obj(possible_course.lower().replace(" ", ""))

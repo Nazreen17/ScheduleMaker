@@ -9,6 +9,12 @@ from constants import MAX_SCHEDULE_COMBINATIONS
 
 
 def generate(course_obj_list):
+    """
+    :param course_obj_list:
+    LIST of course objects
+    :return:
+    Returns a list of CRN codes representing all possible schedule combinations with valid seats and time conflict free.
+    """
     start = time.time()
 
     list_3d = []
@@ -52,6 +58,12 @@ def generate(course_obj_list):
 
 
 def __flip_clock_combinations(list_3d, all_course_classes):
+    """
+    Runs all possible combinations of course options and checks for time conflicts
+    :param list_3d:
+    :param all_course_classes:
+    :return:
+    """
     all_combinations = []
     clock = FlipClock(list_3d)
 

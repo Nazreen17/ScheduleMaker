@@ -11,7 +11,7 @@ class FlipClock:
         self._shift_max = 0
         for course_index in range(len(list_3d)):
             self._clock.append(0)  # Clock starts at all zeros [0, 0, 0, etc]
-            self._limits.append(len(list_3d[course_index][0]))
+            self._limits.append(len(list_3d[course_index]))
             # The clock assumes that all options have equal num of classes, thus take length of option 1 (index 0)
             # For example, we assume that each lecture has 2 linked classes (say 1 lab, 1 tutorial) per option,
             # so we can just take the length of option 1 (index 0) to get the max number of classes per option

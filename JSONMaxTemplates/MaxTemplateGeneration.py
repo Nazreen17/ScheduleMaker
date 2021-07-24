@@ -17,20 +17,22 @@ def generate(course_obj_list):
     # Third dimension element = a single option of the parent course
 
     for course_obj in course_obj_list:
-        lectures_list = pull_class(fac=course_obj.fac, uid=course_obj.uid, class_type="Lecture", seats=1)
+        all_classes = pull_class(fac=course_obj.fac, uid=course_obj.uid, seats=1)
+
+        lectures_list = []
+        for class_obj in all_classes:
+            if class_obj.class_type == "Lecture":
+                lectures_list.append(class_obj)
 
         course_options = []
-
         for lecture_obj in lectures_list:
+
             for option_list in lecture_obj.links:  # Loop through each lecture's linked options
                 temp_option_list = [lecture_obj]
-
                 for link_crn in option_list:  # Loop through each crn code in the linked option
-                    temp_option_list += pull_class(fac=lecture_obj.fac, uid=lecture_obj.uid, seats=1, crn=link_crn)
+                    temp_option_list.append(__find_by_crn(all_classes, link_crn))
 
-                if TermSchedule().add_class(temp_option_list).is_valid():
-                    # TODO WHYYYYYYYYYYYYYdddddyyyyy
-                    course_options.append(temp_option_list)
+                course_options.append(temp_option_list)
 
         list_3d.append(course_options)
     # Example list_3d =
@@ -47,6 +49,12 @@ def generate(course_obj_list):
     # converting MaxSchedule to a clear list of CRN codes
 
     return main_schedules_list
+
+
+def __find_by_crn(full_list, crn):
+    for class_obj in full_list:
+        if class_obj.crn == crn:
+            return class_obj
 
 
 def __flip_clock_combinations(list_3d):
@@ -67,6 +75,7 @@ def __flip_clock_combinations(list_3d):
             else:  # Done class class looping
                 loop_continue = False
                 all_combinations.append(temp_schedule)  # Add the completed schedule
+                # TODO !!!!!!!!!! ADD is_valid CONTROL !!!!!!!!!!
         clock.shift()  # shift late, clock starts a 0 which is possibly valid
     return all_combinations
 

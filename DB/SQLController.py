@@ -29,21 +29,34 @@ def __server_connection():
 
 
 def pull_class(fac, uid, crn=None):
+    """
+    :param fac:
+    STR faculty value, used to find the table
+    :param uid:
+    STR uid value, used to find records of all classes
+    :param crn:
+    INT crn value, used to find a single class
+    :return:
+    Returns a list of AClass objects
+    """
     all_classes_list = []
 
     connection = __server_connection()
     temp_cursor = connection.cursor(buffered=True)
 
-    if crn is None:
-        temp_cursor.execute(f"SELECT json_data FROM {fac} WHERE uid='{uid}'")
-    else:
-        temp_cursor.execute(f"SELECT json_data FROM {fac} WHERE crn={crn}")
+    temp_cursor.execute(f"SELECT COUNT(*) FROM information_schema.tables WHERE table_name='{fac}'")  # check for table
 
-    json_strings = temp_cursor.fetchall()
+    if temp_cursor.fetchone()[0] == 1:  # fac table exists
+        if crn is None:
+            temp_cursor.execute(f"SELECT json_data FROM {fac} WHERE uid='{uid}'")
+        else:
+            temp_cursor.execute(f"SELECT json_data FROM {fac} WHERE crn={crn}")
 
-    if len(json_strings) != 0:  # Class exists
-        for json_str in json_strings:
-            # TODO vvv Check this out, json_str is always a tuple with json_data in index 0, rest of tuple is empty
-            all_classes_list.append(extract_from_json_str(json_str[0]))
+        json_strings = temp_cursor.fetchall()
+
+        if len(json_strings) != 0:  # Class exists
+            for json_str in json_strings:
+                # TODO vvv Check this out, json_str is always a tuple with json_data in index 0, rest of tuple is empty
+                all_classes_list.append(extract_from_json_str(json_str[0]))
 
     return all_classes_list

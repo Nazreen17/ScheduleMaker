@@ -17,11 +17,6 @@ def generate(course_obj_list):
     """
     start = time.time()
 
-    list_3d = []
-    # First dimension element = general list of all courses
-    # Second dimension element = single course list of all its options
-    # Third dimension element = a single option of the parent course
-
     valid_courses_list_2d = []
 
     # 1) Pull all classes you consider valid into valid_courses_list_2d (No time conflict computation yet)
@@ -30,6 +25,27 @@ def generate(course_obj_list):
         # TODO WARNING! ONLY PULL CLASSES DEEMED VALID! LESS OVERHEAD AND REQUIRED FOR MaxTemplate VALIDATION!
 
     # 2) Compute all possible options based on links of lecture type classes
+    list_3d = __compute_options(valid_courses_list_2d)
+    # First dimension element = general list of all courses
+    # Second dimension element = single course list of all its options
+    # Third dimension element = a single option of the parent course
+
+    # 3) Compute all combinations of options through conversion of all CRN code based options to class objects,
+    # is_time_valid() processing also takes place here
+    main_schedules_list = __flip_clock_combinations(list_3d, valid_courses_list_2d)
+
+    # 4) Convert all objects to CRN codes to easier printing
+    main_schedules_list = __crn_clean_up(main_schedules_list)  # converting MaxSchedule to a clear list of CRN codes
+
+    # 5) Print detailed stats on computation
+    print(f"\tGenerated {len(main_schedules_list)} CRN simplified schedules ({str(round(time.time() - start, 2))} sec)")
+
+    return main_schedules_list
+
+
+def __compute_options(valid_courses_list_2d):
+    list_3d = []
+
     for course_sublist in valid_courses_list_2d:  # Cycle through each course sublist to compute in 2d list format
         course_2d_sublist = []
 
@@ -48,24 +64,14 @@ def generate(course_obj_list):
 
         if len(course_2d_sublist) > 0:
             list_3d.append(course_2d_sublist)
-    # Example now list_3d =
+
+    # Now list_3d = (example ->)
     # [
     #  [ [Course 1, Option 1 CRN Codes], [Course 1, Option 2 CRN Codes] ],
     #  [ [Course 2, Option 1 CRN Codes], [Course 2, Option 2 CRN Codes], [Course 2, Option 3 CRN Codes] ],
     # ... etc
     # ]
-
-    # 3) Compute all combinations of options through conversion of all CRN code based options to class objects,
-    # is_time_valid() processing also takes place here
-    main_schedules_list = __flip_clock_combinations(list_3d, valid_courses_list_2d)
-
-    # 4) Convert all objects to CRN codes to easier printing
-    main_schedules_list = __crn_clean_up(main_schedules_list)  # converting MaxSchedule to a clear list of CRN codes
-
-    # 5) Print detailed stats on computation
-    print(f"\tGenerated {len(main_schedules_list)} CRN simplified schedules ({str(round(time.time() - start, 2))} sec)")
-
-    return main_schedules_list
+    return list_3d
 
 
 def __flip_clock_combinations(list_3d, all_course_classes):

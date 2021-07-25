@@ -37,12 +37,15 @@ def generate(course_obj_list):
                 if len(class_obj.links) > 0:  # The lecture class has at least 1 linked secondary class option
                     for found_option_list in class_obj.links:  # Loop through each lecture's linked options
                         option = [class_obj.crn] + found_option_list  # Create a combined option list
-                        course_2d_sublist.append(option)  # Add the combined option list to the course 2d list
+                        if __is_valid_crn_options(found_option_list, all_course_classes):
+                            # Determine if option course was pulled
+                            course_2d_sublist.append(option)  # Add the combined option list to the course 2d list
 
                 else:  # The lecture class has no linked secondary class options
                     course_2d_sublist.append([class_obj.crn])  # Add the single lecture type to the course 2d list
 
-        list_3d.append(course_2d_sublist)
+        if len(course_2d_sublist) > 0:
+            list_3d.append(course_2d_sublist)
     # Example list_3d =
     # [
     #  [ [Course 1, Option 1 CRN Codes], [Course 1, Option 2 CRN Codes] ],
@@ -83,17 +86,7 @@ def __flip_clock_combinations(list_3d, all_course_classes):
                 crn_list = list_3d[course_index][current_course_option_index]  # get the crn list
 
                 converted_to_class_objects = __find_from_crn_list(crn_list, all_course_classes)
-                if len(crn_list) == len(converted_to_class_objects):
-                    # The CRN list might contain classes not matching the previous criteria specified in the
-                    # pull_class() parameters, which is called in generate(), most likely criteria conflict is seat > 0
-                    # usually. Thus the MaxTemplate is only deemed valid if the crn list does not match the classes
-                    # able to be returned from __find_from_crn_list().
-                    # TL;DR: If a class was not pulled by pull_class() -> called in generate(), then it will not be
-                    # found by __find_from_crn_list(). Thus the rule is all CRNs matched secondary classes must be free.
-                    temp_schedule.add_from_class(converted_to_class_objects)  # Add classes from option
-                else:
-                    temp_schedule.crn_list = []  # Clear the entire MaxTemplate's CRN list to determine it invalid
-                    loop_continue = False
+                temp_schedule.add_from_class(converted_to_class_objects)
 
                 course_index += 1  # Shift to next course index
 
@@ -110,6 +103,33 @@ def __flip_clock_combinations(list_3d, all_course_classes):
 
         clock.shift()  # shift late, clock starts a 0 which is possibly valid
     return all_combinations
+
+
+def __is_valid_crn_options(crn_list, all_course_classes):
+    """
+    Copied core logic from __find_from_crn_list()
+    :param crn_list:
+    List of crn codes to search
+    :param all_course_classes:
+    List of all classes in 3d organized format
+    :return:
+    Return BOOL True or False to determine if CRN list is a valid option
+    """
+    class_objects_list = []
+    temp_crn_list = crn_list.copy()  # Always copy lists when applying functions like .remove() which is done here below
+
+    for course_sublist in all_course_classes:
+        if len(temp_crn_list) > 0:
+            for class_object in course_sublist:
+                if class_object.crn in temp_crn_list and len(temp_crn_list) > 0:
+                    class_objects_list.append(class_object)
+                    temp_crn_list.remove(class_object.crn)  # Remove the crn code that was found
+                elif len(temp_crn_list) == 0:  # No more crn codes to search
+                    return class_objects_list
+        else:  # No more crn codes to search
+            return True
+
+    return False
 
 
 def __find_from_crn_list(crn_list, all_course_classes):

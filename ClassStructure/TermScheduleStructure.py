@@ -44,7 +44,7 @@ class TermSchedule:
                     raise TypeError
             self._classes += classes
 
-    def is_valid(self):
+    def is_time_valid(self):
         """
         :return:
         True or False if a schedule is valid and does not have time conflicts

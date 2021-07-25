@@ -43,7 +43,7 @@ def draw_schedule(schedule_obj):
         d.text((10, ROW_SIZE * (row_i - 7)), text, font=HEADER_FONT, fill="black", align="left")
         # time off set >>>>>>>>>>>>>>>>>^ start at 8:00
 
-    if TermSchedule.is_valid:
+    if TermSchedule.is_time_valid:
         colour_counter = 0
         for class_obj in schedule_obj.classes:
             __draw_class(img=img, class_obj=class_obj, block_colour=COLOUR_MIX[colour_counter % len(COLOUR_MIX)])

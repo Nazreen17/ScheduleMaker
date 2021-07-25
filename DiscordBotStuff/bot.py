@@ -6,7 +6,7 @@ from redacted import CLIENT_TOKEN
 from BotConstants import PREFIX
 from DiscordBotStuff.BotExtraProcessing import get_clean_courses_list
 from MaxScheduleTemplates.MaxTemplateGeneration import generate
-from PNGMaker.Pillow import get_drawn_schedule
+from DiscordBotStuff.PNGMaker.Pillow import get_discord_file_png_schedule
 from DB.SQLCoursePullController import pull_class
 from ClassStructure.TermScheduleStructure import TermSchedule
 
@@ -43,14 +43,9 @@ async def make_max_schedule(ctx, *, course_inputs):
     temp = TermSchedule()
     temp.add_class(class_objects_list)
 
-    file = get_drawn_schedule(temp)
+    file = get_discord_file_png_schedule(temp)
 
     await ctx.send(file=file)
 
-    """
-    with open("..//PNGMaker/schedule.png", "rb") as f:
-        f = discord.File(f, filename="schedule.png")
-        await ctx.send(file=f)
-    """
 
 client.run(CLIENT_TOKEN)

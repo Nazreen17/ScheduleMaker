@@ -5,8 +5,8 @@ from ClassStructure.TermScheduleStructure import TermSchedule
 
 COLUMN_SIZE = 200
 ROW_SIZE = 80
-HEADER_FONT = ImageFont.truetype('..//PNGMaker/roboto-mono/RobotoMono-Bold.ttf', 32)
-BODY_FONT = ImageFont.truetype('..//PNGMaker/roboto-mono/RobotoMono-Medium.ttf', 20)
+HEADER_FONT = ImageFont.truetype("PNGMaker/roboto-mono/RobotoMono-Bold.ttf", 32)
+BODY_FONT = ImageFont.truetype("PNGMaker/roboto-mono/RobotoMono-Medium.ttf", 20)
 WEEKDAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
 
 BLUE = (157, 162, 233)
@@ -18,7 +18,7 @@ CRYSTAL = (157, 220, 224)
 COLOUR_MIX = [BLUE, PEACH, MOSS, UBE, APRICOT, CRYSTAL]
 
 
-def get_drawn_schedule(schedule_obj):
+def get_discord_file_png_schedule(schedule_obj):
     """
     draws a .png image of a TermSchedule object
     :param schedule_obj:
@@ -47,9 +47,9 @@ def get_drawn_schedule(schedule_obj):
             __draw_class(img=img, class_obj=class_obj, block_colour=COLOUR_MIX[colour_counter % len(COLOUR_MIX)])
             colour_counter += 1
 
-    img.save('..//PNGMaker/schedule.png')
+    img.save('PNGMaker/schedule.png')
 
-    with open("..//PNGMaker/schedule.png", "rb") as f:
+    with open("PNGMaker/schedule.png", "rb") as f:
         file = discord.File(f, filename="schedule.png")
 
     return file

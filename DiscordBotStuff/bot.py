@@ -40,7 +40,10 @@ async def make_max_schedule(ctx, *, course_inputs):
         for course in all_courses_list:
             class_objects_list += pull_class(fac=course.fac, uid=course.uid, crn=crn)
 
-    file = get_drawn_schedule(TermSchedule().add_class(class_objects_list))
+    temp = TermSchedule()
+    temp.add_class(class_objects_list)
+
+    file = get_drawn_schedule(temp)
 
     await ctx.send(file=file)
 

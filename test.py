@@ -3,7 +3,7 @@
 # THIS FILE IS ONLY FOR LOCAL MACHINE TESTING
 
 from DiscordBotStuff.BotExtraProcessing import get_clean_courses_list
-from JSONMaxTemplates.MaxTemplateGeneration import generate
+from MaxScheduleTemplates.MaxTemplateGeneration import generate
 
 
 def test():

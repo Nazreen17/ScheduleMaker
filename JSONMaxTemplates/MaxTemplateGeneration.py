@@ -22,13 +22,15 @@ def generate(course_obj_list):
     # Second dimension element = single course list of all its options
     # Third dimension element = a single option of the parent course
 
-    all_course_classes = []
+    valid_courses_list_2d = []
 
+    # 1) Pull all classes you consider valid into valid_courses_list_2d (No time conflict computation yet)
     for course_obj in course_obj_list:
-        all_course_classes.append(pull_class(fac=course_obj.fac, uid=course_obj.uid, seats=1))  # Pull all classes
+        valid_courses_list_2d.append(pull_class(fac=course_obj.fac, uid=course_obj.uid, seats=1))  # Pull all classes
         # TODO WARNING! ONLY PULL CLASSES DEEMED VALID! LESS OVERHEAD AND REQUIRED FOR MaxTemplate VALIDATION!
 
-    for course_sublist in all_course_classes:  # Cycle through each course sublist to compute in 2d list format
+    # 2) Compute all possible options based on links of lecture type classes
+    for course_sublist in valid_courses_list_2d:  # Cycle through each course sublist to compute in 2d list format
         course_2d_sublist = []
 
         for class_obj in course_sublist:  # Cycle all class objects
@@ -37,7 +39,7 @@ def generate(course_obj_list):
                 if len(class_obj.links) > 0:  # The lecture class has at least 1 linked secondary class option
                     for found_option_list in class_obj.links:  # Loop through each lecture's linked options
                         option = [class_obj.crn] + found_option_list  # Create a combined option list
-                        if __is_valid_crn_options(found_option_list, all_course_classes):
+                        if __is_valid_crn_options(found_option_list, valid_courses_list_2d):
                             # Determine if option course was pulled
                             course_2d_sublist.append(option)  # Add the combined option list to the course 2d list
 
@@ -46,17 +48,22 @@ def generate(course_obj_list):
 
         if len(course_2d_sublist) > 0:
             list_3d.append(course_2d_sublist)
-    # Example list_3d =
+    # Example now list_3d =
     # [
     #  [ [Course 1, Option 1 CRN Codes], [Course 1, Option 2 CRN Codes] ],
     #  [ [Course 2, Option 1 CRN Codes], [Course 2, Option 2 CRN Codes], [Course 2, Option 3 CRN Codes] ],
     # ... etc
     # ]
 
-    main_schedules_list = __flip_clock_combinations(list_3d, all_course_classes)
-    print(f"\tGenerated {len(main_schedules_list)} CRN simplified schedules ({str(round(time.time() - start, 2))} sec)")
+    # 3) Compute all combinations of options through conversion of all CRN code based options to class objects,
+    # is_time_valid() processing also takes place here
+    main_schedules_list = __flip_clock_combinations(list_3d, valid_courses_list_2d)
 
+    # 4) Convert all objects to CRN codes to easier printing
     main_schedules_list = __crn_clean_up(main_schedules_list)  # converting MaxSchedule to a clear list of CRN codes
+
+    # 5) Print detailed stats on computation
+    print(f"\tGenerated {len(main_schedules_list)} CRN simplified schedules ({str(round(time.time() - start, 2))} sec)")
 
     return main_schedules_list
 
@@ -105,38 +112,36 @@ def __flip_clock_combinations(list_3d, all_course_classes):
     return all_combinations
 
 
-def __is_valid_crn_options(crn_list, all_course_classes):
+def __is_valid_crn_options(crn_list, list_2d):
     """
     Copied core logic from __find_from_crn_list()
     :param crn_list:
     List of crn codes to search
-    :param all_course_classes:
+    :param list_2d:
     List of all classes in 3d organized format
     :return:
     Return BOOL True or False to determine if CRN list is a valid option
     """
-    class_objects_list = []
     temp_crn_list = crn_list.copy()  # Always copy lists when applying functions like .remove() which is done here below
 
-    for course_sublist in all_course_classes:
+    for course_sublist in list_2d:
         if len(temp_crn_list) > 0:
             for class_object in course_sublist:
-                if class_object.crn in temp_crn_list and len(temp_crn_list) > 0:
-                    class_objects_list.append(class_object)
+                if class_object.crn in temp_crn_list:
                     temp_crn_list.remove(class_object.crn)  # Remove the crn code that was found
                 elif len(temp_crn_list) == 0:  # No more crn codes to search
-                    return class_objects_list
-        else:  # No more crn codes to search
+                    return True
+        if len(temp_crn_list) == 0:  # No more crn codes to search, control for the very last class in list_2d
             return True
 
     return False
 
 
-def __find_from_crn_list(crn_list, all_course_classes):
+def __find_from_crn_list(crn_list, list_2d):
     """
     :param crn_list:
     List of crn codes to search
-    :param all_course_classes:
+    :param list_2d:
     List of all classes in 3d organized format
     :return:
     Return a list of class object with matching crn
@@ -144,15 +149,15 @@ def __find_from_crn_list(crn_list, all_course_classes):
     class_objects_list = []
     temp_crn_list = crn_list.copy()  # Always copy lists when applying functions like .remove() which is done here below
 
-    for course_sublist in all_course_classes:
+    for course_sublist in list_2d:
         if len(temp_crn_list) > 0:
             for class_object in course_sublist:
-                if class_object.crn in temp_crn_list and len(temp_crn_list) > 0:
+                if class_object.crn in temp_crn_list:
                     class_objects_list.append(class_object)
                     temp_crn_list.remove(class_object.crn)  # Remove the crn code that was found
                 elif len(temp_crn_list) == 0:  # No more crn codes to search
                     return class_objects_list
-        else:  # No more crn codes to search
+        if len(temp_crn_list) == 0:  # No more crn codes to search, control for the very last class in list_2d
             return class_objects_list
 
     return class_objects_list

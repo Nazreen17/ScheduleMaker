@@ -26,6 +26,7 @@ def generate(course_obj_list):
 
     for course_obj in course_obj_list:
         all_course_classes.append(pull_class(fac=course_obj.fac, uid=course_obj.uid, seats=1))  # Pull all classes
+        # TODO WARNING! ONLY PULL CLASSES DEEMED VALID! LESS OVERHEAD AND REQUIRED FOR MaxTemplate VALIDATION!
 
     for course_sublist in all_course_classes:  # Cycle through each course sublist to compute in 2d list format
         course_2d_sublist = []
@@ -71,29 +72,42 @@ def __flip_clock_combinations(list_3d, all_course_classes):
 
     print(f"\tMaximum {str(max_shifting)} possible flip clock combinations")
 
-    for shift_count in range(max_shifting):  # loop for max shifts possible
+    for shift_count in range(max_shifting):  # Loop for max shifts possible
         temp_schedule = MaxTemplate()
         loop_continue = True
         course_index = 0
+
         while loop_continue:  # Loop through all courses
             if loop_continue and course_index < len(list_3d):  # Still classes left to check
                 current_course_option_index = clock[course_index]  # Get the current option index from clock
                 crn_list = list_3d[course_index][current_course_option_index]  # get the crn list
 
                 converted_to_class_objects = __find_from_crn_list(crn_list, all_course_classes)
-                temp_schedule.add_from_class(converted_to_class_objects)  # add classes from option
+                if len(crn_list) == len(converted_to_class_objects):
+                    # The CRN list might contain classes not matching the previous criteria specified in the
+                    # pull_class() parameters, which is called in generate(), most likely criteria conflict is seat > 0
+                    # usually. Thus the MaxTemplate is only deemed valid if the crn list does not match the classes
+                    # able to be returned from __find_from_crn_list().
+                    # TL;DR: If a class was not pulled by pull_class() -> called in generate(), then it will not be
+                    # found by __find_from_crn_list(). Thus the rule is all CRNs matched secondary classes must be free.
+                    temp_schedule.add_from_class(converted_to_class_objects)  # Add classes from option
+                else:
+                    temp_schedule.crn_list = []  # Clear the entire MaxTemplate's CRN list to determine it invalid
+                    loop_continue = False
 
                 course_index += 1  # Shift to next course index
 
             else:  # Finished going through all course
-                loop_continue = False
-                if len(temp_schedule) > 0 and temp_schedule.is_valid():  # Only add the current max schedule if valid
-                    all_combinations.append(temp_schedule)  # Add the completed schedule
+                loop_continue = False  # Break loop
 
-                    if max_shifting > MAX_SCHEDULE_COMBINATIONS:
-                        print(f"\tWARNING! Passed the set max {MAX_SCHEDULE_COMBINATIONS} combinations, returned 1")
-                        # TODO ^^^ Temporary? Return the first valid max schedule when too many combinations possible
-                        return all_combinations
+        if len(temp_schedule) > 0 and temp_schedule.is_time_valid():  # Only add if time valid and len is okay
+            all_combinations.append(temp_schedule)  # Add the completed schedule
+
+            if max_shifting > MAX_SCHEDULE_COMBINATIONS:
+                print(f"\tWARNING! Passed the set max {MAX_SCHEDULE_COMBINATIONS} combinations, returned 1")
+
+                return all_combinations
+
         clock.shift()  # shift late, clock starts a 0 which is possibly valid
     return all_combinations
 

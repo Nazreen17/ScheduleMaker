@@ -39,7 +39,7 @@ class MaxTemplate:
         if not isinstance(crn_list, list):
             raise TypeError
         for crn in crn_list:
-            if not isinstance(crn, str):
+            if not isinstance(crn, int):
                 raise TypeError
         self._crn_list = crn_list
 
@@ -81,7 +81,7 @@ class MaxTemplate:
         else:
             raise TypeError
 
-    def is_valid(self):
+    def is_time_valid(self):
         """
         :return:
         True or False if a schedule is valid and does not have time conflicts

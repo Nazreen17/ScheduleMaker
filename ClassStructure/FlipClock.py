@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 class FlipClock:
     # The FlipClock represents the index of each option (kinda confusing here is example):
     # [0, 0, 1, 3] -> In this example, there are 4 clock digits, each digit represents a course and further the index

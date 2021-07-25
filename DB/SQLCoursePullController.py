@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import mysql.connector
 
 from ClassStructure.CourseClassStructure import extract_from_json_str

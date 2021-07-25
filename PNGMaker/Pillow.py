@@ -1,9 +1,6 @@
-#!/usr/bin/env python
-
 from PIL import Image, ImageDraw, ImageFont
 
 from ClassStructure.TermScheduleStructure import TermSchedule
-
 
 COLUMN_SIZE = 200
 ROW_SIZE = 80

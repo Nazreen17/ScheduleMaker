@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from datetime import datetime
 
 from Optimizations.Optimize import DualShiftOptimizerStructure

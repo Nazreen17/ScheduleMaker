@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 # THIS FILE IS ONLY FOR LOCAL MACHINE TESTING
 
 from DiscordBotStuff.BotExtraProcessing import get_clean_courses_list
@@ -13,6 +11,5 @@ def test():
     all_courses_list = get_clean_courses_list(course_inputs)
     max_schedules = generate(all_courses_list)
     # print(f"max_schedules: \n{max_schedules}")
-
 
 # test()

@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import os
 
 from ClassStructure.CourseClassStructure import AClass, extract_from_json_str

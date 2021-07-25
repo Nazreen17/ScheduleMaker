@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import json
 
 from ClassStructure.MaxTemplateStructure import MaxScheduleDecoder

@@ -1,6 +1,6 @@
 import time
 
-from ClassStructure.MaxTemplateStructure import MaxTemplate
+from ClassStructure.TermScheduleStructure import TermSchedule
 from ClassStructure.FlipClock import FlipClock
 from DB.SQLCoursePullController import pull_class
 from constants import MAX_SCHEDULE_COMBINATIONS
@@ -87,7 +87,7 @@ def __flip_clock_combinations(list_3d, all_course_classes):
     print(f"\tMaximum {str(max_shifting)} possible flip clock combinations")
 
     for shift_count in range(max_shifting):  # Loop for max shifts possible
-        temp_schedule = MaxTemplate()
+        temp_schedule = TermSchedule()
         loop_continue = True
         course_index = 0
 
@@ -97,7 +97,7 @@ def __flip_clock_combinations(list_3d, all_course_classes):
                 crn_list = list_3d[course_index][current_course_option_index]  # get the crn list
 
                 converted_to_class_objects = __find_from_crn_list(crn_list, all_course_classes)
-                temp_schedule.add_from_class(converted_to_class_objects)
+                temp_schedule.add_class(converted_to_class_objects)
 
                 course_index += 1  # Shift to next course index
 
@@ -169,6 +169,9 @@ def __find_from_crn_list(crn_list, list_2d):
 
 def __crn_clean_up(main_schedules_list):
     extracted_crn = []
-    for max_schedule_obj in main_schedules_list:
-        extracted_crn.append(max_schedule_obj.crn_list)
+    for term_schedule_object in main_schedules_list:
+        crn_code_list = []
+        for class_object in term_schedule_object.classes:
+            crn_code_list.append(class_object.crn)
+        extracted_crn.append(crn_code_list)
     return extracted_crn

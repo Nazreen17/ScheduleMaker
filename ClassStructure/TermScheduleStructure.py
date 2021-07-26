@@ -44,6 +44,13 @@ class TermSchedule:
 
     def is_time_valid(self):
         """
+        How this function works:
+        Loop through all classes and extract their class time tuples from the AClass.class_time property.
+        Inner class time tuple example: (datetime object class start, datetime object class end).
+        Loop through all extracted class time tuples, excluding the very last tuple. While looping through all tuples,
+        compare the current start/end time with all other start/end times ahead, the actual comparison only occurs if
+        the class time tuples being compared have class on the same weekdays. (THIS PROGRAM ASSUMES CLASSES ARE
+        REPEATED EVERY WEEK ON THE SAME WEEKDAYS)
         :return:
         True or False if a schedule is valid and does not have time conflicts
         """
@@ -51,7 +58,8 @@ class TermSchedule:
         for class_obj in self._classes:
             for inner_tuple in class_obj.class_time:
                 temp_hold.append(inner_tuple)
-        for inner_tuple_i in range(len(temp_hold)):
+
+        for inner_tuple_i in range(0, len(temp_hold) - 1):  # -1 to prevent final datetime tuple comparing with itself
             start = temp_hold[inner_tuple_i][0]
             end = temp_hold[inner_tuple_i][1]
             for future_inner_tuple_i in range(inner_tuple_i + 1, len(temp_hold)):

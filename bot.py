@@ -3,7 +3,7 @@
 from discord.ext import commands
 
 from redacted import CLIENT_TOKEN
-from BotConstants import PREFIX
+from DiscordBotStuff.BotConstants import PREFIX
 from DiscordBotStuff.BotExtraProcessing import get_clean_courses_list
 from MaxScheduleTemplates.MaxTemplateGeneration import generate
 from DiscordBotStuff.PNGMaker.Pillow import get_discord_file_png_schedule

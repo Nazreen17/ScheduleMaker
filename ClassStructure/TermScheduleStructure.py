@@ -1,21 +1,17 @@
-import os
-
-from ClassStructure.CourseClassStructure import AClass, extract_from_json_str
+from ClassStructure.CourseClassStructure import AClass
 
 
 class TermSchedule:
     def __init__(self, classes=None):
-        if isinstance(classes, list):
+        if classes is None:
+            self._classes = []
+        elif isinstance(classes, AClass):
+            self._classes = [classes]
+        elif isinstance(classes, list):
             for element_i in range(len(classes)):
                 if not isinstance(classes[element_i], AClass):
-                    temp = self.__extract_from_crn(classes[element_i])
-                    if temp is not None:
-                        classes[element_i] = temp
-                    else:
-                        raise ValueError("Class with crn=" + str(classes[element_i]) + " does not exist")
+                    raise ValueError
             self._classes = classes
-        elif classes is None:
-            self._classes = []
         else:
             raise TypeError
 
@@ -70,18 +66,6 @@ class TermSchedule:
                             start2.time() <= start.time() <= end2.time() or start2.time() <= end.time() <= end2.time():
                         return False
         return True
-
-    @staticmethod
-    def __extract_from_crn(crn):
-        path_to_json = "..//JSONCourses/"
-        json_files = [pos_json for pos_json in os.listdir(path_to_json) if pos_json.endswith('.json')]
-
-        for json_file in json_files:
-            temp = extract_from_json_str(json_file)
-            for a_class in temp:
-                if a_class.crn == crn:
-                    return a_class
-        return None
 
     def __len__(self):
         return len(self._classes)

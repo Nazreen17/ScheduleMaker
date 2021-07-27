@@ -1,6 +1,6 @@
 import mysql.connector
 
-from ClassStructure.CourseClassStructure import extract_from_json_str
+from ClassStructure.CourseClassStructure import extract_class_from_json_str
 from redacted import SQL_HOST, SQL_USERNAME, SQL_PASSWORD, SQL_COURSE_DB  # SEE -> redactedExample.py
 
 
@@ -56,7 +56,7 @@ def pull_class(fac, uid, class_type=None, crn=None, seats=None):
         if len(json_strings) != 0:  # Class exists
             for json_str in json_strings:
                 # TODO vvv Check this out, json_str is always a tuple with json_data in index 0, rest of tuple is empty
-                all_classes_list.append(extract_from_json_str(json_str[0]))
+                all_classes_list.append(extract_class_from_json_str(json_str[0]))
 
     temp_cursor.close()
 

@@ -1,13 +1,7 @@
 import mysql.connector
 
 from ClassStructure.CourseClassStructure import extract_from_json_str
-from redacted import SQL_HOST, SQL_USERNAME, SQL_PASSWORD, SQL_COURSE_DB
-
-
-# SQL_HOST = STR mariadb/mysql server host ipv4 address
-# SQL_USERNAME = STR user with permissions granted
-# SQL_PASSWORD = STR user password
-# SQL_DB = STR PainMaker data base name on the server
+from redacted import SQL_HOST, SQL_USERNAME, SQL_PASSWORD, SQL_COURSE_DB  # SEE -> redactedExample.py
 
 
 def __server_connection_course():

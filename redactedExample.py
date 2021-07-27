@@ -7,7 +7,7 @@ SQL_USERNAME = "daniel"
 SQL_PASSWORD = "SomePassword"
 
 SQL_COURSE_DB = "DB Name"
-SQL_MAX_SCHEDULE_TEMPLATES_DB = "DB Name"
+SQL_MAX_SCHEDULE_DB = "DB Name"
 SQL_UPDATE_COURSE_REQUEST_DB = "DB Name"
 
 # Discord Dev Application Bot Client Token

@@ -1,7 +1,7 @@
 # THIS FILE IS ONLY FOR LOCAL MACHINE TESTING
 
 from DiscordBotStuff.BotExtraProcessing import get_clean_courses_list
-from MaxScheduleTemplates.MaxTemplateGeneration import generate
+from MaxSchedule.MaxScheduleGeneration import generate
 
 
 def test():

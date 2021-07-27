@@ -1,7 +1,7 @@
 import mysql.connector
 
 from ClassStructure.CourseClassStructure import extract_from_json_str
-from redacted import SQL_HOST, SQL_USERNAME, SQL_PASSWORD, SQL_DB
+from redacted import SQL_HOST, SQL_USERNAME, SQL_PASSWORD, SQL_COURSE_DB
 
 
 # SQL_HOST = STR mariadb/mysql server host ipv4 address
@@ -10,14 +10,14 @@ from redacted import SQL_HOST, SQL_USERNAME, SQL_PASSWORD, SQL_DB
 # SQL_DB = STR PainMaker data base name on the server
 
 
-def __server_connection():
+def __server_connection_course():
     db_connection = None
     try:
         db_connection = mysql.connector.connect(
             host=SQL_HOST,
             user=SQL_USERNAME,
             passwd=SQL_PASSWORD,
-            database=SQL_DB
+            database=SQL_COURSE_DB
         )
         # print(f'\n\tSuccessfully connected to mysql DB "{SQL_DB}" AS "{SQL_USERNAME}"')  # TEST CODE
     except Exception as err:
@@ -43,7 +43,7 @@ def pull_class(fac, uid, class_type=None, crn=None, seats=None):
     """
     all_classes_list = []
 
-    connection = __server_connection()
+    connection = __server_connection_course()
     temp_cursor = connection.cursor(buffered=True)
 
     temp_cursor.execute(f"SELECT COUNT(*) FROM information_schema.tables WHERE table_name='{fac}'")

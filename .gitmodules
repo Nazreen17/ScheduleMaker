@@ -1,0 +1,6 @@
+[submodule "COREClassStructure"]
+	path = COREClassStructure
+	url = https://github.com/iDanielJ/COREClassStructure
+[submodule "COREDB"]
+	path = COREDB
+	url = https://github.com/iDanielJ/COREDB

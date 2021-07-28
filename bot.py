@@ -8,7 +8,7 @@ from DiscordBotStuff.BotExtraProcessing import get_clean_courses_list
 from MaxSchedule.MaxScheduleGeneration import generate
 from DiscordBotStuff.PNGMaker.Pillow import get_discord_file_png_schedule
 from COREDB.ClassPull import pull_class_via_redacted
-from ClassStructure.TermScheduleStructure import TermSchedule
+from COREClassStructure.TermScheduleStructure import TermSchedule
 
 # CLIENT_TOKEN = STR Discord dev bot token
 

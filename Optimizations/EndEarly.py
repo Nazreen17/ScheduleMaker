@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from Optimizations.Optimize import DualShiftOptimizerStructure
-from ClassStructure.TermScheduleStructure import TermSchedule
+from COREClassStructure.TermScheduleStructure import TermSchedule
 
 
 class EndEarly(DualShiftOptimizerStructure):

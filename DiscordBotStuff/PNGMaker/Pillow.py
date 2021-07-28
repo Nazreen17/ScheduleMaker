@@ -1,7 +1,7 @@
 from PIL import Image, ImageDraw, ImageFont
 import discord
 
-from ClassStructure.TermScheduleStructure import TermSchedule
+from COREClassStructure.TermScheduleStructure import TermSchedule
 
 COLUMN_SIZE = 200
 ROW_SIZE = 80

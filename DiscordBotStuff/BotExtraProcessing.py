@@ -1,4 +1,4 @@
-from ClassStructure.CourseClassStructure import ACourse
+from COREClassStructure.CourseClassStructure import ACourse
 
 
 def get_clean_courses_list(course_bot_input):

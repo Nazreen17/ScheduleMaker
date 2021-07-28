@@ -1,5 +1,5 @@
 from COREDB.SQLConnection import server_connection
-from ClassStructure.CourseClassStructure import extract_class_from_json_str
+from COREClassStructure.CourseClassStructure import extract_class_from_json_str
 from redacted import SQL_CLASS_TABLE
 
 

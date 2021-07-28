@@ -2,7 +2,7 @@
 # (If extra example constant variables exist it is because it is used in ScheduleMaker)
 
 # MySQL Server login credentials
-SQL_HOST = "123.123.123.123"
+SQL_HOST = "123.123.123.123"  # 127.0.0.1 = localhost
 
 SQL_USERNAME = "daniel"
 SQL_PASSWORD = "SomePassword"

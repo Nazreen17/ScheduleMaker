@@ -2,7 +2,7 @@ import time
 
 from ClassStructure.TermScheduleStructure import TermSchedule
 from ClassStructure.FlipClock import FlipClock
-from DB.SQLCoursePullController import pull_class
+from DB.SQLController import pull_class_via_redacted
 from constants import MAX_SCHEDULE_COMBINATIONS
 
 
@@ -19,8 +19,9 @@ def generate(course_obj_list):
 
     # 1) Pull all classes you consider valid into valid_courses_list_2d (No time conflict computation yet)
     for course_obj in course_obj_list:
-        valid_courses_list_2d.append(pull_class(fac=course_obj.fac, uid=course_obj.uid, seats=1))  # Pull all classes
-        # TODO WARNING! ONLY PULL CLASSES DEEMED VALID! LESS OVERHEAD AND REQUIRED FOR MaxTemplate VALIDATION!
+        valid_courses_list_2d.append(pull_class_via_redacted(fac=course_obj.fac, uid=course_obj.uid, seats=1))
+        # WARNING! ONLY PULL CLASSES DEEMED VALID INTO valid_courses_list_2d!
+        #  LESS OVERHEAD AND REQUIRED FOR MaxSchedule VALIDATION!
 
     # 2) Compute all possible options based on links of lecture type classes
     list_3d = __compute_options(valid_courses_list_2d)

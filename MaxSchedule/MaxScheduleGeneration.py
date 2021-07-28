@@ -2,7 +2,7 @@ import time
 
 from ClassStructure.TermScheduleStructure import TermSchedule
 from ClassStructure.FlipClock import FlipClock
-from DB.SQLController import pull_class_via_redacted
+from COREDB.ClassPull import pull_class_via_redacted
 from constants import MAX_SCHEDULE_COMBINATIONS
 
 

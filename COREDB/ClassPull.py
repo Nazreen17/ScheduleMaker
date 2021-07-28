@@ -1,23 +1,6 @@
-import mysql.connector
-
+from COREDB.SQLConnection import server_connection
 from ClassStructure.CourseClassStructure import extract_class_from_json_str
-from redacted import SQL_HOST, SQL_USERNAME, SQL_PASSWORD, SQL_DB, SQL_CLASS_TABLE  # SEE -> redactedExample.py
-
-
-def __server_connection_course():
-    db_connection = None
-    try:
-        db_connection = mysql.connector.connect(
-            host=SQL_HOST,
-            user=SQL_USERNAME,
-            passwd=SQL_PASSWORD,
-            database=SQL_DB
-        )
-        # print(f'\n\tSuccessfully connected to mysql DB "{SQL_DB}" AS "{SQL_USERNAME}"')  # TEST CODE
-    except Exception as err:
-        print(f"\n\tError: '{err}'")
-
-    return db_connection
+from redacted import SQL_CLASS_TABLE
 
 
 def pull_class_via_redacted(fac, uid, class_type=None, crn=None, seats=None):
@@ -37,7 +20,7 @@ def pull_class_via_redacted(fac, uid, class_type=None, crn=None, seats=None):
     """
     all_classes_list = []
 
-    connection = __server_connection_course()
+    connection = server_connection()
     temp_cursor = connection.cursor(buffered=True)
     """
     https://stackoverflow.com/questions/29772337/python-mysql-connector-unread-result-found-when-using-fetchone
@@ -63,8 +46,9 @@ def pull_class_via_redacted(fac, uid, class_type=None, crn=None, seats=None):
 
         if len(json_strings) != 0:  # Class exists
             for json_str in json_strings:
-                # TODO vvv Check this out, json_str is always a tuple with json_data in index 0, rest of tuple is empty
+                # WEIRD??? vvv json_str is always a tuple with the json_data in index 0, rest of tuple is empty
                 all_classes_list.append(extract_class_from_json_str(json_str[0]))
     temp_cursor.close()
+    connection.close()
 
     return all_classes_list

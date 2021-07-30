@@ -20,7 +20,7 @@ setup(
     #   - MAINTENANCE VERSION 0
     version="0.1.0",
 
-    # url="",  # GitHub repo link
+    url="https://github.com/iDanielJ/ScheduleMaker",  # GitHub repo link
 
     # Here's a small description of the library. This appears when the library is searched on https://pypi.org/search.
     description="Server-End program",

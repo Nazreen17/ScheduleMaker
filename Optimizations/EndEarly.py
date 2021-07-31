@@ -5,8 +5,8 @@ from COREClassStructure.TermScheduleStructure import TermSchedule
 
 
 class EndEarly(DualShiftOptimizerStructure):
-    def __init__(self, schedule_list):
-        self._name = "Early End"
+    def __init__(self, schedule_list=None):
+        self._name = "EarlyEnd"
         self._description = "Get the schedules that average end the earliest end times each class day"
         self._max_schedules = schedule_list
         self._ties = 0

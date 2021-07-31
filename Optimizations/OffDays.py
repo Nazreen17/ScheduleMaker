@@ -5,11 +5,11 @@ from COREClassStructure.TermScheduleStructure import TermSchedule
 
 
 class OffDay(DualShiftOptimizerStructure):
-    def __init__(self, schedule_list, day_off):
-        self._name = "Days Off"
+    def __init__(self, schedule_list=None, day_off=None):
+        self._name = "DaysOff"
         self._description = "Get the schedules that have specific days with no classes (or closest possible to)"
         self._max_schedules = schedule_list
-        self._day_off_int = self.__get_day_off_int(day_off)
+        self._day_off_int = self.__get_day_off_int(day_off) if day_off is not None else None
         self._ties = 0
         self._optimal = self.optimize()
         self._result = "Total ties: " + str(self._ties)

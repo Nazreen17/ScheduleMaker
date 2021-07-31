@@ -1,5 +1,12 @@
 from abc import ABC, abstractmethod
 
+from Optimizations.EndEarly import EndEarly
+from Optimizations.OffDays import OffDay
+
+
+def get_optimizers_list():
+    return [EndEarly(), OffDay()]
+
 
 class DualShiftOptimizerStructure(ABC):
     def __init__(self, name, description, max_schedule_list, result, optimal):

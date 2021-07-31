@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from discord.ext import commands
+from datetime import datetime
 
 from redacted import CLIENT_TOKEN
 from DiscordBotStuff.BotConstants import PREFIX, DEV_IDS
@@ -19,13 +20,15 @@ client = commands.Bot(command_prefix=PREFIX, owner_ids=DEV_IDS)
 
 @client.event
 async def on_ready():
-    print(f"Logged in: {client.user.name} {client.user.id}")
+    print(f"Logged in: {client.user.name} {client.user.id} @ {datetime.now()} UTC")
 
 
-@client.command(aliases=["shutdown"])
+@client.command(aliases=["goodbye"])
 @commands.is_owner()
-async def shutdown(ctx):
-    await ctx.bot.logout()
+async def shutdown_bot(ctx):  # "ctx" is required to be called in all commands
+    await ctx.reply(f"Shutdown: {client.user.name} @ {datetime.now()} UTC", mention_author=True)
+    await client.close()
+    print(f"Shutdown: {client.user.name} {client.user.id} @ {datetime.now()} UTC")
 
 
 @client.command()
@@ -80,8 +83,8 @@ async def view_private_templates(ctx, user_id=None):
     pass
 
 
-@client.command(aliases=["optimize"])
-async def optimize(ctx, template_id=None):
+@client.command(aliases=["make"])
+async def optimize_max(ctx, template_id=None):
     template_id = ctx.message.author.id if template_id is None else template_id
     pass
 

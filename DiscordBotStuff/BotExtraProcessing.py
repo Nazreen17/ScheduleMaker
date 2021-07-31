@@ -1,4 +1,6 @@
 from COREClassStructure.CourseClassStructure import ACourse
+from Optimizations.EndEarly import EndEarly
+from Optimizations.OffDays import OffDay
 
 
 def get_clean_courses_list(course_bot_input):
@@ -40,3 +42,7 @@ def __get_course_obj(new_course):
             uid = new_course[i:]  # course uni id num thing
             return ACourse(fac, uid)
     return None  # No valid course
+
+
+def get_optimizers_list():
+    return [EndEarly(), OffDay()]

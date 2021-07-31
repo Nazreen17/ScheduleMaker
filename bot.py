@@ -7,13 +7,12 @@ from datetime import datetime
 
 from redacted import CLIENT_TOKEN
 from DiscordBotStuff.BotConstants import PREFIX, DEV_IDS
-from DiscordBotStuff.BotExtraProcessing import get_clean_courses_list
+from DiscordBotStuff.BotExtraProcessing import get_clean_courses_list, get_optimizers_list
 from MaxSchedule.MaxScheduleGeneration import generate
 from COREDB.MaxTemplatePrivateUpdate import update_private_max_template
 from COREDB.MaxTemplatePrivatePull import pull_private_max_schedule_crn_2d_list
 from COREDB.MaxTemplatePublicUpdate import update_public_max_template
 from COREDB.MaxTemplatePublicPull import get_public_id_from_private_course_manifest
-from Optimizations.Optimize import get_optimizers_list
 
 # CLIENT_TOKEN = STR Discord dev bot token
 
@@ -101,6 +100,8 @@ async def show_all_optimizers(ctx):
     optimizer_text = ""
     for optimizer in optimizers_list:
         optimizer_text += f"\nName: **{optimizer.name}**\nDescription: {optimizer.description}"
+        if optimizers_list.index(optimizer) != len(optimizers_list) - 1:
+            optimizer_text += "\n"
 
     await ctx.reply(f"**All Optimizers ({len(optimizers_list)})**\n{optimizer_text}", mention_author=False)
 

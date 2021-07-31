@@ -11,7 +11,7 @@ class OffDay(DualShiftOptimizerStructure):
         self._max_schedules = schedule_list
         self._day_off_int = self.__get_day_off_int(day_off) if day_off is not None else None
         self._ties = 0
-        self._optimal = self.optimize()
+        self._optimal = self.optimize() if schedule_list is not None and day_off is not None else None
         self._result = "Total ties: " + str(self._ties)
         """
         WARNING! ATTRIBUTES RUN IN ORDER ^^^

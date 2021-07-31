@@ -10,7 +10,7 @@ class EndEarly(DualShiftOptimizerStructure):
         self._description = "Get the schedules that average end the earliest end times each class day"
         self._max_schedules = schedule_list
         self._ties = 0
-        self._optimal = self.optimize()
+        self._optimal = self.optimize() if schedule_list is not None else None
         self._result = "Total ties: " + str(self._ties)
         """
         WARNING! ATTRIBUTES RUN IN ORDER ^^^

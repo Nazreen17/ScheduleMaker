@@ -76,7 +76,7 @@ async def generate_private_max_template(ctx, *, course_inputs):
 
 @client.command(aliases=["vprivate", "viewprivate"])
 @commands.is_owner()
-async def view_private_templates(ctx):
+async def view_private_templates(ctx, user_id=None):
     pass
 
 

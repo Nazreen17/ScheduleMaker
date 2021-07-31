@@ -4,9 +4,9 @@ from Optimizations.Optimize import DualShiftOptimizerStructure
 from COREClassStructure.TermScheduleStructure import TermSchedule
 
 
-class OffDay(DualShiftOptimizerStructure):
+class DayOff(DualShiftOptimizerStructure):
     def __init__(self, schedule_list=None, day_off=None):
-        self._name = "DaysOff"
+        self._name = "DayOff"
         self._description = "Get the schedules that have specific days with no classes (or closest possible to)"
         self._max_schedules = schedule_list
         self._day_off_int = self.__get_day_off_int(day_off) if day_off is not None else None
@@ -35,8 +35,6 @@ class OffDay(DualShiftOptimizerStructure):
                         return int(day_off)
                     else:
                         raise ValueError
-                else:
-                    raise ValueError
 
         elif isinstance(day_off, int) and 0 <= day_off <= 6:
             # This is mainly for testing cases, since bot will use str inputs mainly

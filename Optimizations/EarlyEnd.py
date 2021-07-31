@@ -4,7 +4,7 @@ from Optimizations.Optimize import DualShiftOptimizerStructure
 from COREClassStructure.TermScheduleStructure import TermSchedule
 
 
-class EndEarly(DualShiftOptimizerStructure):
+class EarlyEnd(DualShiftOptimizerStructure):
     def __init__(self, schedule_list=None):
         self._name = "EarlyEnd"
         self._description = "Get the schedules that average end the earliest end times each class day"

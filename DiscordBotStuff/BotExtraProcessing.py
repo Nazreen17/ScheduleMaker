@@ -1,6 +1,6 @@
 from COREClassStructure.CourseClassStructure import ACourse
-from Optimizations.EndEarly import EndEarly
-from Optimizations.OffDays import OffDay
+from Optimizations.EarlyEnd import EarlyEnd
+from Optimizations.DayOff import DayOff
 
 
 def get_clean_courses_list(course_bot_input):
@@ -45,4 +45,4 @@ def __get_course_obj(new_course):
 
 
 def get_optimizers_list():
-    return [EndEarly(), OffDay()]
+    return [EarlyEnd(), DayOff()]

@@ -3,16 +3,20 @@
 # discord.py Documentation: https://discordpy.readthedocs.io/en/stable/
 
 from discord.ext import commands
+
 from datetime import datetime
 
 from redacted import CLIENT_TOKEN
 from DiscordBotStuff.BotConstants import PREFIX, DEV_IDS
 from DiscordBotStuff.BotExtraProcessing import get_clean_courses_list, get_optimizers_list
+from DiscordBotStuff.BotCallOptimizers import get_optimized_term_schedule
 from MaxSchedule.MaxScheduleGeneration import generate
 from COREDB.MaxTemplatePrivateUpdate import update_private_max_template
 from COREDB.MaxTemplatePrivatePull import pull_private_max_schedule_crn_2d_list
 from COREDB.MaxTemplatePublicUpdate import update_public_max_template
-from COREDB.MaxTemplatePublicPull import get_public_id_from_private_course_manifest
+from COREDB.MaxTemplatePublicPull import get_public_id_from_private_course_manifest, \
+    pull_public_max_schedule_crn_2d_list
+from DiscordBotStuff.PNGMaker.Pillow import get_discord_file_png_schedule
 
 # CLIENT_TOKEN = STR Discord dev bot token
 
@@ -107,9 +111,27 @@ async def show_all_optimizers(ctx):
 
 
 @client.command(aliases=["make"])
-async def optimize_max(ctx, optimizer_name, template_id=None):
-    template_id = ctx.message.author.id if template_id is None else template_id
-    pass
+async def optimize_max(ctx, template_id, optimizer_name, *additional_optimizer_values):
+
+    optimizers_list = get_optimizers_list()
+    valid = False
+
+    for optimizer in optimizers_list:
+        if optimizer_name.lower().replace(" ", "") == optimizer.name.lower().replace(" ", ""):
+            valid = True
+            if template_id == "personal":
+                max_schedules = pull_private_max_schedule_crn_2d_list(ctx.message.author.id)
+            else:
+                max_schedules = pull_public_max_schedule_crn_2d_list(template_id)
+
+            temp = get_optimized_term_schedule(max_schedules=max_schedules, optimizer_name=optimizer_name,
+                                               optimizer_values=additional_optimizer_values)
+
+            file = get_discord_file_png_schedule(temp)
+            await ctx.send(file=file)
+
+    if valid is False:
+        raise commands.errors.BadArgument()
 
 
 client.run(CLIENT_TOKEN)

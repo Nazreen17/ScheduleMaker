@@ -23,7 +23,20 @@ class DualShiftOptimizerStructure(ABC):
         return self._description
 
     @property
+    def max_schedules(self):
+        return self._max_schedules
+
+    @max_schedules.setter
+    def max_schedules(self, max_schedule_list):
+        self._max_schedules = max_schedule_list
+
+    @property
     def optimal(self):
+        if self._optimal is None:
+            try:
+                self._optimal = self.optimize()
+            except:
+                self._optimal = None
         return self._optimal
 
     @property

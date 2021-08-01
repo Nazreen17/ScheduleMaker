@@ -2,8 +2,8 @@
 
 # discord.py Documentation: https://discordpy.readthedocs.io/en/stable/
 
+import discord
 from discord.ext import commands
-
 from datetime import datetime
 
 from redacted import CLIENT_TOKEN
@@ -16,7 +16,7 @@ from COREDB.MaxTemplatePrivatePull import pull_private_max_schedule_crn_2d_list
 from COREDB.MaxTemplatePublicUpdate import update_public_max_template
 from COREDB.MaxTemplatePublicPull import get_public_id_from_private_course_manifest, \
     pull_public_max_schedule_crn_2d_list
-from DiscordBotStuff.PNGMaker.Pillow import get_discord_file_png_schedule
+from DiscordBotStuff.PNGMaker.Pillow import draw_png_schedule
 
 # CLIENT_TOKEN = STR Discord dev bot token
 
@@ -126,9 +126,14 @@ async def optimize_max(ctx, template_id, optimizer_name, *additional_optimizer_v
             one_term_schedule = get_optimized_term_schedule(max_schedules=max_schedules, optimizer_name=optimizer_name,
                                                             optimizer_values=additional_optimizer_values)
 
-            file = get_discord_file_png_schedule(one_term_schedule)
-            await ctx.reply(file=file, mention_author=True)
-            await ctx.reply(one_term_schedule.get_raw_str(), mention_author=True)
+            draw_png_schedule(one_term_schedule)
+            with open("DiscordBotStuff/PNGMaker/schedule.png", "rb") as png_file:
+                await ctx.reply(file=discord.File(png_file, "schedule.png"), mention_author=True)
+
+            with open("result.txt", "w") as file:
+                file.write(one_term_schedule.get_raw_str())
+            with open("result.txt", "rb") as file:
+                await ctx.reply(file=discord.File(file, "result.txt"), mention_author=True)
 
     if valid is False:
         raise commands.errors.BadArgument()

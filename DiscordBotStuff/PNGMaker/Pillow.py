@@ -1,5 +1,4 @@
 from PIL import Image, ImageDraw, ImageFont
-import discord
 
 from COREClassStructure.TermScheduleStructure import TermSchedule
 
@@ -18,7 +17,7 @@ CRYSTAL = (157, 220, 224)
 COLOUR_MIX = [BLUE, PEACH, MOSS, UBE, APRICOT, CRYSTAL]
 
 
-def get_discord_file_png_schedule(schedule_obj):
+def draw_png_schedule(schedule_obj):
     """
     draws a .png image of a TermSchedule object
     :param schedule_obj:
@@ -48,11 +47,6 @@ def get_discord_file_png_schedule(schedule_obj):
             colour_counter += 1
 
     img.save('DiscordBotStuff/PNGMaker/schedule.png')
-
-    with open("DiscordBotStuff/PNGMaker/schedule.png", "rb") as f:
-        file = discord.File(f, filename="schedule.png")
-
-    return file
 
 
 def __draw_class(img, class_obj, block_colour):

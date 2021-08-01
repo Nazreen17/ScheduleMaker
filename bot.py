@@ -9,11 +9,11 @@ from datetime import datetime
 from redacted import CLIENT_TOKEN
 from constants import ENABLED_OPTIMIZER_OBJECT_LIST
 from DiscordBotStuff.BotConstants import PREFIX, DEV_IDS
-from FullProcess.Processing import get_clean_courses_list
+from FullProcess.Processing import get_clean_courses_list, generate_png_and_txt
 
 from MaxSchedule.MaxScheduleGeneration import generate
 from FullProcess.CallOptimizers import get_optimizer
-from DiscordBotStuff.PNGMaker.Pillow import draw_png_schedule
+from FullProcess.Processing import make_term_schedule_from_crn_no_overhead
 from COREDB.MaxTemplatePrivateUpdate import update_private_max_template
 from COREDB.MaxTemplatePublicUpdate import update_public_max_template
 from COREDB.MaxTemplatePublicPull import get_public_id_from_private_course_manifest
@@ -110,18 +110,31 @@ async def show_all_optimizers(ctx):
 
 @client.command(aliases=["make"])
 async def optimize_max(ctx, template_id, optimizer_name, *additional_optimizer_values):
-    optimizer = get_optimizer(template_id=template_id, optimizer_name=optimizer_name, user_discord_id=ctx.message.author.id,
+    optimizer = get_optimizer(template_id=template_id, optimizer_name=optimizer_name,
+                              user_discord_id=ctx.message.author.id,
                               optimizer_values=additional_optimizer_values)
 
-    # Generate schedule.png
     single_term_schedule = optimizer.optimal
-    draw_png_schedule(single_term_schedule)
+    result_txt = f"OPTIMIZER.result =\n{optimizer.result}\n"
 
-    # Generate results.txt
-    results = optimizer.result
-    result_txt = f"OPTIMIZER.result =\n{results}\n------------------------------\n"
-    with open("DiscordBotStuff/result.txt", "w") as file:
-        file.write(result_txt + single_term_schedule.get_raw_str())
+    generate_png_and_txt(single_term_schedule=single_term_schedule, result_txt_header_str=result_txt)
+
+    # Discord send schedule.png
+    with open("DiscordBotStuff/PNGMaker/schedule.png", "rb") as png_file:
+        await ctx.reply(file=discord.File(png_file, "schedule.png"), mention_author=True)
+
+    # Discord send results.txt
+    with open("DiscordBotStuff/result.txt", "rb") as file:
+        await ctx.reply(file=discord.File(file, "result.txt"), mention_author=True)
+
+
+@client.command(aliases=["display"])
+async def display_from_crn(ctx, *crn_codes):
+    single_term_schedule = make_term_schedule_from_crn_no_overhead(crn_list=crn_codes)
+
+    result_txt = f"Display Source CRNs =\n{crn_codes}\n"
+
+    generate_png_and_txt(single_term_schedule=single_term_schedule, result_txt_header_str=result_txt)
 
     # Discord send schedule.png
     with open("DiscordBotStuff/PNGMaker/schedule.png", "rb") as png_file:

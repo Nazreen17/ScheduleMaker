@@ -1,4 +1,7 @@
 from COREClassStructure.CourseClassStructure import ACourse
+from COREClassStructure.TermScheduleStructure import TermSchedule
+from COREDB.ClassPull import pull_class_via_redacted
+from DiscordBotStuff.PNGMaker.Pillow import draw_png_schedule
 
 
 def get_clean_courses_list(course_bot_input):
@@ -40,3 +43,23 @@ def __get_course_obj(new_course):
             uid = new_course[i:]  # course uni id num thing
             return ACourse(fac, uid)
     return None  # No valid course
+
+
+def make_term_schedule_from_crn_no_overhead(crn_list):
+    class_objects_list = []
+
+    for crn in crn_list:
+        class_objects_list += pull_class_via_redacted(crn=crn)
+
+    return TermSchedule(class_objects_list)
+
+
+def generate_png_and_txt(single_term_schedule, result_txt_header_str=None):
+    # Generate schedule.png
+    draw_png_schedule(single_term_schedule)
+
+    header = f"{result_txt_header_str}\n------------------------------\n"
+
+    # Generate results.txt
+    with open("DiscordBotStuff/result.txt", "w") as file:
+        file.write(header + single_term_schedule.get_raw_str())

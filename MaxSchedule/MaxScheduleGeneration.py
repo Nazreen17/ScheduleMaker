@@ -1,5 +1,3 @@
-import time
-
 from COREClassStructure.TermScheduleStructure import TermSchedule
 from COREClassStructure.FlipClock import FlipClock
 from COREDB.ClassPull import pull_class_object_list_via
@@ -13,8 +11,6 @@ def generate(course_obj_list):
     :return:
     Returns a list of CRN codes representing all possible schedule combinations with valid seats and time conflict free.
     """
-    start = time.time()
-
     valid_courses_list_2d = []
 
     # 1) Pull all classes you consider valid into valid_courses_list_2d (No time conflict computation yet)
@@ -35,9 +31,6 @@ def generate(course_obj_list):
 
     # 4) Convert all objects to CRN codes to easier printing
     main_schedules_list = __crn_clean_up(main_schedules_list)  # converting MaxSchedule to a clear list of CRN codes
-
-    # 5) Print detailed stats on computation
-    print(f"\tGenerated {len(main_schedules_list)} CRN simplified schedules ({str(round(time.time() - start, 2))} sec)")
 
     return main_schedules_list
 
@@ -84,8 +77,6 @@ def __flip_clock_combinations(list_3d, all_course_classes):
     clock = FlipClock(list_3d)
 
     max_shifting = clock.shift_max
-
-    print(f"\tMaximum {str(max_shifting)} possible flip clock combinations")
 
     for shift_count in range(max_shifting):  # Loop for max shifts possible
         temp_schedule = TermSchedule()

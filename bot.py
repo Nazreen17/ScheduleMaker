@@ -9,14 +9,11 @@ from datetime import datetime
 from redacted import CLIENT_TOKEN
 from constants import ENABLED_OPTIMIZER_OBJECT_LIST
 from DiscordBotStuff.BotConstants import PREFIX, DEV_IDS
-from FullProcess.Processing import get_clean_courses_list, generate_png_and_txt
-
-from MaxSchedule.MaxScheduleGeneration import generate
+from FullProcess.GeneralProcessing import get_clean_courses_list, generate_png_and_txt
+from FullProcess.CallMaxTemplateGeneration import generate_and_update_db_private_template, \
+    generate_and_update_db_public_template
 from FullProcess.CallOptimizers import get_optimizer
-from FullProcess.Processing import make_term_schedule_from_crn_no_overhead
-from COREDB.MaxTemplatePrivateUpdate import update_private_max_template
-from COREDB.MaxTemplatePublicUpdate import update_public_max_template
-from COREDB.MaxTemplatePublicPull import get_public_id_from_private_course_manifest
+from FullProcess.GeneralProcessing import make_term_schedule_from_crn_no_overhead
 
 # CLIENT_TOKEN = STR Discord dev bot token
 
@@ -51,40 +48,26 @@ async def ping(ctx):
 
 
 @client.command(aliases=["personal"])
-async def generate_private_max_template(ctx, *, course_inputs):
-    all_courses_list = get_clean_courses_list(course_inputs)
+async def generate_private_max_template(ctx, *course_inputs):
+    course_object_list = get_clean_courses_list("".join(course_inputs))
 
-    course_raw_str_list = []
-    for course in all_courses_list:
-        course_raw_str_list.append(course.get_raw_str())
-
-    public_id_num = get_public_id_from_private_course_manifest(course_raw_str_list=course_raw_str_list)
-
-    if public_id_num < 0:  # No public match, save this private custom max schedule template
-        max_schedules = generate(all_courses_list)
-
-        await ctx.reply(f"Generated {len(max_schedules)} schedules", mention_author=False)
-        if len(max_schedules) > 0:
-            update_private_max_template(max_schedule=max_schedules, discord_user_id=ctx.message.author.id)
-    else:  # Public match found
-        await ctx.reply("Matching public template already exists. "
-                        f"\nPlease use the public template `id = {public_id_num}`", mention_author=False)
+    try:
+        generate_and_update_db_private_template(course_object_list=course_object_list, discord_user_id=ctx.message.author.id)
+        await ctx.reply(f"Successfully generated your personal template", mention_author=False)
+    except Exception as e:
+        raise e
 
 
 @client.command(aliases=["wpublic", "writepublic", "write_public"])
 @commands.is_owner()  # Only bot devs and labeled owners can request a public template creation
-async def generate_public_max_template(ctx, *, course_inputs):
-    all_courses_list = get_clean_courses_list(course_inputs)
-    max_schedules = generate(all_courses_list)
+async def generate_public_max_template(ctx, description, *course_inputs):
+    course_object_list = get_clean_courses_list("".join(course_inputs))
 
-    await ctx.reply(f"Generated {len(max_schedules)} schedules", mention_author=False)
-
-    if len(max_schedules) > 0:
-        course_raw_str_list = []
-        for course in all_courses_list:
-            course_raw_str_list.append(course.get_raw_str())
-
-        update_public_max_template(max_schedule=max_schedules)
+    try:
+        await ctx.reply(f"Successfully generated public template", mention_author=False)
+        generate_and_update_db_public_template(course_object_list=course_object_list, description=description)
+    except Exception as e:
+        raise e
 
 
 @client.command(aliases=["templates", "public"])

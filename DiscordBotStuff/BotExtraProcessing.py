@@ -1,6 +1,5 @@
+from constants import ENABLED_OPTIMIZER_OBJECT_LIST
 from COREClassStructure.CourseClassStructure import ACourse
-from Optimizations.EarlyEnd import EarlyEnd
-from Optimizations.DayOff import DayOff
 
 
 def get_clean_courses_list(course_bot_input):
@@ -44,5 +43,9 @@ def __get_course_obj(new_course):
     return None  # No valid course
 
 
-def get_optimizers_list():
-    return [EarlyEnd(), DayOff()]
+def is_valid_optimizer(optimizer_name):
+    for optimizer in ENABLED_OPTIMIZER_OBJECT_LIST:
+        if optimizer_name.lower().replace(" ", "") == optimizer.name.lower().replace(" ", ""):
+            return True
+
+    return False

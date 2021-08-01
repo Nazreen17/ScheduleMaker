@@ -12,7 +12,7 @@ def __initialize_optimizer(max_schedules, optimizer_name, optimizer_values=None)
         return DayOff(schedule_list=max_schedules, day_off=optimizer_values[0])
 
 
-def get_optimized_term_schedule(max_schedules, optimizer_name, optimizer_values=None):
+def get_optimizer(max_schedules, optimizer_name, optimizer_values=None):
     all_classes = []
     found_crn_classes = []
 
@@ -32,4 +32,4 @@ def get_optimized_term_schedule(max_schedules, optimizer_name, optimizer_values=
     else:
         optimizer = __initialize_optimizer(max_schedules, optimizer_name, optimizer_values)
 
-    return optimizer.optimal
+    return optimizer

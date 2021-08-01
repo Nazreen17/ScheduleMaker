@@ -112,7 +112,6 @@ async def show_all_optimizers(ctx):
 
 @client.command(aliases=["make"])
 async def optimize_max(ctx, template_id, optimizer_name, *additional_optimizer_values):
-
     optimizers_list = get_optimizers_list()
     valid = False
 
@@ -124,11 +123,12 @@ async def optimize_max(ctx, template_id, optimizer_name, *additional_optimizer_v
             else:
                 max_schedules = pull_public_max_schedule_crn_2d_list(template_id)
 
-            temp = get_optimized_term_schedule(max_schedules=max_schedules, optimizer_name=optimizer_name,
-                                               optimizer_values=additional_optimizer_values)
+            one_term_schedule = get_optimized_term_schedule(max_schedules=max_schedules, optimizer_name=optimizer_name,
+                                                            optimizer_values=additional_optimizer_values)
 
-            file = get_discord_file_png_schedule(temp)
-            await ctx.send(file=file)
+            file = get_discord_file_png_schedule(one_term_schedule)
+            await ctx.reply(file=file, mention_author=True)
+            await ctx.reply(one_term_schedule.get_raw_str(), mention_author=True)
 
     if valid is False:
         raise commands.errors.BadArgument()

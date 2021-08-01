@@ -2,7 +2,7 @@ import time
 
 from COREClassStructure.TermScheduleStructure import TermSchedule
 from COREClassStructure.FlipClock import FlipClock
-from COREDB.ClassPull import pull_class_via_redacted
+from COREDB.ClassPull import pull_class_object_list_via
 from constants import MAX_SCHEDULE_COMBINATIONS
 
 
@@ -19,7 +19,7 @@ def generate(course_obj_list):
 
     # 1) Pull all classes you consider valid into valid_courses_list_2d (No time conflict computation yet)
     for course_obj in course_obj_list:
-        valid_courses_list_2d.append(pull_class_via_redacted(fac=course_obj.fac, uid=course_obj.uid, seats=1))
+        valid_courses_list_2d.append(pull_class_object_list_via(fac=course_obj.fac, uid=course_obj.uid, seats=1))
         # WARNING! ONLY PULL CLASSES DEEMED VALID INTO valid_courses_list_2d!
         #  LESS OVERHEAD AND REQUIRED FOR MaxSchedule VALIDATION!
 

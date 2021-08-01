@@ -78,12 +78,13 @@ async def generate_public_max_template(ctx, *, course_inputs):
     max_schedules = generate(all_courses_list)
 
     await ctx.reply(f"Generated {len(max_schedules)} schedules", mention_author=False)
+
     if len(max_schedules) > 0:
         course_raw_str_list = []
         for course in all_courses_list:
             course_raw_str_list.append(course.get_raw_str())
 
-        update_public_max_template(max_schedule=max_schedules, course_raw_str_list=course_raw_str_list)
+        update_public_max_template(max_schedule=max_schedules)
 
 
 @client.command(aliases=["templates", "public"])

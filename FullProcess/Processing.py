@@ -1,6 +1,6 @@
 from COREClassStructure.CourseClassStructure import ACourse
 from COREClassStructure.TermScheduleStructure import TermSchedule
-from COREDB.ClassPull import pull_class_via_redacted
+from COREDB.ClassPull import pull_class_object_list_via
 from DiscordBotStuff.PNGMaker.Pillow import draw_png_schedule
 
 
@@ -49,7 +49,7 @@ def make_term_schedule_from_crn_no_overhead(crn_list):
     class_objects_list = []
 
     for crn in crn_list:
-        class_objects_list += pull_class_via_redacted(crn=crn)
+        class_objects_list += pull_class_object_list_via(crn=crn)
 
     return TermSchedule(class_objects_list)
 

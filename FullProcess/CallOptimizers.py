@@ -1,4 +1,4 @@
-from COREDB.ClassPull import pull_class_via_redacted
+from COREDB.ClassPull import pull_class_object_list_via
 from COREDB.MaxTemplatePrivatePull import pull_private_max_schedule_crn_2d_list
 from COREDB.MaxTemplatePublicPull import pull_public_max_schedule_crn_2d_list
 from Optimizations.DayOff import DayOff
@@ -34,7 +34,7 @@ def get_optimizer(template_id, optimizer_name, user_discord_id, optimizer_values
             if crn not in found_crn_classes:
                 # Store the first instance of each crn and its AClass value from pulled (indexes match)
                 found_crn_classes.append(crn)
-                all_classes += pull_class_via_redacted(crn=crn)
+                all_classes += pull_class_object_list_via(crn=crn)
 
     # Convert/Rewrite 2D crn code based max schedule list to 2D AClass based
     for schedule_i in range(len(max_schedules)):

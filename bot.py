@@ -9,15 +9,13 @@ from datetime import datetime
 from redacted import CLIENT_TOKEN
 from constants import ENABLED_OPTIMIZER_OBJECT_LIST
 from DiscordBotStuff.BotConstants import PREFIX, DEV_IDS
-from DiscordBotStuff.BotExtraProcessing import get_clean_courses_list, is_valid_optimizer
-from DiscordBotStuff.BotCallOptimizers import get_optimizer
+from DiscordBotStuff.Processing import get_clean_courses_list
+
 from MaxSchedule.MaxScheduleGeneration import generate
+from DiscordBotStuff.CallOptimizers import run_optimizer
 from COREDB.MaxTemplatePrivateUpdate import update_private_max_template
-from COREDB.MaxTemplatePrivatePull import pull_private_max_schedule_crn_2d_list
 from COREDB.MaxTemplatePublicUpdate import update_public_max_template
-from COREDB.MaxTemplatePublicPull import get_public_id_from_private_course_manifest, \
-    pull_public_max_schedule_crn_2d_list
-from DiscordBotStuff.PNGMaker.Pillow import draw_png_schedule
+from COREDB.MaxTemplatePublicPull import get_public_id_from_private_course_manifest
 
 # CLIENT_TOKEN = STR Discord dev bot token
 
@@ -111,31 +109,13 @@ async def show_all_optimizers(ctx):
 
 @client.command(aliases=["make"])
 async def optimize_max(ctx, template_id, optimizer_name, *additional_optimizer_values):
-    if not is_valid_optimizer(optimizer_name):
-        raise commands.errors.BadArgument()
 
-    if template_id == "personal":
-        max_schedules = pull_private_max_schedule_crn_2d_list(ctx.message.author.id)
-    else:
-        max_schedules = pull_public_max_schedule_crn_2d_list(template_id)
-
-    completed_optimizer = get_optimizer(max_schedules=max_schedules, optimizer_name=optimizer_name,
-                                        optimizer_values=additional_optimizer_values)
-
-    # Generate schedule.png
-    single_term_schedule = completed_optimizer.optimal
+    run_optimizer(template_id=template_id, optimizer_name=optimizer_name, author_id=ctx.message.author.id,
+                  additional_optimizer_values=additional_optimizer_values)
 
     # Discord send schedule.png
-    draw_png_schedule(single_term_schedule)
     with open("DiscordBotStuff/PNGMaker/schedule.png", "rb") as png_file:
         await ctx.reply(file=discord.File(png_file, "schedule.png"), mention_author=True)
-
-    # Generate results.txt
-    results = completed_optimizer.result
-    result_txt = f"OPTIMIZER.result =\n{results}\n------------------------------\n"
-
-    with open("DiscordBotStuff/result.txt", "w") as file:
-        file.write(result_txt + single_term_schedule.get_raw_str())
 
     # Discord send results.txt
     with open("DiscordBotStuff/result.txt", "rb") as file:

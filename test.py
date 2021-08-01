@@ -1,6 +1,6 @@
 # THIS FILE IS ONLY FOR LOCAL MACHINE TESTING
 
-from DiscordBotStuff.BotExtraProcessing import get_clean_courses_list
+from DiscordBotStuff.Processing import get_clean_courses_list
 from MaxSchedule.MaxScheduleGeneration import generate
 
 

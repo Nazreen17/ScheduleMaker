@@ -1,4 +1,3 @@
-from constants import ENABLED_OPTIMIZER_OBJECT_LIST
 from COREClassStructure.CourseClassStructure import ACourse
 
 
@@ -41,11 +40,3 @@ def __get_course_obj(new_course):
             uid = new_course[i:]  # course uni id num thing
             return ACourse(fac, uid)
     return None  # No valid course
-
-
-def is_valid_optimizer(optimizer_name):
-    for optimizer in ENABLED_OPTIMIZER_OBJECT_LIST:
-        if optimizer_name.lower().replace(" ", "") == optimizer.name.lower().replace(" ", ""):
-            return True
-
-    return False

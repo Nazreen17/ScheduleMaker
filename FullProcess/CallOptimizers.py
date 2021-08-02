@@ -1,18 +1,26 @@
 from COREDB.ClassPull import pull_class_object_list_via
 from COREDB.MaxTemplatePrivatePull import pull_private_max_schedule_crn_2d_list
 from COREDB.MaxTemplatePublicPull import pull_public_max_schedule_crn_2d_list
+from constants import ENABLED_OPTIMIZER_OBJECT_LIST
+
 from Optimizations.DayOff import DayOff
 from Optimizations.EarlyEnd import EarlyEnd
-from constants import ENABLED_OPTIMIZER_OBJECT_LIST
+from Optimizations.InPerson import InPerson
+from Optimizations.InPersonNot import Online
 
 
 def __initialize_optimizer(max_schedules, optimizer_name, optimizer_values=None):
+    # ALSO UPDATE: constants.py -> ENABLED_OPTIMIZER_OBJECT_LIST
     optimizer_name.lower().replace(" ", "")
 
-    if optimizer_name == EarlyEnd().name.lower().replace(" ", ""):
+    if optimizer_name == EarlyEnd().name.lower():
         return EarlyEnd(schedule_list=max_schedules)
-    elif optimizer_name == DayOff().name.lower().replace(" ", ""):
+    elif optimizer_name == DayOff().name.lower():
         return DayOff(schedule_list=max_schedules, day_off=optimizer_values[0])
+    elif optimizer_name == InPerson().name.lower():
+        return InPerson(schedule_list=max_schedules)
+    elif optimizer_name == Online().name.lower():
+        return Online(schedule_list=max_schedules)
 
 
 def get_optimizer(template_id, optimizer_name, user_discord_id, optimizer_values):

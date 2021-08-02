@@ -14,6 +14,7 @@ from FullProcess.CallMaxTemplateGeneration import generate_and_update_db_private
     generate_and_update_db_public_template
 from FullProcess.CallOptimizers import get_optimizer
 from FullProcess.GeneralProcessing import make_term_schedule_from_crn_no_overhead
+from FullProcess.CallCourseRequester import add_course_requests_via_list, drop_course_requests_via_list
 
 # CLIENT_TOKEN = STR Discord dev bot token
 
@@ -44,7 +45,30 @@ async def shutdown_bot(ctx):  # "ctx" is required to be called in all commands
 
 @client.command()
 async def ping(ctx):
-    await ctx.send(f"Kinda useless stuff, but ok... {round(client.latency * 1000)} ms")
+    await ctx.reply(f"Kinda useless stuff, but ok... {round(client.latency * 1000)} ms", mention_author=False)
+
+
+@client.command(aliases=["request"])
+async def user_course_request(ctx, *course_inputs):
+    course_object_list = get_clean_courses_list("".join(course_inputs))
+
+    try:
+        add_course_requests_via_list(courses_list=course_object_list)
+        await ctx.reply(f"Successfully submitted course update request(s)", mention_author=False)
+    except Exception as e:
+        raise e
+
+
+@client.command(aliases=["drop"])
+@commands.is_owner()
+async def drop_course_request(ctx, *course_inputs):
+    course_object_list = get_clean_courses_list("".join(course_inputs))
+
+    try:
+        drop_course_requests_via_list(courses_list=course_object_list)
+        await ctx.reply(f"Successfully removed course update request(s)", mention_author=False)
+    except Exception as e:
+        raise e
 
 
 @client.command(aliases=["personal"])
@@ -52,14 +76,15 @@ async def generate_private_max_template(ctx, *course_inputs):
     course_object_list = get_clean_courses_list("".join(course_inputs))
 
     try:
-        generate_and_update_db_private_template(course_object_list=course_object_list, discord_user_id=ctx.message.author.id)
+        generate_and_update_db_private_template(course_object_list=course_object_list,
+                                                discord_user_id=ctx.message.author.id)
         await ctx.reply(f"Successfully generated your personal template", mention_author=False)
     except Exception as e:
         raise e
 
 
 @client.command(aliases=["wpublic", "writepublic", "write_public"])
-@commands.is_owner()  # Only bot devs and labeled owners can request a public template creation
+@commands.is_owner()
 async def generate_public_max_template(ctx, description, *course_inputs):
     course_object_list = get_clean_courses_list("".join(course_inputs))
 

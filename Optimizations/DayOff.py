@@ -5,18 +5,21 @@ from Optimizations.Optimize import DualShiftOptimizerStructure
 
 class DayOff(DualShiftOptimizerStructure):
     def __init__(self, schedule_list=None, day_off=None):
-        self._name = "DayOff"
-        self._description = "Get the schedules that have specific days with no classes (or closest possible to)"
-        self._max_schedules = schedule_list
         self.__day_off_int = self.__get_day_off_int(day_off) if day_off is not None else None
-        self._result = f"Total ties count: {len(super().ties)}"
-        """
-        WARNING! ATTRIBUTES RUN IN ORDER ^^^
-        PUT RESULT AFTER optimal, UPDATE TIES AFTER optimize() TO MATCH _ties ATTRIBUTE
-        (Or stop being lazy and make updater method)
-        """
-        super().__init__(name=self._name, description=self._description, max_schedule_list=self._max_schedules,
-                         result=self._result)
+        super().__init__(schedule_list=schedule_list)
+
+    @property
+    def name(self):
+        return "DayOff"
+
+    @property
+    def description(self):
+        return "Get the schedules that have specific days with no classes (or closest possible to)"
+
+    @property
+    def result(self):
+        result = "" if self.ties == [] else f"Total ties count: {len(self.ties)}"
+        return result
 
     @staticmethod
     def __get_day_off_int(day_off):
@@ -54,12 +57,12 @@ class DayOff(DualShiftOptimizerStructure):
         current_delta = self.__get_delta_time(current_day)
 
         if current_delta == best_delta:
-            super().ties_append_via_term_schedule(current)
+            self.ties_append_via_term_schedule(current)
             return best  # Default tie -> return previous best
         if best_delta < current_delta:  # return smallest delta
             return best
         else:
-            super().ties = current  # Reset ties
+            self.ties = current  # Reset ties
             return current
 
     def __get_day_off_list(self, schedule_obj):

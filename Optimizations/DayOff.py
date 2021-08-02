@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from Optimizations.Optimize import DualShiftOptimizerStructure
-from COREClassStructure.TermScheduleStructure import TermSchedule
 
 
 class DayOff(DualShiftOptimizerStructure):
@@ -9,17 +8,15 @@ class DayOff(DualShiftOptimizerStructure):
         self._name = "DayOff"
         self._description = "Get the schedules that have specific days with no classes (or closest possible to)"
         self._max_schedules = schedule_list
-        self._day_off_int = self.__get_day_off_int(day_off) if day_off is not None else None
-        self._ties = 0
-        self._optimal = self.optimize() if schedule_list is not None and day_off is not None else None
-        self._result = "Total ties: " + str(self._ties)
+        self.__day_off_int = self.__get_day_off_int(day_off) if day_off is not None else None
+        self._result = f"Total ties count: {len(super().ties)}"
         """
         WARNING! ATTRIBUTES RUN IN ORDER ^^^
         PUT RESULT AFTER optimal, UPDATE TIES AFTER optimize() TO MATCH _ties ATTRIBUTE
         (Or stop being lazy and make updater method)
         """
         super().__init__(name=self._name, description=self._description, max_schedule_list=self._max_schedules,
-                         result=self._result, optimal=self._optimal)
+                         result=self._result)
 
     @staticmethod
     def __get_day_off_int(day_off):
@@ -43,14 +40,7 @@ class DayOff(DualShiftOptimizerStructure):
         else:
             raise ValueError
 
-    def optimize(self):
-        best = TermSchedule(self._max_schedules[0])  # initialized first element as the best case
-        for crn_list_i in range(1, len(self._max_schedules)):  # cycle all in schedule list
-            current = TermSchedule(self._max_schedules[crn_list_i])
-            best = self.__compare_for_best(best, current)
-        return best
-
-    def __compare_for_best(self, best, current):
+    def compare_for_best(self, best, current):
         """
         used in optimize
         :param best:
@@ -64,18 +54,19 @@ class DayOff(DualShiftOptimizerStructure):
         current_delta = self.__get_delta_time(current_day)
 
         if current_delta == best_delta:
-            self._ties += 1
-        if best_delta <= current_delta:  # return smallest delta
+            super().ties_append_via_term_schedule(current)
+            return best  # Default tie -> return previous best
+        if best_delta < current_delta:  # return smallest delta
             return best
         else:
-            self._ties = 0
+            super().ties = current  # Reset ties
             return current
 
     def __get_day_off_list(self, schedule_obj):
         day_off = []
         for class_obj in schedule_obj.classes:
             for meet_time_tuple in class_obj.class_time:
-                if meet_time_tuple[0].weekday() == self._day_off_int:
+                if meet_time_tuple[0].weekday() == self.__day_off_int:
                     day_off.append(meet_time_tuple)
         return day_off  # day off will have the meet time inner tuples
 

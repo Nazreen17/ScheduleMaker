@@ -48,7 +48,7 @@ def get_optimizer(template_id, optimizer_name, user_discord_id, optimizer_values
     for schedule_i in range(len(max_schedules)):
         for crn_i in range(len(max_schedules[schedule_i])):
             max_schedules[schedule_i][crn_i] = all_classes[found_crn_classes.index(max_schedules[schedule_i][crn_i])]
-            # Rewrite the
+            # Rewrite the 2D max schedule list from crn code based into AClass based
 
     return __initialize_optimizer(max_schedules, optimizer_name, optimizer_values)
 

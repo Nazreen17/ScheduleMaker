@@ -32,6 +32,9 @@ class EarlyEnd(DualShiftOptimizerStructure):
 
         for class_obj in term_schedule_obj.classes:
             for inner_tuple in class_obj.class_time:
+                # TODO ERROR!!!
+                #  class_obj is a list of class objects? I don't have time to fix... (too lazy)
+                #  More details will be made on an issue on GitHub.
                 if not isinstance(week[inner_tuple[1].weekday()], datetime) or \
                         week[inner_tuple[1].weekday()] < inner_tuple[1]:  # more recent in time
                     week[inner_tuple[1].weekday()] = inner_tuple[1]

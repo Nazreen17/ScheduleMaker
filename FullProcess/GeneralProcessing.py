@@ -30,7 +30,7 @@ def get_clean_courses_list(course_inputs):
     for possible_course in course_str_list:
         new_course_obj = __make_course_obj(possible_course)
 
-        if isinstance(new_course_obj, ACourse) and new_course_obj.is_format_valid() is True:
+        if isinstance(new_course_obj, ACourse):
             all_courses_list.append(new_course_obj)
         else:
             raise ValueError(f"{possible_course} is not a valid ACourse object or has incorrect format")

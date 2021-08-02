@@ -28,23 +28,13 @@ def get_clean_courses_list(course_inputs):
             i += 1  # No uid ending 'u' found, increase the character shift iterator by 1 to check next character
 
     for possible_course in course_str_list:
-        new_course_obj = __make_course_obj(possible_course)
-
-        if isinstance(new_course_obj, ACourse):
+        try:
+            new_course_obj = ACourse(combined=possible_course)  # Validation done far in backend at ACourse
             all_courses_list.append(new_course_obj)
-        else:
-            raise ValueError(f"{possible_course} is not a valid ACourse object or has incorrect format")
+        except Exception as e:
+            print(e)
 
     return all_courses_list
-
-
-def __make_course_obj(new_course):
-    for i in range(len(new_course)):
-        if new_course[i].isdigit():  # i is now the index of first digit
-            fac = new_course[:i]  # faculty
-            uid = new_course[i:]  # course uni id num thing
-            return ACourse(fac, uid)
-    return None  # No valid course
 
 
 def make_term_schedule_from_crn_no_overhead(crn_list):

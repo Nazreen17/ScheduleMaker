@@ -4,47 +4,32 @@ from COREClassStructure.TermScheduleStructure import TermSchedule
 
 
 class DualShiftOptimizerStructure(ABC):
-    def __init__(self, name, description, max_schedule_list, result):
-        self._name = name
-        self._description = description
-        self._max_schedules = max_schedule_list
-        self._optimal = None
-        self._ties = []
-        self._result = result
-        """
-        WARNING! ATTRIBUTES RUN IN ORDER ^^^
-        PUT RESULT AFTER optimal, UPDATE TIES AFTER optimize() TO MATCH _ties ATTRIBUTE
-        (Or stop being lazy and make updater method)
-        """
+    def __init__(self, schedule_list):
+        self._max_schedules = schedule_list
+        self._ties = []  # _ties attribute init must be called before _optimial init because _ties is required in
+        # optimize(). The optimize() function is used in setting the _optimial value
+        self._optimal = self.optimize() if self._max_schedules is not None else None
 
     @property
+    @abstractmethod
     def name(self):
-        return self._name
+        pass
 
     @property
+    @abstractmethod
     def description(self):
-        return self._description
+        pass
 
     @property
-    def max_schedules(self):
-        return self._max_schedules
-
-    @max_schedules.setter
-    def max_schedules(self, max_schedule_list):
-        self._max_schedules = max_schedule_list
+    @abstractmethod
+    def result(self):
+        pass
 
     @property
     def optimal(self):  # Void property? Sets its own value when called
         if self._optimal is None:
-            try:
-                self._optimal = self.optimize()
-            except:
-                self._optimal = None
+            self._optimal = self.optimize()
         return self._optimal
-
-    @property
-    def result(self):
-        return self._result
 
     def optimize(self):
         best = TermSchedule(self._max_schedules[0])  # Initialized first element as the best case

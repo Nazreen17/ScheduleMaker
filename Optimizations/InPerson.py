@@ -3,17 +3,20 @@ from Optimizations.Optimize import DualShiftOptimizerStructure
 
 class InPerson(DualShiftOptimizerStructure):
     def __init__(self, schedule_list=None):
-        self._name = "InPerson"
-        self._description = "Get the schedules that average end the most classes in person"
-        self._max_schedules = schedule_list
-        self._result = f"Total ties count: {len(super().ties)}"
-        """
-        WARNING! ATTRIBUTES RUN IN ORDER ^^^
-        PUT RESULT AFTER optimal, UPDATE TIES AFTER optimize() TO MATCH _ties ATTRIBUTE
-        (Or stop being lazy and make updater method)
-        """
-        super().__init__(name=self._name, description=self._description, max_schedule_list=self._max_schedules,
-                         result=self._result)
+        super().__init__(schedule_list=schedule_list)
+
+    @property
+    def name(self):
+        return "InPerson"
+
+    @property
+    def description(self):
+        return "Get the schedules that average end the most classes in person"
+
+    @property
+    def result(self):
+        result = "" if self.ties == [] else f"Total ties count: {len(self.ties)}"
+        return result
 
     @staticmethod
     def __count_in_person(schedule_obj):
@@ -44,10 +47,10 @@ class InPerson(DualShiftOptimizerStructure):
         current_in_person_count = self.__count_in_person(current)
 
         if best_in_person_count == current_in_person_count:
-            super().ties_append_via_term_schedule(current)
+            self.ties_append_via_term_schedule(current)
             return best  # Default tie -> return previous best
         elif best_in_person_count > current_in_person_count:
             return best
         else:  # else current_in_person_count > best_in_person_count
-            super().ties = current  # Reset ties
+            self.ties = current  # Reset ties
             return current

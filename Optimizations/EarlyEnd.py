@@ -5,29 +5,32 @@ from Optimizations.Optimize import DualShiftOptimizerStructure
 
 class EarlyEnd(DualShiftOptimizerStructure):
     def __init__(self, schedule_list=None):
-        self._name = "EarlyEnd"
-        self._description = "Get the schedules that average end the earliest end times each class day"
-        self._max_schedules = schedule_list
-        self._result = f"Total ties count: {len(super().ties)}"
-        """
-        WARNING! ATTRIBUTES RUN IN ORDER ^^^
-        PUT RESULT AFTER optimal, UPDATE TIES AFTER optimize() TO MATCH _ties ATTRIBUTE
-        (Or stop being lazy and make updater method)
-        """
-        super().__init__(name=self._name, description=self._description, max_schedule_list=self._max_schedules,
-                         result=self._result)
+        super().__init__(schedule_list=schedule_list)
+
+    @property
+    def name(self):
+        return "EarlyEnd"
+
+    @property
+    def description(self):
+        return "Get the schedules that average end the earliest end times each class day"
+
+    @property
+    def result(self):
+        result = "" if self.ties == [] else f"Total ties count: {len(self.ties)}"
+        return result
 
     @staticmethod
-    def __generate_week_list(schedule_obj):
+    def __generate_week_list(term_schedule_obj):
         """
         used in optimize
-        :param schedule_obj:
+        :param term_schedule_obj:
         :return:
         """
         # generate a week list (default below vvv)
         week = [None, None, None, None, None, None, None]
 
-        for class_obj in schedule_obj.classes:
+        for class_obj in term_schedule_obj.classes:
             for inner_tuple in class_obj.class_time:
                 if not isinstance(week[inner_tuple[1].weekday()], datetime) or \
                         week[inner_tuple[1].weekday()] < inner_tuple[1]:  # more recent in time
@@ -55,10 +58,10 @@ class EarlyEnd(DualShiftOptimizerStructure):
                 current_delta += current_week[day_i] - datetime(current_week[day_i].year, current_week[day_i].month,
                                                                 current_week[day_i].day, 0, 0)
         if current_delta == best_delta:
-            super().ties_append_via_term_schedule(current)
+            self.ties_append_via_term_schedule(current)
             return best  # Default tie -> return previous best
         if current_delta > best_delta:  # the greater the delta, the later classes end, return smallest delta
             return best
         else:
-            super().ties = current  # Reset ties
+            self.ties = current  # Reset ties
             return current

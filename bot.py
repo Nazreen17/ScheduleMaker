@@ -7,7 +7,7 @@ from discord.ext import commands
 from datetime import datetime
 
 from redacted import CLIENT_TOKEN
-from constants import ENABLED_OPTIMIZER_OBJECT_LIST
+from enabledOptimizers import ENABLED_OPTIMIZER_OBJECT_LIST
 from DiscordBotStuff.BotConstants import PREFIX, DEV_IDS
 from FullProcess.GeneralProcessing import get_clean_courses_list, generate_png_and_txt
 from FullProcess.CallMaxTemplateGeneration import generate_and_update_db_private_template, \

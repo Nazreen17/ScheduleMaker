@@ -9,4 +9,4 @@ def test_optimizer(template_id, request_list):
     request_optimizer(template_id, request_list=request_list)
 
 
-test_optimizer("3", ["online", "dayoff, friday", "earlyend", "dayoff, monday"])
+test_optimizer("3", ["inperson", "dayoff, friday"])

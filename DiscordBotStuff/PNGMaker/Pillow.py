@@ -1,6 +1,7 @@
 from PIL import Image, ImageDraw, ImageFont
 
 from COREClassStructure.TermScheduleStructure import TermSchedule
+from constants import CLASS_INSTRUCTION_IN_PERSON_KEYS, RGB_ONLINE_BLUE, RGB_IN_PERSON_PEACH
 
 COLUMN_SIZE = 200
 ROW_SIZE = 80
@@ -8,21 +9,13 @@ HEADER_FONT = ImageFont.truetype("DiscordBotStuff/PNGMaker/roboto-mono/RobotoMon
 BODY_FONT = ImageFont.truetype("DiscordBotStuff/PNGMaker/roboto-mono/RobotoMono-Medium.ttf", 20)
 WEEKDAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
 
-BLUE = (157, 162, 233)
-PEACH = (255, 223, 182)
-MOSS = (171, 210, 172)
-UBE = (208, 178, 241)
-APRICOT = (254, 200, 173)
-CRYSTAL = (157, 220, 224)
-COLOUR_MIX = [BLUE, PEACH, MOSS, UBE, APRICOT, CRYSTAL]
-
 
 def draw_png_schedule(schedule_obj):
     """
     draws a .png image of a TermSchedule object
     :param schedule_obj:
     """
-    global COLUMN_SIZE, ROW_SIZE, HEADER_FONT, WEEKDAYS, COLOUR_MIX
+    global COLUMN_SIZE, ROW_SIZE, HEADER_FONT, WEEKDAYS
 
     if not isinstance(schedule_obj, TermSchedule):
         raise TypeError
@@ -41,12 +34,20 @@ def draw_png_schedule(schedule_obj):
         # time off set >>>>>>>>>>>>>>>>>^ start at 8:00
 
     if TermSchedule.is_time_valid:
-        colour_counter = 0
         for class_obj in schedule_obj.classes:
-            __draw_class(img=img, class_obj=class_obj, block_colour=COLOUR_MIX[colour_counter % len(COLOUR_MIX)])
-            colour_counter += 1
+            colour = __get_block_colour_from_instruction_type_str(class_obj.instruction)
+            __draw_class(img=img, class_obj=class_obj, block_colour=colour)
 
     img.save('DiscordBotStuff/PNGMaker/schedule.png')
+
+
+def __get_block_colour_from_instruction_type_str(instruction):
+    instruction = instruction.lower()
+
+    for key in CLASS_INSTRUCTION_IN_PERSON_KEYS:
+        if key.lower() in instruction.lower():  # If the class is in person
+            return RGB_IN_PERSON_PEACH
+    return RGB_ONLINE_BLUE  # No match, assume online
 
 
 def __draw_class(img, class_obj, block_colour):

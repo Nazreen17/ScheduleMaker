@@ -1,4 +1,4 @@
-from constants import ENABLED_OPTIMIZER_OBJECT_LIST
+from enabledOptimizers import ENABLED_OPTIMIZER_OBJECT_LIST
 from COREDB.ClassPull import pull_class_object_list_via
 from COREDB.MaxTemplatePrivatePull import pull_private_max_schedule_crn_2d_list
 from COREDB.MaxTemplatePublicPull import pull_public_max_schedule_crn_2d_list
@@ -162,7 +162,7 @@ class OptimizerRequest:
         :return:
         DualShiftOptimizerStructure subclass -> Return a complete optimizer
         """
-        # ALSO UPDATE: constants.py -> ENABLED_OPTIMIZER_OBJECT_LIST
+        # ALSO UPDATE: enabledOptimizers.py -> ENABLED_OPTIMIZER_OBJECT_LIST
 
         if self._optimizer_name == EarlyEnd().name.lower():
             return EarlyEnd(schedule_list=self._max_schedule)

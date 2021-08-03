@@ -1,4 +1,5 @@
 from Optimizations.DualShiftOptimizerStructure import DualShiftOptimizer
+from constants import CLASS_INSTRUCTION_IN_PERSON_KEYS
 
 
 class Online(DualShiftOptimizer):
@@ -25,12 +26,11 @@ class Online(DualShiftOptimizer):
         :param schedule_obj:
         :return:
         """
-        instruction_type_in_person_keys = ["In-class"]
         in_class_count = 0
 
         for class_obj in schedule_obj.classes:
-            for key in instruction_type_in_person_keys:
-                if class_obj.instruction is not None and key in class_obj.instruction:
+            for key in CLASS_INSTRUCTION_IN_PERSON_KEYS:
+                if class_obj.instruction is not None and key.lower() in class_obj.instruction.lower():
                     in_class_count += 1
 
         return in_class_count

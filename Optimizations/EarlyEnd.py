@@ -1,9 +1,9 @@
 from datetime import datetime
 
-from Optimizations.Optimize import DualShiftOptimizerStructure
+from Optimizations.DualShiftOptimizerStructure import DualShiftOptimizer
 
 
-class EarlyEnd(DualShiftOptimizerStructure):
+class EarlyEnd(DualShiftOptimizer):
     def __init__(self, schedule_list=None):
         super().__init__(schedule_list=schedule_list)
 
@@ -61,7 +61,7 @@ class EarlyEnd(DualShiftOptimizerStructure):
                 current_delta += current_week[day_i] - datetime(current_week[day_i].year, current_week[day_i].month,
                                                                 current_week[day_i].day, 0, 0)
         if current_delta == best_delta:
-            self.ties_append_via_term_schedule(current)
+            self.ties_add_from_term_schedule(current)
             return best  # Default tie -> return previous best
         if current_delta > best_delta:  # the greater the delta, the later classes end, return smallest delta
             return best

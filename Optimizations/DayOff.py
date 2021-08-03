@@ -1,9 +1,9 @@
 from datetime import datetime
 
-from Optimizations.Optimize import DualShiftOptimizerStructure
+from Optimizations.DualShiftOptimizerStructure import DualShiftOptimizer
 
 
-class DayOff(DualShiftOptimizerStructure):
+class DayOff(DualShiftOptimizer):
     def __init__(self, schedule_list=None, day_off=None):
         self.__day_off_int = self.__get_day_off_int(day_off) if day_off is not None else None
         super().__init__(schedule_list=schedule_list)
@@ -57,7 +57,7 @@ class DayOff(DualShiftOptimizerStructure):
         current_delta = self.__get_delta_time(current_day)
 
         if current_delta == best_delta:
-            self.ties_append_via_term_schedule(current)
+            self.ties_add_from_term_schedule(current)
             return best  # Default tie -> return previous best
         if best_delta < current_delta:  # return smallest delta
             return best

@@ -12,7 +12,7 @@ from DiscordBotStuff.BotConstants import PREFIX, DEV_IDS
 from FullProcess.GeneralProcessing import get_clean_courses_list, generate_png_and_txt
 from FullProcess.CallMaxTemplateGeneration import generate_and_update_db_private_template, \
     generate_and_update_db_public_template
-from FullProcess.CallOptimizers import get_optimizer
+from FullProcess.CallOptimizers import request_optimizer
 from FullProcess.GeneralProcessing import make_term_schedule_from_crn_no_overhead
 from FullProcess.CallCourseRequester import add_course_requests_via_list, drop_course_requests_via_list
 
@@ -20,14 +20,6 @@ from FullProcess.CallCourseRequester import add_course_requests_via_list, drop_c
 
 
 client = commands.Bot(command_prefix=PREFIX, owner_ids=DEV_IDS)
-
-
-# async def command_example(ctx, arg) means send arguments via position after command declaration
-# (https://discordpy.readthedocs.io/en/latest/ext/commands/commands.html#positional)
-# async def command_example(ctx, *arg) means send all arguments
-# (https://discordpy.readthedocs.io/en/latest/ext/commands/commands.html#variable)
-# async def command_example(ctx, *, arg) means send all arguments as single arg
-# (https://discordpy.readthedocs.io/en/latest/ext/commands/commands.html#keyword-only-arguments)
 
 
 @client.event
@@ -118,15 +110,12 @@ async def show_all_optimizers(ctx):
 
 
 @client.command(aliases=["make"])
-async def optimize_max(ctx, template_id, optimizer_name, *additional_optimizer_values):
-    optimizer = get_optimizer(template_id=template_id, optimizer_name=optimizer_name,
-                              user_discord_id=ctx.message.author.id,
-                              optimizer_values=additional_optimizer_values)
+async def optimize_max(ctx, template_id, *optimization_requests):
+    # Complete command: $ <PublicTemplateId / 'personal'> "<SINGLE_REQUEST#1>" "<SINGLE_REQUEST#1>"
+    # <SINGLE_REQUEST#1> format: <OptimizerName>, <ExtraValue#n>, <ExtraValue#n+1>
 
-    single_term_schedule = optimizer.optimal
-    result_txt = f"OPTIMIZER.result =\n{optimizer.result}\n"
-
-    generate_png_and_txt(single_term_schedule=single_term_schedule, result_txt_header_str=result_txt)
+    request_optimizer(template_id=template_id, request_list=optimization_requests,
+                      user_discord_id=ctx.message.author.id)
 
     # Discord send schedule.png
     with open("DiscordBotStuff/PNGMaker/schedule.png", "rb") as png_file:

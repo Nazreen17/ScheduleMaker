@@ -1,7 +1,7 @@
-from Optimizations.Optimize import DualShiftOptimizerStructure
+from Optimizations.DualShiftOptimizerStructure import DualShiftOptimizer
 
 
-class InPerson(DualShiftOptimizerStructure):
+class InPerson(DualShiftOptimizer):
     def __init__(self, schedule_list=None):
         super().__init__(schedule_list=schedule_list)
 
@@ -47,7 +47,7 @@ class InPerson(DualShiftOptimizerStructure):
         current_in_person_count = self.__count_in_person(current)
 
         if best_in_person_count == current_in_person_count:
-            self.ties_append_via_term_schedule(current)
+            self.ties_add_from_term_schedule(current)
             return best  # Default tie -> return previous best
         elif best_in_person_count > current_in_person_count:
             return best

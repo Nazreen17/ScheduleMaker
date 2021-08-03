@@ -114,7 +114,7 @@ async def optimize_max(ctx, template_id, *optimization_requests):
     # Complete command: $ <PublicTemplateId / 'personal'> "<SINGLE_REQUEST#1>" "<SINGLE_REQUEST#1>"
     # <SINGLE_REQUEST#1> format: <OptimizerName>, <ExtraValue#n>, <ExtraValue#n+1>
 
-    request_optimizer(template_id=template_id, request_list=optimization_requests,
+    request_optimizer(template_id=template_id, request_list=list(optimization_requests),
                       user_discord_id=ctx.message.author.id)
 
     # Discord send schedule.png

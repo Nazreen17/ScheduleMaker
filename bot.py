@@ -81,8 +81,8 @@ async def generate_public_max_template(ctx, description, *course_inputs):
     course_object_list = get_clean_courses_list("".join(course_inputs))
 
     try:
-        await ctx.reply(f"Successfully generated public template", mention_author=False)
         generate_and_update_db_public_template(course_object_list=course_object_list, description=description)
+        await ctx.reply(f"Successfully generated public template", mention_author=False)
     except Exception as e:
         raise e
 

@@ -104,7 +104,7 @@ def __flip_clock_combinations(list_3d, all_course_classes):
 
                 return all_combinations
 
-        clock.shift()  # shift late, clock starts a 0 which is possibly valid
+        clock.shift_by(1)  # shift late, clock starts a 0 which is possibly valid
     return all_combinations
 
 

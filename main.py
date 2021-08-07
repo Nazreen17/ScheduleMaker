@@ -88,14 +88,15 @@ def test_display_from_crn(crn_codes):
     generate_png_and_txt(single_term_schedule=single_term_schedule, result_txt_header_str=result_txt)
 
 
-start = time.time()
+if __name__ == '__main__':
+    start = time.time()
 
-# test_optimize_max("3", ["inperson", "dayoff, friday"])
-# test_generate_public_max_template("Daniel", ["Math1010u", "math1850u", "engr1015u", "comm1050u", "phy1010u"])
+    # test_optimize_max("3", ["inperson", "dayoff, friday"])
+    # test_generate_public_max_template("Daniel", ["Math1010u", "math1850u", "engr1015u", "comm1050u", "phy1010u"])
 
-max_schedules = generate(get_clean_courses_list("".join(["engr1015u"])))
+    max_schedules = generate(get_clean_courses_list("".join(["Math1010u", "math1850u", "engr1015u"])))
 
-with open("yeet1.json", "w") as write_file:
-    json.dump(max_schedules, write_file, indent=4)
+    with open("v1.json", "w") as write_file:
+        json.dump(max_schedules, write_file)
 
-print(f"Completed in {round(time.time() - start, 2)} sec")
+    print(f"Completed in {round(time.time() - start, 2)} sec")

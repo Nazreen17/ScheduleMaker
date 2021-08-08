@@ -1,7 +1,7 @@
+import itertools
+
 from COREClassStructure.TermScheduleStructure import TermSchedule
-from COREClassStructure.FlipClock import FlipClock
 from COREDB.ClassPull import pull_class_object_list_via
-from constants import MAX_SCHEDULE_COMBINATIONS
 
 
 def generate(course_obj_list):
@@ -27,10 +27,12 @@ def generate(course_obj_list):
 
     # 3) Compute all combinations of options through conversion of all CRN code based options to class objects,
     # is_time_valid() processing also takes place here
-    main_schedules_list = __flip_clock_combinations(list_3d, valid_courses_list_2d)
+    main_schedules_list = __compute_all_combinations(list_3d, valid_courses_list_2d)
 
+    """
     # 4) Convert all objects to CRN codes to easier printing
     main_schedules_list = __crn_clean_up(main_schedules_list)  # converting MaxSchedule to a clear list of CRN codes
+    """
 
     return main_schedules_list
 
@@ -66,61 +68,43 @@ def __compute_options(valid_courses_list_2d):
     return list_3d
 
 
-def __flip_clock_combinations(list_3d, all_course_classes):
+def __compute_all_combinations(list_3d, valid_courses_list_2d):
     """
     Runs all possible combinations of course options and checks for time conflicts
     :param list_3d:
-    :param all_course_classes:
+    :param valid_courses_list_2d:
+    List of all classes in 2D organized format
     :return:
     """
-    all_combinations = []
-    clock = FlipClock(list_3d)
+    verified_combos = []
+    all_combos = list(itertools.product(*list_3d))
 
-    max_shifting = clock.shift_max
+    for combo in all_combos:
+        possible_valid_crn_combo = list(itertools.chain(*combo))
+        if __is_valid_crn_options(possible_valid_crn_combo, valid_courses_list_2d):
+            # Verify the class was pulled originally and deemed valid
 
-    for shift_count in range(max_shifting):  # Loop for max shifts possible
-        temp_schedule = TermSchedule()
-        loop_continue = True
-        course_index = 0
-
-        while loop_continue:  # Loop through all courses
-            if loop_continue and course_index < len(list_3d):  # Still classes left to check
-                current_course_option_index = clock[course_index]  # Get the current option index from clock
-                crn_list = list_3d[course_index][current_course_option_index]  # get the crn list
-
-                converted_to_class_objects = __find_from_crn_list(crn_list, all_course_classes)
-                temp_schedule.add_class(converted_to_class_objects)
-
-                course_index += 1  # Shift to next course index
-
-            else:  # Finished going through all course
-                loop_continue = False  # Break loop
-
-        if len(temp_schedule) > 0 and temp_schedule.is_time_valid():  # Only add if time valid and len is okay
-            all_combinations.append(temp_schedule)  # Add the completed schedule
-
-            if max_shifting > MAX_SCHEDULE_COMBINATIONS:
-                print(f"\tWARNING! Passed the set max {MAX_SCHEDULE_COMBINATIONS} combinations, returned 1")
-
-                return all_combinations
-
-        clock.shift_by(1)  # shift late, clock starts a 0 which is possibly valid
-    return all_combinations
+            pulled_class_from_possible = __find_from_crn_list(possible_valid_crn_combo, valid_courses_list_2d)
+            if TermSchedule(pulled_class_from_possible).is_time_valid():
+                # Verify time validation with TermSchedule
+                verified_combos.append(possible_valid_crn_combo)
+        # Merge 4D list -> Each 4th dimension lists a course sublist of a max combo option
+    return verified_combos
 
 
-def __is_valid_crn_options(crn_list, list_2d):
+def __is_valid_crn_options(crn_list, valid_courses_list_2d):
     """
     Copied core logic from __find_from_crn_list()
     :param crn_list:
     List of crn codes to search
-    :param list_2d:
-    List of all classes in 3d organized format
+    :param valid_courses_list_2d:
+    List of all classes in 2D organized format
     :return:
     Return BOOL True or False to determine if CRN list is a valid option
     """
     temp_crn_list = crn_list.copy()  # Always copy lists when applying functions like .remove() which is done here below
 
-    for course_sublist in list_2d:
+    for course_sublist in valid_courses_list_2d:
         if len(temp_crn_list) > 0:
             for class_object in course_sublist:
                 if class_object.crn in temp_crn_list:
@@ -133,19 +117,19 @@ def __is_valid_crn_options(crn_list, list_2d):
     return False
 
 
-def __find_from_crn_list(crn_list, list_2d):
+def __find_from_crn_list(crn_list, valid_courses_list_2d):
     """
     :param crn_list:
     List of crn codes to search
-    :param list_2d:
-    List of all classes in 3d organized format
+    :param valid_courses_list_2d:
+    List of all classes in 2d organized format
     :return:
     Return a list of class object with matching crn
     """
     class_objects_list = []
     temp_crn_list = crn_list.copy()  # Always copy lists when applying functions like .remove() which is done here below
 
-    for course_sublist in list_2d:
+    for course_sublist in valid_courses_list_2d:
         if len(temp_crn_list) > 0:
             for class_object in course_sublist:
                 if class_object.crn in temp_crn_list:

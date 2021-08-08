@@ -74,15 +74,12 @@ def __compute_all_combinations(list_3d, valid_courses_list_2d):
     all_combos = list(itertools.product(*list_3d))
 
     for combo in all_combos:
-        possible_valid_crn_combo = list(itertools.chain(*combo))
-        if __is_valid_crn_options(possible_valid_crn_combo, valid_courses_list_2d):
-            # Verify the class was pulled originally and deemed valid
+        possible_valid_crn_combo = list(itertools.chain(*combo))  # Merge 4D list ->
+        # Each 4th dimension lists a course sublist of a max combo option
+        pulled_class_from_possible = __find_from_crn_list(possible_valid_crn_combo, valid_courses_list_2d)
 
-            pulled_class_from_possible = __find_from_crn_list(possible_valid_crn_combo, valid_courses_list_2d)
-            if TermSchedule(pulled_class_from_possible).is_time_valid():
-                # Verify time validation with TermSchedule
-                verified_combos.append(possible_valid_crn_combo)
-        # Merge 4D list -> Each 4th dimension lists a course sublist of a max combo option
+        if TermSchedule(pulled_class_from_possible).is_time_valid():  # Verify time validation with TermSchedule
+            verified_combos.append(possible_valid_crn_combo)
     return verified_combos
 
 

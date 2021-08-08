@@ -1,6 +1,8 @@
 # MODULE IS ONLY FOR DEV TESTING ON A LOCAL MACHINE
 
-# import time  # USED FOR main.py TESTING
+import time  # USED FOR main.py TESTING
+import json  # USED FOR main.py TESTING
+from FullProcess.MaxScheduleGeneration import generate  # USED FOR main.py TESTING
 
 from enabledOptimizers import ENABLED_OPTIMIZER_OBJECT_LIST
 from FullProcess.GeneralProcessing import get_clean_courses_list, generate_png_and_txt
@@ -86,9 +88,16 @@ def test_display_from_crn(crn_codes):
 
 if __name__ == '__main__':
     pass
-    # start = time.time()
+    start = time.time()
 
     # test_optimize_max("3", ["inperson", "dayoff, friday"])
     # test_generate_public_max_template("Daniel", ["Math1010u", "math1850u", "engr1015u", "comm1050u", "phy1010u"])
 
-    # print(f"Completed in {round(time.time() - start, 2)} sec")
+    max_schedules = generate(get_clean_courses_list("".join(["Math1010u", "math1850u", "engr1015u"])))
+
+    print(f"Completed in {round(time.time() - start, 2)} sec")
+
+    with open("yeet1.json", "w") as write_file:
+        json.dump(max_schedules, write_file, indent=4)
+
+    print(f"Completed + write in {round(time.time() - start, 2)} sec")

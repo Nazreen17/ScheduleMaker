@@ -1,6 +1,6 @@
 # MODULE IS ONLY FOR DEV TESTING ON A LOCAL MACHINE
 
-import time
+# import time  # USED FOR main.py TESTING
 
 from enabledOptimizers import ENABLED_OPTIMIZER_OBJECT_LIST
 from FullProcess.GeneralProcessing import get_clean_courses_list, generate_png_and_txt
@@ -9,10 +9,6 @@ from FullProcess.CallMaxTemplateGeneration import generate_and_update_db_private
 from FullProcess.CallOptimizers import request_optimizer
 from FullProcess.GeneralProcessing import make_term_schedule_from_crn_no_overhead
 from FullProcess.CallCourseRequester import add_course_requests_via_list, drop_course_requests_via_list
-
-# TEST
-from MaxSchedule.MaxScheduleGeneration import generate
-import json
 
 
 def test_user_course_request(course_inputs):
@@ -89,14 +85,10 @@ def test_display_from_crn(crn_codes):
 
 
 if __name__ == '__main__':
-    start = time.time()
+    pass
+    # start = time.time()
 
     # test_optimize_max("3", ["inperson", "dayoff, friday"])
     # test_generate_public_max_template("Daniel", ["Math1010u", "math1850u", "engr1015u", "comm1050u", "phy1010u"])
 
-    max_schedules = generate(get_clean_courses_list("".join(["Math1010u", "math1850u", "engr1015u"])))
-
-    with open("v1.json", "w") as write_file:
-        json.dump(max_schedules, write_file)
-
-    print(f"Completed in {round(time.time() - start, 2)} sec")
+    # print(f"Completed in {round(time.time() - start, 2)} sec")

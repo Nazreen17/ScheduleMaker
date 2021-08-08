@@ -1,7 +1,7 @@
 from COREDB.MaxTemplatePrivateUpdate import update_private_max_template
 from COREDB.MaxTemplatePublicUpdate import update_public_max_template
 from COREDB.MaxTemplatePublicPull import get_public_id_from_private_course_manifest
-from MaxSchedule.MaxScheduleGeneration import generate
+from FullProcess.MaxScheduleGeneration import generate
 
 
 def generate_and_update_db_private_template(course_object_list, discord_user_id):

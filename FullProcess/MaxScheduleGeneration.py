@@ -25,14 +25,8 @@ def generate(course_obj_list):
     # Second dimension element = single course list of all its options
     # Third dimension element = a single option of the parent course
 
-    # 3) Compute all combinations of options through conversion of all CRN code based options to class objects,
-    # is_time_valid() processing also takes place here
+    # 3) Compute all combinations of options through conversion of all CRN code based options to class objects
     main_schedules_list = __compute_all_combinations(list_3d, valid_courses_list_2d)
-
-    """
-    # 4) Convert all objects to CRN codes to easier printing
-    main_schedules_list = __crn_clean_up(main_schedules_list)  # converting MaxSchedule to a clear list of CRN codes
-    """
 
     return main_schedules_list
 

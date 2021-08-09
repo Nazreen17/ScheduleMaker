@@ -6,7 +6,7 @@ from FullProcess.MaxScheduleGeneration import generate  # USED FOR main.py TESTI
 
 from enabledOptimizers import ENABLED_OPTIMIZER_OBJECT_LIST
 from FullProcess.GeneralProcessing import get_clean_courses_list, generate_png_and_txt
-from FullProcess.CallMaxTemplateGeneration import generate_and_update_db_private_template, \
+from FullProcess.CallMaxTemplateProcessing import generate_and_update_db_private_template, \
     generate_and_update_db_public_template
 from FullProcess.CallOptimizers import request_optimizer
 from FullProcess.GeneralProcessing import make_term_schedule_from_crn_no_overhead
@@ -86,18 +86,15 @@ def test_display_from_crn(crn_codes):
     generate_png_and_txt(single_term_schedule=single_term_schedule, result_txt_header_str=result_txt)
 
 
-if __name__ == '__main__':
-    pass
-    start = time.time()
+    # start = time.time()
 
     # test_optimize_max("3", ["inperson", "dayoff, friday"])
     # test_generate_public_max_template("Daniel", ["Math1010u", "math1850u", "engr1015u", "comm1050u", "phy1010u"])
 
-    max_schedules = generate(get_clean_courses_list("".join(["Math1010u", "math1850u", "engr1015u"])))
+    # max_schedules = generate(get_clean_courses_list("".join(["Math1010u", "math1850u", "engr1015u"])))
+    # print(f"Completed in {round(time.time() - start, 2)} sec")
 
-    print(f"Completed in {round(time.time() - start, 2)} sec")
+    # with open("yeet1.json", "w") as write_file:
+    #     json.dump(max_schedules, write_file, indent=4)
 
-    with open("yeet1.json", "w") as write_file:
-        json.dump(max_schedules, write_file, indent=4)
-
-    print(f"Completed + write in {round(time.time() - start, 2)} sec")
+    # print(f"Completed + write in {round(time.time() - start, 2)} sec")

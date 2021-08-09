@@ -1,6 +1,4 @@
-from COREClassStructure.CourseClassStructure import ACourse
 from COREDB.RequestCourseUpdate import add_course_request, remove_request
-from COREDB.RequestCoursePull import read_all_course_request_as_list
 
 
 def add_course_requests_via_list(courses_list):

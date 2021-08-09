@@ -1,5 +1,8 @@
 import itertools
+import os
+from multiprocessing import Process, Lock, Manager
 
+from constants import MAX_COURSE_COMBOS, SINGLE_PROCESS_COMBOS
 from COREClassStructure.TermScheduleStructure import TermSchedule
 from COREDB.ClassPull import pull_class_object_list_via
 
@@ -70,17 +73,56 @@ def __compute_all_combinations(list_3d, valid_courses_list_2d):
     List of all classes in 2D organized format
     :return:
     """
-    verified_combos = []
-    all_combos = list(itertools.product(*list_3d))
+    all_combos = list(itertools.product(*list_3d))  # Generate all combos
 
+    processes = []  # Multi process list
+    cpu_core_count = os.cpu_count()  # Number of CPUs on the machine
+    lock = Lock()  # Lock to prevent race condition
+
+    with Manager() as manager:
+        verified_combos = manager.list()
+
+        if len(all_combos) > MAX_COURSE_COMBOS:
+            raise ValueError
+        else:
+            process_count = len(all_combos) // SINGLE_PROCESS_COMBOS
+            process_count += 1 if len(all_combos) % SINGLE_PROCESS_COMBOS != 0 else 0
+
+            for i in range(process_count):
+                if i < process_count - 1:  # Not the last process
+                    new_process = Process(target=__single_process_validation,
+                                          args=(lock,
+                                                all_combos[i * SINGLE_PROCESS_COMBOS:(i + 1) * SINGLE_PROCESS_COMBOS],
+                                                verified_combos, valid_courses_list_2d))
+                else:  # Last process
+                    new_process = Process(target=__single_process_validation,
+                                          args=(lock, all_combos[i * SINGLE_PROCESS_COMBOS:], verified_combos,
+                                                valid_courses_list_2d))
+                processes.append(new_process)
+
+        if len(processes) > cpu_core_count:
+            print(f"\tWARNING! Processes created: {process_count} | CPU core count: {cpu_core_count}")
+
+        for process in processes:  # Start all processes
+            process.start()
+
+        for process in processes:  # Wait for all processes to finish
+            process.join()
+
+        return list(verified_combos)
+
+
+def __single_process_validation(lock, all_combos, verified_combos, valid_courses_list_2d):
     for combo in all_combos:
         possible_valid_crn_combo = list(itertools.chain(*combo))  # Merge 4D list ->
         # Each 4th dimension lists a course sublist of a max combo option
+
         pulled_class_from_possible = __find_from_crn_list(possible_valid_crn_combo, valid_courses_list_2d)
 
         if TermSchedule(pulled_class_from_possible).is_time_valid():  # Verify time validation with TermSchedule
-            verified_combos.append(possible_valid_crn_combo)
-    return verified_combos
+            lock.acquire()  # Lock non local all_combos_array
+            verified_combos.append(possible_valid_crn_combo)  # Add the completed schedule
+            lock.release()  # Unlock non local all_combos_array
 
 
 def __is_valid_crn_options(crn_list, valid_courses_list_2d):

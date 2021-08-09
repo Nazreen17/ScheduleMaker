@@ -84,21 +84,22 @@ def __compute_all_combinations(list_3d, valid_courses_list_2d):
 
         if len(all_combos) > MAX_COURSE_COMBOS:
             raise ValueError
-        else:
-            process_count = len(all_combos) // SINGLE_PROCESS_COMBOS
-            process_count += 1 if len(all_combos) % SINGLE_PROCESS_COMBOS != 0 else 0
 
-            for i in range(process_count):
-                if i < process_count - 1:  # Not the last process
-                    new_process = Process(target=__single_process_validation,
-                                          args=(lock,
-                                                all_combos[i * SINGLE_PROCESS_COMBOS:(i + 1) * SINGLE_PROCESS_COMBOS],
-                                                verified_combos, valid_courses_list_2d))
-                else:  # Last process
-                    new_process = Process(target=__single_process_validation,
-                                          args=(lock, all_combos[i * SINGLE_PROCESS_COMBOS:], verified_combos,
-                                                valid_courses_list_2d))
-                processes.append(new_process)
+        process_count = len(all_combos) // SINGLE_PROCESS_COMBOS
+        process_count += 1 if len(all_combos) % SINGLE_PROCESS_COMBOS != 0 else 0
+
+        for i in range(process_count):
+            if i < process_count - 1:  # Not the last process
+                new_process = Process(target=__single_process_validation,
+                                      args=(lock,
+                                            all_combos[i * SINGLE_PROCESS_COMBOS:(i + 1) * SINGLE_PROCESS_COMBOS],
+                                            verified_combos, valid_courses_list_2d))
+            else:  # Last process
+                new_process = Process(target=__single_process_validation,
+                                      args=(lock, all_combos[i * SINGLE_PROCESS_COMBOS:], verified_combos,
+                                            valid_courses_list_2d))
+
+            processes.append(new_process)
 
         if len(processes) > cpu_core_count:
             print(f"\tWARNING! Processes created: {process_count} | CPU core count: {cpu_core_count}")

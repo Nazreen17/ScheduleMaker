@@ -155,4 +155,6 @@ async def display_from_crn(ctx, *crn_codes):
         await ctx.reply(file=discord.File(file, "result.txt"), mention_author=True)
 
 
-client.run(CLIENT_TOKEN)
+if __name__ == "__main__":
+    # Must run under if __name__ == "__main__": in order to use multi-processing for max template generation
+    client.run(CLIENT_TOKEN)

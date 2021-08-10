@@ -32,10 +32,12 @@ def generate_and_update_db_private_template(course_object_list, discord_user_id)
 def pull_private_details_str(discord_id):
     details_list = pull_private_details_raw(discord_id)
 
-    return_str = (f"ID: {details_list[0][0]}\n"
-                  f"Description: {details_list[0][1]}\n"
-                  f"Course Manifest: {', '.join(json.loads(details_list[0][2]))}\n"
-                  f"Updated: {details_list[0][3].strftime('%Y/%m/%d %H:%M:%S')}\n\n")
+    if len(details_list) > 0:
+        return_str = (f"User ID: {details_list[0][0]}\n"
+                      f"Course Manifest: {', '.join(json.loads(details_list[0][1]))}\n"
+                      f"Updated: {details_list[0][2].strftime('%Y/%m/%d %H:%M:%S')}\n\n")
+    else:
+        return_str = "No Public Template details found"
     return return_str
 
 
@@ -55,4 +57,7 @@ def pull_public_details_str(id_num=None):
                        f"Description: {detail[1]}\n"
                        f"Course Manifest: {', '.join(json.loads(detail[2]))}\n"
                        f"Updated: {detail[3].strftime('%Y/%m/%d %H:%M:%S')}\n\n")
+
+    return_str += "" if len(return_str) > 0 else "No Public Template details found"
+
     return return_str

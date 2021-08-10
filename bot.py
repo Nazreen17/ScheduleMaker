@@ -14,7 +14,8 @@ from FullProcess.CallMaxTemplateProcessing import generate_and_update_db_private
     generate_and_update_db_public_template, pull_public_details_str, pull_private_details_str
 from FullProcess.CallOptimizers import request_optimizer
 from FullProcess.GeneralProcessing import make_term_schedule_from_crn_no_overhead
-from FullProcess.CallCourseRequester import add_course_requests_via_list, drop_course_requests_via_list
+from FullProcess.CallCourseRequester import add_course_requests_via_list, drop_course_requests_via_list, \
+    pull_course_requests_as_str
 
 # CLIENT_TOKEN = STR Discord dev bot token
 
@@ -28,7 +29,7 @@ async def on_ready():
     await client.change_presence(activity=discord.Game(f"{PREFIX}help"))  # Bot activity status
 
 
-@client.command(aliases=["goodbye"])
+@client.command(aliases=["shutdown", "goodbye"])
 @commands.is_owner()
 async def dev_shutdown_bot(ctx):  # "ctx" is required to be called in all commands
     await ctx.reply(f"```Shutdown: {client.user.name} @ {datetime.now()} UTC```", mention_author=True)
@@ -43,7 +44,7 @@ async def ping(ctx):
 
 
 @client.command(aliases=["request"])
-async def user_course_request(ctx, *course_inputs):
+async def add_course_requests(ctx, *course_inputs):
     course_object_list = get_clean_courses_list("".join(course_inputs))
 
     try:
@@ -53,9 +54,15 @@ async def user_course_request(ctx, *course_inputs):
         raise e
 
 
-@client.command(aliases=["drop"])
+@client.command(aliases=["vrequest", "viewrequest", "vrequests", "viewrequests"])
+async def view_all_course_requests(ctx):
+    printing_str = pull_course_requests_as_str()
+    await ctx.reply(printing_str, mention_author=False)
+
+
+@client.command(aliases=["droprequest", "droprequests"])
 @commands.is_owner()
-async def dev_drop_course_request(ctx, *course_inputs):
+async def drop_course_requests(ctx, *course_inputs):
     course_object_list = get_clean_courses_list("".join(course_inputs))
 
     try:
@@ -79,20 +86,20 @@ async def generate_private_max_template(ctx, *course_inputs):
                         mention_author=False)
 
 
-@client.command(aliases=["private"])
+@client.command(aliases=["vpersonal", "viewpersonal"])
 async def view_private_templates(ctx):
     printing_str = pull_private_details_str(ctx.message.author.id)
     await ctx.reply(printing_str, mention_author=False)
 
 
-@client.command(aliases=["vprivate", "viewprivate", "view_private"])
+@client.command(aliases=["vprivate", "viewprivate"])
 @commands.is_owner()
 async def dev_view_private_templates(ctx, user_id):
     printing_str = pull_private_details_str(user_id)
     await ctx.reply(printing_str, mention_author=False)
 
 
-@client.command(aliases=["wpublic", "writepublic", "write_public"])
+@client.command(aliases=["wpublic", "writepublic"])
 @commands.is_owner()
 async def dev_generate_public_max_template(ctx, description, *course_inputs):
     course_object_list = get_clean_courses_list("".join(course_inputs))
@@ -104,13 +111,13 @@ async def dev_generate_public_max_template(ctx, description, *course_inputs):
         raise e
 
 
-@client.command(aliases=["templates", "public"])
+@client.command(aliases=["templates", "public", "vpublic", "viewpublic"])
 async def view_public_templates(ctx, public_template_id=None):
     printing_str = pull_public_details_str(public_template_id)
     await ctx.reply(printing_str, mention_author=False)
 
 
-@client.command(aliases=["optimizers"])
+@client.command(aliases=["optimizers", "voptimizers", "viewoptimizers"])
 async def show_all_optimizers(ctx):
     optimizer_text = ""
     for optimizer in ENABLED_OPTIMIZER_OBJECT_LIST:

@@ -2,7 +2,7 @@ import json
 
 from COREDB.MaxTemplatePrivateUpdate import update_private_max_template
 from COREDB.MaxTemplatePrivatePull import pull_private_details_raw
-from COREDB.MaxTemplatePublicUpdate import update_public_max_template
+from COREDB.MaxTemplatePublicUpdate import update_public_max_template, drop_public_max_template
 from COREDB.MaxTemplatePublicPull import get_public_id_from_private_course_manifest, \
     pull_public_details_raw
 from FullProcess.MaxScheduleGeneration import generate
@@ -14,6 +14,9 @@ def generate_and_update_db_private_template(course_object_list, discord_user_id)
     :param discord_user_id:
     :return:
     """
+    if len(course_object_list) == 0:
+        raise ValueError("Missing course values")
+
     course_raw_str_list = []
     for course in course_object_list:
         course_raw_str_list.append(course.get_raw_str())
@@ -26,7 +29,7 @@ def generate_and_update_db_private_template(course_object_list, discord_user_id)
         if len(max_schedules) > 0:
             update_private_max_template(max_schedule=max_schedules, discord_user_id=discord_user_id)
     else:
-        raise RuntimeError
+        raise ValueError(f"A public template with the same course manifest exists!\nPlease use id = {public_id_num}")
 
 
 def pull_private_details_str(discord_id):
@@ -49,6 +52,9 @@ def generate_and_update_db_public_template(course_object_list, description=None)
 
 
 def pull_public_details_str(id_num=None):
+    if id_num is None:
+        raise ValueError("Missing id num value")
+
     details_list = pull_public_details_raw(id_num)
 
     return_str = ""
@@ -61,3 +67,11 @@ def pull_public_details_str(id_num=None):
     return_str += "" if len(return_str) > 0 else "No Public Template details found"
 
     return return_str
+
+
+def drop_public_templates(id_nums):
+    if len(id_nums) == 0:
+        raise ValueError("Missing id num values")
+
+    for id_num in id_nums:
+        drop_public_max_template(id_num)

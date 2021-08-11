@@ -18,7 +18,7 @@ def draw_png_schedule(schedule_obj):
     global COLUMN_SIZE, ROW_SIZE, HEADER_FONT, WEEKDAYS
 
     if not isinstance(schedule_obj, TermSchedule):
-        raise TypeError
+        raise TypeError(schedule_obj)
 
     img = Image.new("RGB", (COLUMN_SIZE * 8, ROW_SIZE * 14), color="white")
     d = ImageDraw.Draw(img)

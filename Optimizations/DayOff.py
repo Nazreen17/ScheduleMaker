@@ -34,14 +34,14 @@ class DayOff(DualShiftOptimizer):
                     if 0 <= int(day_off) <= 6:
                         return int(day_off)
                     else:
-                        raise ValueError
+                        raise ValueError(day_off)
 
         elif isinstance(day_off, int) and 0 <= day_off <= 6:
             # This is mainly for testing cases, since bot will use str inputs mainly
             return day_off
 
         else:
-            raise ValueError
+            raise TypeError(day_off)
 
     def compare_for_best(self, best, current):
         """

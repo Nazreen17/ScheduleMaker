@@ -32,7 +32,7 @@ def get_clean_courses_list(course_inputs):
             new_course_obj = ACourse(combined=possible_course)  # Validation done far in backend at ACourse
             all_courses_list.append(new_course_obj)
         except Exception as e:
-            print(e)
+            raise e
 
     return all_courses_list
 

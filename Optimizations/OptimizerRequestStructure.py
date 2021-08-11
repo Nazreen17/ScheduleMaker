@@ -2,7 +2,6 @@ from enabledOptimizers import ENABLED_OPTIMIZER_OBJECT_LIST
 from COREDB.ClassPull import pull_class_object_list_via
 from COREDB.MaxTemplatePrivatePull import pull_private_max_schedule_crn_2d_list
 from COREDB.MaxTemplatePublicPull import pull_public_max_schedule_crn_2d_list
-from COREClassStructure.TermScheduleStructure import TermSchedule
 
 from Optimizations.DayOff import DayOff
 from Optimizations.EarlyEnd import EarlyEnd
@@ -23,7 +22,7 @@ class OptimizerRequest:
         str -> Represents if the user wants to use their personal saved template or a public template via an id
         :param user_discord_id:
         :param max_schedule:
-        2D list -> CRN code based max schedule or AClass based max schedule (Occurs in multi linear optimizer processing)
+        2D list -> CRN code based max schedule or AClass based max schedule (Occurs in linear multi optimizer process)
         """
         self._optimizer_name = optimizer_name  # str
         self._extra_values = extra_values  # extra values
@@ -95,7 +94,7 @@ class OptimizerRequest:
         elif template_id.isdigit():  # User requests to use public template
             return pull_public_max_schedule_crn_2d_list(template_id)
         else:
-            raise ValueError
+            raise ValueError(template_id)
 
     @staticmethod
     def __convert_crn_2d_to_class_obj_2d(max_schedules):
@@ -173,7 +172,7 @@ class OptimizerRequest:
         elif self._optimizer_name == Online().name.lower():
             return Online(schedule_list=self._max_schedule)
         else:
-            raise ValueError
+            raise ValueError(self._optimizer_name)
 
     def __str__(self):
         return (f"--- OptimizerRequest Object ---\n"

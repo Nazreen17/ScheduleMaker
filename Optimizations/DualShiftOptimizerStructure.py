@@ -46,7 +46,7 @@ class DualShiftOptimizer(ABC):
         if isinstance(term_schedule, TermSchedule):
             self._ties.append(term_schedule)
         else:
-            raise TypeError
+            raise TypeError(term_schedule)
 
     @ties.setter
     def ties(self, ties):

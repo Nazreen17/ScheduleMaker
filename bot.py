@@ -11,7 +11,7 @@ from enabledOptimizers import ENABLED_OPTIMIZER_OBJECT_LIST
 from DiscordBotStuff.BotConstants import PREFIX, DEV_IDS
 from FullProcess.GeneralProcessing import get_clean_courses_list, generate_png_and_txt
 from FullProcess.CallMaxTemplateProcessing import generate_and_update_db_private_template, \
-    generate_and_update_db_public_template, pull_public_details_str, pull_private_details_str
+    generate_and_update_db_public_template, pull_public_details_str, pull_private_details_str, drop_public_templates
 from FullProcess.CallOptimizers import request_optimizer
 from FullProcess.GeneralProcessing import make_term_schedule_from_crn_no_overhead
 from FullProcess.CallCourseRequester import add_course_requests_via_list, drop_course_requests_via_list, \
@@ -50,6 +50,12 @@ async def add_course_requests(ctx, *course_inputs):
     try:
         add_course_requests_via_list(courses_list=course_object_list)
         await ctx.reply(f"Successfully submitted course update request(s)", mention_author=False)
+    except ValueError as e:
+        await ctx.reply(f"ValueError! > {e}", mention_author=False)
+    except TypeError as e:
+        await ctx.reply(f"TypeError! > {e}", mention_author=False)
+    except RuntimeError as e:
+        await ctx.reply(f"RuntimeError! > {e}", mention_author=False)
     except Exception as e:
         raise e
 
@@ -65,25 +71,26 @@ async def view_all_course_requests(ctx):
 async def drop_course_requests(ctx, *course_inputs):
     course_object_list = get_clean_courses_list("".join(course_inputs))
 
-    try:
-        drop_course_requests_via_list(courses_list=course_object_list)
-        await ctx.reply(f"Successfully removed course update request(s)", mention_author=False)
-    except Exception as e:
-        raise e
+    drop_course_requests_via_list(courses_list=course_object_list)
+    await ctx.reply(f"Successfully removed course update request(s)", mention_author=False)
 
 
 @client.command(aliases=["personal"])
 async def generate_private_max_template(ctx, *course_inputs):
     course_object_list = get_clean_courses_list("".join(course_inputs))
 
-    generate_and_update = generate_and_update_db_private_template(course_object_list=course_object_list,
-                                                                  discord_user_id=ctx.message.author.id)
-
-    if generate_and_update:
+    try:
+        generate_and_update_db_private_template(course_object_list=course_object_list,
+                                                discord_user_id=ctx.message.author.id)
         await ctx.reply(f"Successfully generated your personal template", mention_author=False)
-    else:
-        await ctx.reply("ERROR! A public template with the same course manifest exists!\nPlease use `id = {call}`",
-                        mention_author=False)
+    except ValueError as e:
+        await ctx.reply(f"ValueError! > {e}", mention_author=False)
+    except TypeError as e:
+        await ctx.reply(f"TypeError! > {e}", mention_author=False)
+    except RuntimeError as e:
+        await ctx.reply(f"RuntimeError! > {e}", mention_author=False)
+    except Exception as e:
+        raise e
 
 
 @client.command(aliases=["vpersonal", "viewpersonal"])
@@ -107,6 +114,12 @@ async def dev_generate_public_max_template(ctx, description, *course_inputs):
     try:
         generate_and_update_db_public_template(course_object_list=course_object_list, description=description)
         await ctx.reply(f"Successfully generated public template", mention_author=False)
+    except ValueError as e:
+        await ctx.reply(f"ValueError! > {e}", mention_author=False)
+    except TypeError as e:
+        await ctx.reply(f"TypeError! > {e}", mention_author=False)
+    except RuntimeError as e:
+        await ctx.reply(f"RuntimeError! > {e}", mention_author=False)
     except Exception as e:
         raise e
 
@@ -115,6 +128,22 @@ async def dev_generate_public_max_template(ctx, description, *course_inputs):
 async def view_public_templates(ctx, public_template_id=None):
     printing_str = pull_public_details_str(public_template_id)
     await ctx.reply(printing_str, mention_author=False)
+
+
+@client.command(aliases=["droppublic", "droppublics"])
+@commands.is_owner()
+async def dev_drop_public_template(ctx, *id_nums):
+    try:
+        drop_public_templates(id_nums)
+        await ctx.reply(f"Successfully dropped public template {list(id_nums)}", mention_author=False)
+    except ValueError as e:
+        await ctx.reply(f"ValueError! > {e}", mention_author=False)
+    except TypeError as e:
+        await ctx.reply(f"TypeError! > {e}", mention_author=False)
+    except RuntimeError as e:
+        await ctx.reply(f"RuntimeError! > {e}", mention_author=False)
+    except Exception as e:
+        raise e
 
 
 @client.command(aliases=["optimizers", "voptimizers", "viewoptimizers"])

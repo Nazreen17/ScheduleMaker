@@ -83,7 +83,7 @@ def __compute_all_combinations(list_3d, valid_courses_list_2d):
         verified_combos = manager.list()
 
         if len(all_combos) > MAX_COURSE_COMBOS:
-            raise ValueError
+            raise RuntimeError(f"Surpassed MAX_COURSE_COMBOS = {MAX_COURSE_COMBOS} <  {len(all_combos)}")
 
         process_count = len(all_combos) // SINGLE_PROCESS_COMBOS
         process_count += 1 if len(all_combos) % SINGLE_PROCESS_COMBOS != 0 else 0

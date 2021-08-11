@@ -11,7 +11,8 @@ def request_optimizer(template_id, request_list, user_discord_id=None):
     :param user_discord_id:
     """
     if len(request_list) > MAX_OPTIMIZATIONS_PER_REQUEST:
-        raise ValueError
+        raise RuntimeError(f"Surpassed MAX_OPTIMIZATIONS_PER_REQUEST = {MAX_OPTIMIZATIONS_PER_REQUEST}"
+                           f" < {len(request_list)}")
 
     last_optimizer_obj = None
 

@@ -9,7 +9,8 @@ from datetime import datetime
 from redacted import CLIENT_TOKEN
 from enabledOptimizers import ENABLED_OPTIMIZER_OBJECT_LIST
 from DiscordBotStuff.BotConstants import PREFIX, DEV_IDS
-from FullProcess.GeneralProcessing import get_clean_courses_list, generate_png_and_txt
+from FullProcess.GeneralProcessing import get_clean_courses_list, generate_png_and_txt, \
+    raise_value_error_for_unknown_course_on_db
 from FullProcess.CallMaxTemplateProcessing import generate_and_update_db_private_template, \
     generate_and_update_db_public_template, pull_public_details_str, pull_private_details_str, drop_public_templates
 from FullProcess.CallOptimizers import request_optimizer
@@ -80,6 +81,8 @@ async def generate_private_max_template(ctx, *course_inputs):
     course_object_list = get_clean_courses_list("".join(course_inputs))
 
     try:
+        raise_value_error_for_unknown_course_on_db(course_object_list)
+
         generate_and_update_db_private_template(course_object_list=course_object_list,
                                                 discord_user_id=ctx.message.author.id)
         await ctx.reply(f"Successfully generated your personal template", mention_author=False)
@@ -112,6 +115,8 @@ async def dev_generate_public_max_template(ctx, description, *course_inputs):
     course_object_list = get_clean_courses_list("".join(course_inputs))
 
     try:
+        raise_value_error_for_unknown_course_on_db(course_object_list)
+
         generate_and_update_db_public_template(course_object_list=course_object_list, description=description)
         await ctx.reply(f"Successfully generated public template", mention_author=False)
     except ValueError as e:

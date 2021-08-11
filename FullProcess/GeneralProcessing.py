@@ -1,6 +1,6 @@
 from COREClassStructure.CourseClassStructure import ACourse
 from COREClassStructure.TermScheduleStructure import TermSchedule
-from COREDB.ClassPull import pull_class_object_list_via
+from COREDB.ClassPull import pull_class_object_list_via, classes_from_course_count
 from DiscordBotStuff.PNGMaker.Pillow import draw_png_schedule
 
 
@@ -55,3 +55,18 @@ def generate_png_and_txt(single_term_schedule, result_txt_header_str=None):
     # Generate results.txt
     with open("DiscordBotStuff/result.txt", "w") as file:
         file.write(header + single_term_schedule.get_raw_str())
+
+
+def raise_value_error_for_unknown_course_on_db(course_objects_list):
+    """
+    Void function, raises a ValueError for an unknown course not listed on the DB
+    :param course_objects_list:
+    List -> List of ACourse objects
+    """
+    for course_object in course_objects_list:
+        if not isinstance(course_object, ACourse):
+            raise TypeError(course_object)
+
+        if classes_from_course_count(course_object) <= 0:
+            raise ValueError(f"Unknown Course: '{course_object.get_raw_str()}'\n"
+                             f"Please send a course update request if needed")

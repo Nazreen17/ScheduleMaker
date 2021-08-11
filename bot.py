@@ -51,11 +51,11 @@ async def add_course_requests(ctx, *course_inputs):
         add_course_requests_via_list(courses_list=course_object_list)
         await ctx.reply(f"Successfully submitted course update request(s)", mention_author=False)
     except ValueError as e:
-        await ctx.reply(f"ValueError! > {e}", mention_author=False)
+        await ctx.reply(f"ValueError -> {e}", mention_author=False)
     except TypeError as e:
-        await ctx.reply(f"TypeError! > {e}", mention_author=False)
+        await ctx.reply(f"TypeError -> {e}", mention_author=False)
     except RuntimeError as e:
-        await ctx.reply(f"RuntimeError! > {e}", mention_author=False)
+        await ctx.reply(f"RuntimeError -> {e}", mention_author=False)
     except Exception as e:
         raise e
 
@@ -84,11 +84,11 @@ async def generate_private_max_template(ctx, *course_inputs):
                                                 discord_user_id=ctx.message.author.id)
         await ctx.reply(f"Successfully generated your personal template", mention_author=False)
     except ValueError as e:
-        await ctx.reply(f"ValueError! > {e}", mention_author=False)
+        await ctx.reply(f"ValueError -> {e}", mention_author=False)
     except TypeError as e:
-        await ctx.reply(f"TypeError! > {e}", mention_author=False)
+        await ctx.reply(f"TypeError -> {e}", mention_author=False)
     except RuntimeError as e:
-        await ctx.reply(f"RuntimeError! > {e}", mention_author=False)
+        await ctx.reply(f"RuntimeError -> {e}", mention_author=False)
     except Exception as e:
         raise e
 
@@ -115,11 +115,11 @@ async def dev_generate_public_max_template(ctx, description, *course_inputs):
         generate_and_update_db_public_template(course_object_list=course_object_list, description=description)
         await ctx.reply(f"Successfully generated public template", mention_author=False)
     except ValueError as e:
-        await ctx.reply(f"ValueError! > {e}", mention_author=False)
+        await ctx.reply(f"ValueError -> {e}", mention_author=False)
     except TypeError as e:
-        await ctx.reply(f"TypeError! > {e}", mention_author=False)
+        await ctx.reply(f"TypeError -> {e}", mention_author=False)
     except RuntimeError as e:
-        await ctx.reply(f"RuntimeError! > {e}", mention_author=False)
+        await ctx.reply(f"RuntimeError -> {e}", mention_author=False)
     except Exception as e:
         raise e
 
@@ -137,11 +137,11 @@ async def dev_drop_public_template(ctx, *id_nums):
         drop_public_templates(id_nums)
         await ctx.reply(f"Successfully dropped public template {list(id_nums)}", mention_author=False)
     except ValueError as e:
-        await ctx.reply(f"ValueError! > {e}", mention_author=False)
+        await ctx.reply(f"ValueError -> {e}", mention_author=False)
     except TypeError as e:
-        await ctx.reply(f"TypeError! > {e}", mention_author=False)
+        await ctx.reply(f"TypeError -> {e}", mention_author=False)
     except RuntimeError as e:
-        await ctx.reply(f"RuntimeError! > {e}", mention_author=False)
+        await ctx.reply(f"RuntimeError -> {e}", mention_author=False)
     except Exception as e:
         raise e
 

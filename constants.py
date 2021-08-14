@@ -11,3 +11,6 @@ CLASS_INSTRUCTION_IN_PERSON_KEYS = ["In-class"]
 # RGB Colour codes used for Pillow PNG schedule generation
 RGB_ONLINE_BLUE = (157, 162, 233)
 RGB_IN_PERSON_PEACH = (255, 223, 182)
+
+# Public User Documentation - Google Doc
+PUBLIC_USER_DOCUMENTATION_LINK = "https://docs.google.com/document/d/1zgVHCSHJoIqeGINdOmOBZsoW-tphYWR38JG_btiSBpA"

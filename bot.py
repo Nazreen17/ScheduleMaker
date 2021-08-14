@@ -2,13 +2,12 @@
 
 # discord.py Documentation: https://discordpy.readthedocs.io/en/stable/
 import os
-
 import discord
 from discord.ext import commands
 from datetime import datetime
 
 from redacted import CLIENT_TOKEN
-
+from constants import PUBLIC_USER_DOCUMENTATION_LINK
 from DiscordBotStuff.BotConstants import PREFIX, DEV_IDS
 
 
@@ -20,9 +19,12 @@ class CustomHelpCommand(commands.MinimalHelpCommand):
         super().__init__()
 
     async def send_bot_help(self, mapping):
-        for cog in mapping:
-            await self.get_destination().send(f"{cog.qualified_name}: {[command.name for command in mapping[cog]]}")
+        await self.get_destination().send(f"**PSA: Don't click risky links**\n"
+                                          f"{PUBLIC_USER_DOCUMENTATION_LINK}")
 
+    # Using default discord.ext.commands.MinimalHelpCommand
+
+    """
     async def send_cog_help(self, cog):
         await self.get_destination().send(f"{cog.qualified_name}: {[command.name for command in cog.get_commands()]}")
 
@@ -32,10 +34,10 @@ class CustomHelpCommand(commands.MinimalHelpCommand):
 
     async def send_command_help(self, command):
         await self.get_destination().send(command.name)
+    """
 
 
-# client = commands.Bot(command_prefix=PREFIX, owner_ids=DEV_IDS, help_command=CustomHelpCommand())
-client = commands.Bot(command_prefix=PREFIX, owner_ids=DEV_IDS, help_command=commands.MinimalHelpCommand())
+client = commands.Bot(command_prefix=PREFIX, owner_ids=DEV_IDS, help_command=CustomHelpCommand())
 
 
 @client.event

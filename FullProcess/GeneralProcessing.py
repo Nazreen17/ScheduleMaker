@@ -7,7 +7,8 @@ from DiscordBotStuff.PNGMaker.Pillow import draw_png_schedule
 def get_clean_courses_list(course_inputs):
     """
     :param course_inputs:
-    STR Course inputs or a single Course input Example: "Math1010U, %! MATH 1010 U" -> all auto corrected here
+    STR Course inputs or a single Course input
+    Example: "Math1010U, %! MATH 1850 U" -> Returns [ACourse("MATH1010U"), ACourse("MATH1850U")]
     :return:
     A list of Course objects
     """
@@ -19,19 +20,27 @@ def get_clean_courses_list(course_inputs):
 
     course_str_list = []
     i = 1
-    while len(course_inputs) > 1:
-        if course_inputs[i] == "u" and course_inputs[i - 1].isdigit():  # Isolate the end of a uid to split by
-            course_str_list.append(course_inputs[:i + 1])  # Find and save course substring into list (+1 for 'u')
-            course_inputs = course_inputs[i + 1:]  # Again, +1 for the 'u'
-            i = 1  # Reset the iterator (since we removed the front end course, gotta start from beginning again)
-        else:
-            i += 1  # No uid ending 'u' found, increase the character shift iterator by 1 to check next character
+    while len(course_inputs) > 1 and i < len(course_inputs):
+        try:
+            if course_inputs[i] == "u" and course_inputs[i - 1].isdigit():  # Isolate the end of a uid to split by
+
+                course_str_list.append(course_inputs[:i + 1])  # Find and save course substring into list (+1 for 'u')
+
+                course_inputs = course_inputs[i + 1:]  # Again, +1 for the 'u'
+                i = 1  # Reset the iterator (since we removed the front end course, gotta start from beginning again)
+
+            else:
+                i += 1  # No uid ending 'u' found, increase the character shift iterator by 1 to check next character
+
+        except Exception as e:  # Course not format valid
+            raise e
 
     for possible_course in course_str_list:
         try:
             new_course_obj = ACourse(combined=possible_course)  # Validation done far in backend at ACourse
             all_courses_list.append(new_course_obj)
-        except Exception as e:
+
+        except Exception as e:  # Course not format valid
             raise e
 
     return all_courses_list

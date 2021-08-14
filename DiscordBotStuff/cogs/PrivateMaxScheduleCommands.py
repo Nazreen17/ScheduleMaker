@@ -9,14 +9,15 @@ class PrivateMaxScheduleCog(commands.Cog):
 
     @commands.command(aliases=["personal"])
     async def generate_private_max_template(self, ctx, *course_inputs):
-        course_object_list = get_clean_courses_list("".join(course_inputs))
-
         try:
+            course_object_list = get_clean_courses_list("".join(course_inputs))
             raise_value_error_for_unknown_course_on_db(course_object_list)
 
             generate_and_update_db_private_template(course_object_list=course_object_list,
                                                     discord_user_id=ctx.message.author.id)
+
             await ctx.reply(f"Successfully generated your personal template", mention_author=False)
+
         except ValueError as e:
             await ctx.reply(f"ValueError -> {e}", mention_author=False)
         except TypeError as e:

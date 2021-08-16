@@ -30,8 +30,18 @@ class PublicMaxScheduleCog(commands.Cog):
 
     @commands.command(aliases=["templates", "public", "vpublic", "viewpublic"])
     async def view_public_templates(self, ctx, public_template_id=None):
-        printing_str = pull_public_details_str(public_template_id)
-        await ctx.reply(printing_str, mention_author=False)
+        try:
+            printing_str = pull_public_details_str(public_template_id)
+            await ctx.reply(printing_str, mention_author=False)
+
+        except ValueError as e:
+            await ctx.reply(f"ValueError -> {e}", mention_author=False)
+        except TypeError as e:
+            await ctx.reply(f"TypeError -> {e}", mention_author=False)
+        except RuntimeError as e:
+            await ctx.reply(f"RuntimeError -> {e}", mention_author=False)
+        except Exception as e:
+            raise e
 
     @commands.command(aliases=["droppublic", "droppublics"])
     @commands.is_owner()

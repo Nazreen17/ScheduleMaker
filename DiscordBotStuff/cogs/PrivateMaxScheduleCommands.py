@@ -34,7 +34,9 @@ class PrivateMaxScheduleCog(commands.Cog):
 
     @commands.command(aliases=["vprivate", "viewprivate"])
     @commands.is_owner()
-    async def dev_view_private_templates(self, ctx, user_id):
+    async def dev_view_private_templates(self, ctx, user_id=None):
+        user_id = ctx.message.author.id if user_id is None else user_id
+
         printing_str = pull_private_details_str(user_id)
         await ctx.reply(printing_str, mention_author=False)
 

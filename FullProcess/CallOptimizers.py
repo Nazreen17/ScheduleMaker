@@ -1,5 +1,5 @@
 from constants import MAX_OPTIMIZATIONS_PER_REQUEST
-from FullProcess.GeneralProcessing import generate_png_and_txt
+from FullProcess.CallPngAndTextGenerate import generate_png_and_txt
 from Optimizations.OptimizerRequestStructure import OptimizerRequest
 
 

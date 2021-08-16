@@ -2,7 +2,7 @@ from discord.ext import commands
 
 from FullProcess.CallCourseRequester import add_course_requests_via_list, drop_course_requests_via_list, \
     pull_course_requests_as_str
-from FullProcess.GeneralProcessing import get_clean_courses_list
+from FullProcess.CallGeneralProcesses import get_clean_courses_list
 
 
 class CourseRequestCog(commands.Cog):

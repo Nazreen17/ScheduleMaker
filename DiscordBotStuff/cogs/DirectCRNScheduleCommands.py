@@ -1,8 +1,8 @@
 import discord
 from discord.ext import commands
 
-from FullProcess.GeneralProcessing import generate_png_and_txt
-from FullProcess.GeneralProcessing import make_term_schedule_from_crn_no_overhead
+from FullProcess.CallPngAndTextGenerate import generate_png_and_txt
+from FullProcess.CallGeneralProcesses import make_term_schedule_from_crn_no_overhead
 
 
 class DirectCRNScheduleCog(commands.Cog):

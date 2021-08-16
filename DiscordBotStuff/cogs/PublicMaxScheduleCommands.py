@@ -1,6 +1,6 @@
 from discord.ext import commands
 
-from FullProcess.GeneralProcessing import get_clean_courses_list, raise_value_error_for_unknown_course_on_db
+from FullProcess.CallGeneralProcesses import get_clean_courses_list, raise_value_error_for_unknown_course_on_db
 from FullProcess.CallMaxTemplateProcessing import generate_and_update_db_public_template, pull_public_details_str, \
     drop_public_templates
 

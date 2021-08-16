@@ -2,7 +2,7 @@ from discord.ext import commands
 
 from FullProcess.CallMaxTemplateProcessing import generate_and_update_db_private_template, \
     pull_private_details_str
-from FullProcess.GeneralProcessing import get_clean_courses_list, raise_value_error_for_unknown_course_on_db
+from FullProcess.CallGeneralProcesses import get_clean_courses_list, raise_value_error_for_unknown_course_on_db
 
 
 class PrivateMaxScheduleCog(commands.Cog):

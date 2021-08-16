@@ -1,7 +1,7 @@
 from PIL import Image, ImageDraw, ImageFont
 
 from COREClassStructure.TermScheduleStructure import TermSchedule
-from constants import CLASS_INSTRUCTION_IN_PERSON_KEYS, RGB_ONLINE_BLUE, RGB_IN_PERSON_PEACH
+from constants import CLASS_INSTRUCTION_IN_PERSON_KEYS, RGB_ONLINE_BLUE, RGB_IN_PERSON_PEACH, SCHEDULE_PNG_FILENAME
 
 COLUMN_SIZE = 200
 ROW_SIZE = 80
@@ -38,7 +38,7 @@ def draw_png_schedule(schedule_obj):
             colour = __get_block_colour_from_instruction_type_str(class_obj.instruction)
             __draw_class(img=img, class_obj=class_obj, block_colour=colour)
 
-    img.save('DiscordBotStuff/PNGMaker/schedule.png')
+    img.save(f"DiscordBotStuff/PNGMaker/{SCHEDULE_PNG_FILENAME}")
 
 
 def __get_block_colour_from_instruction_type_str(instruction):

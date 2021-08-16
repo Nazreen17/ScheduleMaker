@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 
+from constants import SCHEDULE_PNG_FILENAME, RESULT_TXT_FILENAME
 from enabledOptimizers import ENABLED_OPTIMIZER_OBJECT_LIST
 from FullProcess.CallPngAndTextGenerate import generate_png_and_txt
 from FullProcess.CallOptimizers import get_requested_optimizer
@@ -36,12 +37,12 @@ class OptimizationCog(commands.Cog):
             generate_png_and_txt(single_term_schedule=optimal_term_schedule, result_txt_header_str=result_txt)
 
             # Discord send schedule.png
-            with open("DiscordBotStuff/PNGMaker/schedule.png", "rb") as png_file:
-                await ctx.message.author.send(file=discord.File(png_file, "schedule.png"))
+            with open(f"DiscordBotStuff/PNGMaker/{SCHEDULE_PNG_FILENAME}", "rb") as png_file:
+                await ctx.message.author.send(file=discord.File(png_file, SCHEDULE_PNG_FILENAME))
 
             # Discord send results.txt
-            with open("DiscordBotStuff/result.txt", "rb") as file:
-                await ctx.message.author.send(file=discord.File(file, "result.txt"))
+            with open(f"DiscordBotStuff/{RESULT_TXT_FILENAME}", "rb") as file:
+                await ctx.message.author.send(file=discord.File(file, RESULT_TXT_FILENAME))
 
         except ValueError as e:
             await ctx.reply(f"ValueError -> {e}", mention_author=False)

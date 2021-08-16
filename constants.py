@@ -1,3 +1,6 @@
+# General Program Status Constants
+CURRENT_TERM = "Fall 2021"
+
 # Dev set program limits
 MAX_OPTIMIZATIONS_PER_REQUEST = 3
 MAX_COURSE_UPDATE_REQUESTS = 25

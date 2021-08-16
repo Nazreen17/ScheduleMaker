@@ -7,11 +7,13 @@ from discord.ext import commands
 from datetime import datetime
 
 from redacted import CLIENT_TOKEN
-from constants import PUBLIC_USER_DOCUMENTATION_LINK
+from constants import PUBLIC_USER_DOCUMENTATION_LINK, CURRENT_TERM
 from DiscordBotStuff.BotConstants import PREFIX, DEV_IDS
 
-
 # CLIENT_TOKEN = STR Discord dev bot token
+
+
+start_datetime = datetime.now()
 
 
 class CustomHelpCommand(commands.MinimalHelpCommand):
@@ -19,7 +21,7 @@ class CustomHelpCommand(commands.MinimalHelpCommand):
         super().__init__()
 
     async def send_bot_help(self, mapping):
-        await self.get_destination().send(f"**PSA: Don't click risky links**\n"
+        await self.get_destination().send(f"__**Public User Documentation**__\n"
                                           f"{PUBLIC_USER_DOCUMENTATION_LINK}")
 
     # Using default discord.ext.commands.MinimalHelpCommand
@@ -42,22 +44,42 @@ client = commands.Bot(command_prefix=PREFIX, owner_ids=DEV_IDS, help_command=Cus
 
 @client.event
 async def on_ready():
-    print(f"Logged in: {client.user.name} ({client.user.id}) @ {datetime.now()} UTC")
+    global start_datetime
+    start_datetime = datetime.now()
+
+    print(f"Logged in: {client.user.name} ({client.user.id}) @ {start_datetime}")
     await client.change_presence(activity=discord.Game(f"{PREFIX}help"))  # Bot activity status
 
 
 @client.command(aliases=["shutdown", "goodbye"])
 @commands.is_owner()
 async def dev_shutdown_bot(ctx):  # "ctx" is required to be called in all commands
-    await ctx.reply(f"```Shutdown: {client.user.name} @ {datetime.now()} UTC```", mention_author=True)
-    print(f"Shutdown called via command by: {ctx.message.author.name} ({ctx.message.author.id})")
+    shutdown_datetime = datetime.now()
+
+    print_str = (f"Shutdown: {client.user.name} ({client.user.id}) @ {shutdown_datetime}\n"
+                 f"Uptime = {shutdown_datetime - start_datetime}")
+
+    await ctx.reply(f"```{print_str}```", mention_author=True)
     await client.close()
-    print(f"Shutdown: {client.user.name} ({client.user.id}) @ {datetime.now()} UTC")
+
+    print(print_str)
+
+
+@client.command()
+async def about(ctx):
+    global start_datetime
+
+    await ctx.reply(f"__**Program Status**__\n"
+                    f"Current Term = `{CURRENT_TERM}`\n"
+                    f"Prefix = `{PREFIX}`\n"
+                    f"Uptime Start = `{start_datetime}`\n"
+                    f"Uptime = `{datetime.now() - start_datetime}`\n"
+                    f"Ping = `{round(client.latency * 1000)} ms`", mention_author=False)
 
 
 @client.command()
 async def ping(ctx):
-    await ctx.reply(f"Kinda useless stuff, but ok... {round(client.latency * 1000)} ms", mention_author=False)
+    await ctx.reply(f"Kinda useless stuff, but ok... `{round(client.latency * 1000)} ms`", mention_author=False)
 
 
 if __name__ == "__main__":

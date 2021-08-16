@@ -29,11 +29,11 @@ class DirectCRNScheduleCog(commands.Cog):
 
             # Discord send schedule.png
             with open("DiscordBotStuff/PNGMaker/schedule.png", "rb") as png_file:
-                await ctx.reply(file=discord.File(png_file, "schedule.png"), mention_author=True)
+                await ctx.message.author.send(file=discord.File(png_file, "schedule.png"))
 
             # Discord send results.txt
             with open("DiscordBotStuff/result.txt", "rb") as file:
-                await ctx.reply(file=discord.File(file, "result.txt"), mention_author=True)
+                await ctx.message.author.send(file=discord.File(file, "result.txt"))
 
         except ValueError as e:
             await ctx.reply(f"ValueError -> {e}", mention_author=False)

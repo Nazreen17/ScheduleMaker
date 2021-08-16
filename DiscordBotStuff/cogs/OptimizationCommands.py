@@ -24,22 +24,33 @@ class OptimizationCog(commands.Cog):
         # Complete command: $ <PublicTemplateId / 'personal'> "<SINGLE_REQUEST#1>" "<SINGLE_REQUEST#1>"
         # <SINGLE_REQUEST#1> format: <OptimizerName>, <ExtraValue#n>, <ExtraValue#n+1>
 
-        last_optimizer_obj = get_requested_optimizer(template_id=template_id,
-                                                     request_list=list(optimization_requests),
-                                                     user_discord_id=ctx.message.author.id)
+        try:
+            last_optimizer_obj = get_requested_optimizer(template_id=template_id,
+                                                         request_list=list(optimization_requests),
+                                                         user_discord_id=ctx.message.author.id)
 
-        optimal_term_schedule = last_optimizer_obj.ties[0]  # Set first optimizer TermSchedule as the best optimal
-        result_txt = f"OPTIMIZER.result =\n{last_optimizer_obj.result}\n"  # Set the result text for results.txt
+            optimal_term_schedule = last_optimizer_obj.ties[0]  # Set first optimizer TermSchedule as the best optimal
+            result_txt = f"OPTIMIZER.result =\n{last_optimizer_obj.result}\n"  # Set the result text for results.txt
 
-        generate_png_and_txt(single_term_schedule=optimal_term_schedule, result_txt_header_str=result_txt)
+            # Generate a png and txt
+            generate_png_and_txt(single_term_schedule=optimal_term_schedule, result_txt_header_str=result_txt)
 
-        # Discord send schedule.png
-        with open("DiscordBotStuff/PNGMaker/schedule.png", "rb") as png_file:
-            await ctx.reply(file=discord.File(png_file, "schedule.png"), mention_author=True)
+            # Discord send schedule.png
+            with open("DiscordBotStuff/PNGMaker/schedule.png", "rb") as png_file:
+                await ctx.message.author.send(file=discord.File(png_file, "schedule.png"))
 
-        # Discord send results.txt
-        with open("DiscordBotStuff/result.txt", "rb") as file:
-            await ctx.reply(file=discord.File(file, "result.txt"), mention_author=True)
+            # Discord send results.txt
+            with open("DiscordBotStuff/result.txt", "rb") as file:
+                await ctx.message.author.send(file=discord.File(file, "result.txt"))
+
+        except ValueError as e:
+            await ctx.reply(f"ValueError -> {e}", mention_author=False)
+        except TypeError as e:
+            await ctx.reply(f"TypeError -> {e}", mention_author=False)
+        except RuntimeError as e:
+            await ctx.reply(f"RuntimeError -> {e}", mention_author=False)
+        except Exception as e:
+            raise e
 
 
 def setup(client):

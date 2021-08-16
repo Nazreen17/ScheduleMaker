@@ -90,11 +90,24 @@ class OptimizerRequest:
         """
         # User requests to use personal template
         if template_id == "personal" and user_discord_id is not None:  # ensure validity
-            return pull_private_max_schedule_crn_2d_list(user_discord_id)
+            private_max_schedule = pull_private_max_schedule_crn_2d_list(user_discord_id)
+
+            if len(private_max_schedule) == 0:
+                raise ValueError("Bad template_id")
+
+            else:
+                return private_max_schedule
+
         elif template_id.isdigit():  # User requests to use public template
-            return pull_public_max_schedule_crn_2d_list(template_id)
+            public_max_schedule = pull_public_max_schedule_crn_2d_list(template_id)
+
+            if len(public_max_schedule) == 0:
+                raise ValueError("Bad template_id")
+
+            else:
+                return public_max_schedule
         else:
-            raise ValueError(template_id)
+            raise ValueError("Bad template_id")
 
     @staticmethod
     def __convert_crn_2d_to_class_obj_2d(max_schedules):

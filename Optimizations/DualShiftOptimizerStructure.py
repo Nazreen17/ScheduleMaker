@@ -28,6 +28,9 @@ class DualShiftOptimizer(ABC):
         pass
 
     def __optimize(self):
+        if len(self._max_schedules) == 0:
+            raise ValueError("len(max_schedules) = 0")
+
         best = TermSchedule(self._max_schedules[0])  # Initialized first element as the best case
         self._ties.append(best)  # Initialize best into the ties
         for crn_list_i in range(1, len(self._max_schedules)):  # cycle all in schedule list

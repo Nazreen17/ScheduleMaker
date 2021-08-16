@@ -62,6 +62,8 @@ async def ping(ctx):
 
 if __name__ == "__main__":
     # Must run under if __name__ == "__main__": in order to use multi-processing for max template generation
+
+    # Add all cogs in the specified directory
     for filename in os.listdir("DiscordBotStuff/cogs"):
         if filename.endswith(".py"):
             client.load_extension(f"DiscordBotStuff.cogs.{filename[:-3]}")

@@ -2,7 +2,8 @@ import discord
 from discord.ext import commands
 
 from enabledOptimizers import ENABLED_OPTIMIZER_OBJECT_LIST
-from FullProcess.CallOptimizers import request_optimizer
+from FullProcess.CallPngAndTextGenerate import generate_png_and_txt
+from FullProcess.CallOptimizers import get_requested_optimizer
 
 
 class OptimizationCog(commands.Cog):
@@ -23,8 +24,14 @@ class OptimizationCog(commands.Cog):
         # Complete command: $ <PublicTemplateId / 'personal'> "<SINGLE_REQUEST#1>" "<SINGLE_REQUEST#1>"
         # <SINGLE_REQUEST#1> format: <OptimizerName>, <ExtraValue#n>, <ExtraValue#n+1>
 
-        request_optimizer(template_id=template_id, request_list=list(optimization_requests),
-                          user_discord_id=ctx.message.author.id)
+        last_optimizer_obj = get_requested_optimizer(template_id=template_id,
+                                                     request_list=list(optimization_requests),
+                                                     user_discord_id=ctx.message.author.id)
+
+        optimal_term_schedule = last_optimizer_obj.ties[0]  # Set first optimizer TermSchedule as the best optimal
+        result_txt = f"OPTIMIZER.result =\n{last_optimizer_obj.result}\n"  # Set the result text for results.txt
+
+        generate_png_and_txt(single_term_schedule=optimal_term_schedule, result_txt_header_str=result_txt)
 
         # Discord send schedule.png
         with open("DiscordBotStuff/PNGMaker/schedule.png", "rb") as png_file:

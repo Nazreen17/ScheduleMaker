@@ -1,9 +1,8 @@
 from constants import MAX_OPTIMIZATIONS_PER_REQUEST
-from FullProcess.CallPngAndTextGenerate import generate_png_and_txt
 from Optimizations.OptimizerRequestStructure import OptimizerRequest
 
 
-def request_optimizer(template_id, request_list, user_discord_id=None):
+def get_requested_optimizer(template_id, request_list, user_discord_id=None):
     """
     VOID function, generate new max_schedule
     :param template_id:
@@ -42,7 +41,9 @@ def request_optimizer(template_id, request_list, user_discord_id=None):
 
         last_optimizer_obj = request.build_request()
 
-    optimal_term_schedule = last_optimizer_obj.ties[0]
-    result_txt = f"OPTIMIZER.result =\n{last_optimizer_obj.result}\n"
+    """
+    optimal_term_schedule = last_optimizer_obj.ties[0]  # Set first optimizer TermSchedule as the best optimal
+    result_txt = f"OPTIMIZER.result =\n{last_optimizer_obj.result}\n"  # Set the result text for results.txt
+    """
 
-    generate_png_and_txt(single_term_schedule=optimal_term_schedule, result_txt_header_str=result_txt)
+    return last_optimizer_obj

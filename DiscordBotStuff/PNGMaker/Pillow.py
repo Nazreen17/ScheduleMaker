@@ -65,7 +65,9 @@ def __draw_class(img, class_obj, block_colour):
             y_1_cord = (((class_time[0].hour - 8) + class_time[0].minute / 60) + 1) * ROW_SIZE
             y_2_cord = (((class_time[1].hour - 8) + class_time[1].minute / 60) + 1) * ROW_SIZE
 
-            d.rectangle((x_1_cord, y_1_cord, x_2_cord, y_2_cord), fill=block_colour, outline="black", width=3)
+            outline_colour = "black" if class_obj.seats > 0 else "red"
+
+            d.rectangle((x_1_cord, y_1_cord, x_2_cord, y_2_cord), fill=block_colour, outline=outline_colour, width=3)
 
             text = str(class_obj.fac)[:7] + " " + str(class_obj.uid)[:7]
             d.text((x_1_cord + 10, y_1_cord + 5), text, font=BODY_FONT, fill="black")

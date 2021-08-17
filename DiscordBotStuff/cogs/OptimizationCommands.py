@@ -40,16 +40,16 @@ class OptimizationCog(commands.Cog):
                                  user_id=ctx.message.author.id)
 
             # Discord send schedule.png
-            path = get_cache_path(RESULT_TXT_FILENAME, ctx.message.author.id)
-            with open(get_cache_path(SCHEDULE_PNG_FILENAME, ctx.message.author.id), "rb") as png_file:
+            path1 = get_cache_path(SCHEDULE_PNG_FILENAME, ctx.message.author.id)
+            with open(path1, "rb") as png_file:
                 await ctx.message.author.send(file=discord.File(png_file, SCHEDULE_PNG_FILENAME))
-            remove_file_path(path)
+            remove_file_path(path1)
 
             # Discord send results.txt
-            path = get_cache_path(RESULT_TXT_FILENAME, ctx.message.author.id)
-            with open(path, "rb") as file:
+            path2 = get_cache_path(RESULT_TXT_FILENAME, ctx.message.author.id)
+            with open(path2, "rb") as file:
                 await ctx.message.author.send(file=discord.File(file, RESULT_TXT_FILENAME))
-            remove_file_path(path)
+            remove_file_path(path2)
 
         except ValueError as e:
             await ctx.reply(f"ValueError -> {e}", mention_author=False)

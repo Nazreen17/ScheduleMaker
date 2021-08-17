@@ -33,10 +33,9 @@ def draw_png_schedule(schedule_obj):
         d.text((10, ROW_SIZE * (row_i - 7)), text, font=HEADER_FONT, fill="black", align="left")
         # time off set >>>>>>>>>>>>>>>>>^ start at 8:00
 
-    if TermSchedule.is_time_valid:
-        for class_obj in schedule_obj.classes:
-            colour = __get_block_colour_from_instruction_type_str(class_obj.instruction)
-            __draw_class(img=img, class_obj=class_obj, block_colour=colour)
+    for class_obj in schedule_obj.classes:
+        colour = __get_block_colour_from_instruction_type_str(class_obj.instruction)
+        __draw_class(img=img, class_obj=class_obj, block_colour=colour)
 
     img.save(f"DiscordBotStuff/PNGMaker/{SCHEDULE_PNG_FILENAME}")
 

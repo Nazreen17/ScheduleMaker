@@ -13,9 +13,19 @@ class DirectCRNScheduleCog(commands.Cog):
         try:
             single_term_schedule = generate_term_schedule_from_crn_list(crn_codes)
 
+            warning_message = ""
+
             # Check for possible bad crn codes
             if len(single_term_schedule.classes) != len(crn_codes):
-                await ctx.reply("Warning! Some CRN codes specified could not be found", mention_author=False)
+                warning_message += f"WARNING! Could not find all originally specified CRN codes.\n"
+
+            # Check for possible time conflict
+            if not single_term_schedule.is_time_valid():
+                warning_message += "WARNING! Term Schedule time conflict detected.\n"
+
+            # Send possible error messages
+            if len(warning_message) > 0:
+                await ctx.message.author.send(warning_message)
 
             # Generate Result text
             found_crn_code_matches = []
@@ -23,7 +33,7 @@ class DirectCRNScheduleCog(commands.Cog):
                 found_crn_code_matches.append(str(class_object.crn))  # Cast as str to ensure .join works
 
             crn_codes_str = ", ".join(found_crn_code_matches)  # Join as a string
-            result_txt = f"Display Source CRNs =\n{crn_codes_str}\n"
+            result_txt = f"Display Source CRNs =\n{crn_codes_str}\n{warning_message}"
 
             # Generate a png and txt
             generate_png_and_txt(single_term_schedule=single_term_schedule, result_txt_header_str=result_txt)

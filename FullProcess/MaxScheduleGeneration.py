@@ -175,13 +175,3 @@ def __find_from_crn_list(crn_list, valid_courses_list_2d):
             return class_objects_list
 
     return class_objects_list
-
-
-def __crn_clean_up(main_schedules_list):
-    extracted_crn = []
-    for term_schedule_object in main_schedules_list:
-        crn_code_list = []
-        for class_object in term_schedule_object.classes:
-            crn_code_list.append(class_object.crn)
-        extracted_crn.append(crn_code_list)
-    return extracted_crn

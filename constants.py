@@ -9,6 +9,7 @@ MAX_COURSE_COMBOS = 5000000
 SINGLE_PROCESS_COMBOS = 500000
 
 # Result generation filenames
+CACHE_FILE_PATH = "Cache/"
 SCHEDULE_PNG_FILENAME = "schedule.png"
 RESULT_TXT_FILENAME = "result.txt"
 

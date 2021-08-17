@@ -2,6 +2,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 from COREClassStructure.TermScheduleStructure import TermSchedule
 from constants import CLASS_INSTRUCTION_IN_PERSON_KEYS, RGB_ONLINE_BLUE, RGB_IN_PERSON_PEACH, SCHEDULE_PNG_FILENAME
+from CacheFilePathManipulation import get_cache_path
 
 COLUMN_SIZE = 200
 ROW_SIZE = 80
@@ -10,10 +11,11 @@ BODY_FONT = ImageFont.truetype("DiscordBotStuff/PNGMaker/roboto-mono/RobotoMono-
 WEEKDAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
 
 
-def draw_png_schedule(schedule_obj):
+def draw_png_schedule(schedule_obj, user_id):
     """
     draws a .png image of a TermSchedule object
     :param schedule_obj:
+    :param user_id:
     """
     global COLUMN_SIZE, ROW_SIZE, HEADER_FONT, WEEKDAYS
 
@@ -37,7 +39,7 @@ def draw_png_schedule(schedule_obj):
         colour = __get_block_colour_from_instruction_type_str(class_obj.instruction)
         __draw_class(img=img, class_obj=class_obj, block_colour=colour)
 
-    img.save(f"DiscordBotStuff/PNGMaker/{SCHEDULE_PNG_FILENAME}")
+    img.save(get_cache_path(SCHEDULE_PNG_FILENAME, user_id))
 
 
 def __get_block_colour_from_instruction_type_str(instruction):

@@ -2,9 +2,11 @@ import discord
 from discord.ext import commands
 
 from constants import SCHEDULE_PNG_FILENAME, RESULT_TXT_FILENAME
+from CacheFilePathManipulation import get_cache_path
 from enabledOptimizers import ENABLED_OPTIMIZER_OBJECT_LIST
 from FullProcess.CallPngAndTextGenerate import generate_png_and_txt
 from FullProcess.CallOptimizers import get_requested_optimizer
+from CacheFilePathManipulation import remove_file_path
 
 
 class OptimizationCog(commands.Cog):
@@ -34,15 +36,20 @@ class OptimizationCog(commands.Cog):
             result_txt = f"OPTIMIZER.result =\n{last_optimizer_obj.result}\n"  # Set the result text for results.txt
 
             # Generate a png and txt
-            generate_png_and_txt(single_term_schedule=optimal_term_schedule, result_txt_header_str=result_txt)
+            generate_png_and_txt(single_term_schedule=optimal_term_schedule, result_txt_header_str=result_txt,
+                                 user_id=ctx.message.author.id)
 
             # Discord send schedule.png
-            with open(f"DiscordBotStuff/PNGMaker/{SCHEDULE_PNG_FILENAME}", "rb") as png_file:
+            path = get_cache_path(RESULT_TXT_FILENAME, ctx.message.author.id)
+            with open(get_cache_path(SCHEDULE_PNG_FILENAME, ctx.message.author.id), "rb") as png_file:
                 await ctx.message.author.send(file=discord.File(png_file, SCHEDULE_PNG_FILENAME))
+            remove_file_path(path)
 
             # Discord send results.txt
-            with open(f"DiscordBotStuff/{RESULT_TXT_FILENAME}", "rb") as file:
+            path = get_cache_path(RESULT_TXT_FILENAME, ctx.message.author.id)
+            with open(path, "rb") as file:
                 await ctx.message.author.send(file=discord.File(file, RESULT_TXT_FILENAME))
+            remove_file_path(path)
 
         except ValueError as e:
             await ctx.reply(f"ValueError -> {e}", mention_author=False)

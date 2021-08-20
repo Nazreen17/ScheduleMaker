@@ -1,6 +1,6 @@
 from constants import RESULT_TXT_FILENAME
 from CacheFilePathManipulation import get_cache_path
-from DiscordBotStuff.PNGMaker.Pillow import draw_png_schedule
+from FullProcess.PNGMaker.Pillow import draw_png_schedule
 
 
 def generate_png_and_txt(single_term_schedule, result_txt_header_str=None, user_id=None):

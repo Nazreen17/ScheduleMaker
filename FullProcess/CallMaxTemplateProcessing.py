@@ -56,9 +56,6 @@ def generate_and_update_db_public_template(course_object_list, description=None)
 
 
 def pull_public_details_str(id_num=None):
-    if id_num is None:
-        raise ValueError("Missing id num value")
-
     details_list = pull_public_details_raw(id_num)
 
     return_str = ""
@@ -78,4 +75,4 @@ def drop_public_templates(id_nums):
         raise ValueError("Missing id num values")
 
     for id_num in id_nums:
-        drop_public_max_template(id_num)
+        drop_public_max_template(int(id_num))

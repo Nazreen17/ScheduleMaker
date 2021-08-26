@@ -49,7 +49,7 @@ class PublicMaxScheduleCog(commands.Cog):
         try:
             drop_public_templates(id_nums)
 
-            await ctx.reply(f"Successfully dropped public template {list(id_nums)}", mention_author=False)
+            await ctx.reply(f"Successfully dropped public template(s) id = {', '.join(id_nums)}", mention_author=False)
 
         except ValueError as e:
             await ctx.reply(f"ValueError -> {e}", mention_author=False)

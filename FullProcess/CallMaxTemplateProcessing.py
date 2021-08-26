@@ -29,7 +29,7 @@ def generate_and_update_db_private_template(course_object_list, discord_user_id)
         if len(max_schedules) > 0:  # Successfully generated a max schedule
             update_private_max_template(max_schedule=max_schedules, discord_user_id=discord_user_id)
         else:    # Failed to generate any possible schedules
-            raise RuntimeError("Could not generate a max schedule with the given conditions")
+            raise RuntimeError("No schedule combos were generated with the given conditions")
     else:
         raise ValueError(f"A public template with the same course manifest exists!\nPlease use id = {public_id_num}")
 
@@ -52,7 +52,7 @@ def generate_and_update_db_public_template(course_object_list, description=None)
     if len(max_schedules) > 0:  # Successfully generated a max schedule
         update_public_max_template(max_schedule=max_schedules, description=description)
     else:  # Failed to generate any possible schedules
-        raise RuntimeError("Could not generate a max schedule with the given conditions")
+        raise RuntimeError("No schedule combos were generated with the given conditions")
 
 
 def pull_public_details_str(id_num=None):

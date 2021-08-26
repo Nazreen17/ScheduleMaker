@@ -23,7 +23,15 @@ class DirectCRNScheduleCog(commands.Cog):
 
             # Check for possible time conflict
             if not single_term_schedule.is_time_valid():
-                warning_message += "WARNING! Term Schedule time conflict detected.\n"
+                warning_message += "WARNING! Time conflict detected.\n"
+
+            # Check for link satisfaction
+            if not single_term_schedule.all_links_satisfied():
+                warning_message += "WARNING! Class links are unsatisfied.\n"
+
+            # Check for open seats
+            if not single_term_schedule.all_open_seats():
+                warning_message += "WARNING! Some classes may have no seats left.\n"
 
             # Send possible error messages
             if len(warning_message) > 0:

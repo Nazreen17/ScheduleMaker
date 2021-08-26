@@ -6,8 +6,8 @@ from CacheFilePathManipulation import get_cache_path
 
 COLUMN_SIZE = 200
 ROW_SIZE = 80
-HEADER_FONT = ImageFont.truetype("DiscordBotStuff/PNGMaker/roboto-mono/RobotoMono-Bold.ttf", 32)
-BODY_FONT = ImageFont.truetype("DiscordBotStuff/PNGMaker/roboto-mono/RobotoMono-Medium.ttf", 20)
+HEADER_FONT = ImageFont.truetype("FullProcess/PNGMaker/roboto-mono/RobotoMono-Bold.ttf", 32)
+BODY_FONT = ImageFont.truetype("FullProcess/PNGMaker/roboto-mono/RobotoMono-Medium.ttf", 20)
 WEEKDAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
 
 

@@ -3,7 +3,7 @@ from discord.ext import commands
 
 from constants import SCHEDULE_PNG_FILENAME, RESULT_TXT_FILENAME
 from CacheFilePathManipulation import get_cache_path
-from enabledOptimizers import ENABLED_OPTIMIZER_OBJECT_LIST
+from Optimizations.EnabledOptimizers import ENABLED_OPTIMIZER_OBJECT_LIST
 from FullProcess.CallPngAndTextGenerate import generate_png_and_txt
 from FullProcess.CallOptimizers import get_requested_optimizer
 from CacheFilePathManipulation import remove_file_path

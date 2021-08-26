@@ -1,5 +1,4 @@
 from Optimizations.DualShiftOptimizerStructure import DualShiftOptimizer
-from constants import CLASS_INSTRUCTION_IN_PERSON_KEYS
 
 
 class OpenSeats(DualShiftOptimizer):
@@ -12,7 +11,7 @@ class OpenSeats(DualShiftOptimizer):
 
     @property
     def description(self):
-        return "Maximize open seats"
+        return "Maximize open seat classes"
 
     @property
     def result(self):
@@ -40,7 +39,7 @@ class OpenSeats(DualShiftOptimizer):
         :param best:
         :param current:
         :return:
-        Return the TermSchedule object with the highest in person count, in the case of a tie maintain the current best
+        Return the TermSchedule object with the most open seats
         """
         best_in_person_count = self.__open_seat_count(best)
         current_in_person_count = self.__open_seat_count(current)

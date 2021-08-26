@@ -12,15 +12,20 @@ def generate(course_obj_list):
     :param course_obj_list:
     LIST of course objects
     :return:
-    Returns a list of CRN codes representing all possible schedule combinations with valid seats and time conflict free.
+    List -> CRN codes representing all possible schedule combinations with seats > 0 and time conflict free.
     """
-    valid_courses_list_2d = []
+    valid_courses_list_2d = []  # List to save all pulled classes of the requested course
 
     # 1) Pull all classes you consider valid into valid_courses_list_2d (No time conflict computation yet)
     for course_obj in course_obj_list:
-        valid_courses_list_2d.append(pull_class_object_list_via(fac=course_obj.fac, uid=course_obj.uid, seats=1))
+        pulled_course_classes = pull_class_object_list_via(fac=course_obj.fac, uid=course_obj.uid, seats=1)
         # WARNING! ONLY PULL CLASSES DEEMED VALID INTO valid_courses_list_2d!
         #  LESS OVERHEAD AND REQUIRED FOR MaxSchedule VALIDATION!
+
+        if len(pulled_course_classes) == 0:  # Ensure at least 1 class was pulled for each course
+            raise RuntimeError(f"Course \'{course_obj.get_raw_str()}\' pulled 0 classes")
+        else:
+            valid_courses_list_2d.append(pulled_course_classes)  # Add all pulled classes
 
     # 2) Compute all possible options based on links of lecture type classes
     list_3d = __compute_options(valid_courses_list_2d)

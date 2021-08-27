@@ -20,15 +20,16 @@ class __OptimizerExample(DualShiftOptimizer):
         return result
 
     @staticmethod
-    def __calculate_score(schedule_obj):
+    def __calculate_score(term_schedule_obj):
         """
         used in optimize
-        :param schedule_obj:
+        :param term_schedule_obj:
+        TermSchedule -> Calculate score of this TermSchedule
         :return:
         """
         example_score = 0
 
-        for class_obj in schedule_obj.classes:
+        for class_obj in term_schedule_obj.classes:
             pass
 
         return example_score

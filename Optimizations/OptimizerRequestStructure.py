@@ -180,16 +180,27 @@ class OptimizerRequest:
 
         if self._optimizer_name == EarlyEnd().name.lower():
             return EarlyEnd(schedule_list=self._max_schedule)
+
         elif self._optimizer_name == DayOff().name.lower():
-            return DayOff(schedule_list=self._max_schedule, day_off=self.extra_values[0])
+            try:
+                day_off = self.extra_values[0]
+            except IndexError:
+                raise ValueError(f"Missing DayOff secondary value")
+
+            return DayOff(schedule_list=self._max_schedule, day_off=day_off)
+
         elif self._optimizer_name == InPerson().name.lower():
             return InPerson(schedule_list=self._max_schedule)
+
         elif self._optimizer_name == Online().name.lower():
             return Online(schedule_list=self._max_schedule)
+
         elif self._optimizer_name == OpenSeats().name.lower():
             return OpenSeats(schedule_list=self._max_schedule)
+
         elif self._optimizer_name == Balanced().name.lower():
             return Balanced(schedule_list=self._max_schedule)
+
         else:
             raise ValueError(self._optimizer_name)
 

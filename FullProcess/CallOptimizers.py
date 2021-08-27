@@ -34,16 +34,13 @@ def get_requested_optimizer(template_id, request_list, user_discord_id=None):
 
         if i == 0:  # Single request
             request.single_request_build_max_schedule_from_self()
-        elif i == len(request_list) - 1:  # Currently running last operation of multi
-            request.max_schedule = last_optimizer_obj.ties
-        else:  # Multi (Not last of multi)
+
+        elif last_optimizer_obj is not None and len(last_optimizer_obj.ties) == 1:  # No more optimization possible
+            return last_optimizer_obj
+
+        else:  # Multi request
             request.max_schedule = last_optimizer_obj.ties
 
         last_optimizer_obj = request.build_request()
-
-    """
-    optimal_term_schedule = last_optimizer_obj.ties[0]  # Set first optimizer TermSchedule as the best optimal
-    result_txt = f"OPTIMIZER.result =\n{last_optimizer_obj.result}\n"  # Set the result text for results.txt
-    """
 
     return last_optimizer_obj

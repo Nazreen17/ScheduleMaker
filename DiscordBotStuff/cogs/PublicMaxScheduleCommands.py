@@ -26,6 +26,7 @@ class PublicMaxScheduleCog(commands.Cog):
         except RuntimeError as e:
             await ctx.reply(f"RuntimeError -> {e}", mention_author=False)
         except Exception as e:
+            await ctx.reply(f"Something went wrong", mention_author=False)
             raise e
 
     @commands.command(aliases=["templates", "public", "vpublic", "viewpublic"])
@@ -41,6 +42,7 @@ class PublicMaxScheduleCog(commands.Cog):
         except RuntimeError as e:
             await ctx.reply(f"RuntimeError -> {e}", mention_author=False)
         except Exception as e:
+            await ctx.reply(f"Something went wrong", mention_author=False)
             raise e
 
     @commands.command(aliases=["droppublic", "droppublics"])
@@ -58,6 +60,7 @@ class PublicMaxScheduleCog(commands.Cog):
         except RuntimeError as e:
             await ctx.reply(f"RuntimeError -> {e}", mention_author=False)
         except Exception as e:
+            await ctx.reply(f"Something went wrong", mention_author=False)
             raise e
 
 

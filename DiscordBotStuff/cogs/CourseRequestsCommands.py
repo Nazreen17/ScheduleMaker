@@ -22,6 +22,7 @@ class CourseRequestCog(commands.Cog):
         except RuntimeError as e:
             await ctx.reply(f"RuntimeError -> {e}", mention_author=False)
         except Exception as e:
+            await ctx.reply(f"Something went wrong", mention_author=False)
             raise e
 
     @commands.command(aliases=["vrequest", "viewrequest", "vrequests", "viewrequests"])
@@ -45,6 +46,7 @@ class CourseRequestCog(commands.Cog):
         except RuntimeError as e:
             await ctx.reply(f"RuntimeError -> {e}", mention_author=False)
         except Exception as e:
+            await ctx.reply(f"Something went wrong", mention_author=False)
             raise e
 
 

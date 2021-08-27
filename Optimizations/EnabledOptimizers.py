@@ -5,5 +5,5 @@ from Optimizations.InPersonNot import Online
 from Optimizations.OpenSeats import OpenSeats
 from Optimizations.Balanced import Balanced
 
-ENABLED_OPTIMIZER_OBJECT_LIST = [EarlyEnd(), DayOff(), InPerson(), Online(), OpenSeats(), Balanced()]
+ENABLED_OPTIMIZER_OBJECT_LIST = [Balanced(), EarlyEnd(), DayOff(), InPerson(), Online(), OpenSeats()]
 # ^^^ ALSO UPDATE: FullProcess/OptimizerRequestStructure.py -> OptimizerRequest.build_request()

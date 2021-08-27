@@ -32,20 +32,22 @@ class EarlyEnd(DualShiftOptimizer):
 
         for class_obj in term_schedule_obj.classes:
             for inner_tuple in class_obj.class_time:
-                # TODO ERROR!!!
-                #  class_obj is a list of class objects? I don't have time to fix... (too lazy)
-                #  More details will be made on an issue on GitHub.
                 if not isinstance(week[inner_tuple[1].weekday()], datetime) or \
                         week[inner_tuple[1].weekday()] < inner_tuple[1]:  # more recent in time
                     week[inner_tuple[1].weekday()] = inner_tuple[1]
+
         return week  # week list will have the latest class end times
 
     def compare_for_best(self, best, current):
         """
-        used in optimize
+        compare_for_best() is called by the super class's __optimize() method.
+        __optimize() compares the current and best case TermSchedule
         :param best:
+        TermSchedule -> The best TermSchedule so far
         :param current:
+        TermSchedule -> The current TermSchedule to compare to the best
         :return:
+        TermSchedule -> Return the best case TermSchedule object
         """
         best_week = self.__generate_week_list(best)
         current_week = self.__generate_week_list(current)

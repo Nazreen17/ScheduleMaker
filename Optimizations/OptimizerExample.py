@@ -47,6 +47,7 @@ class __OptimizerExample(DualShiftOptimizer):
         """
         best_case_score = self.__calculate_score(best)
         current_case_score = self.__calculate_score(current)
+        # HIGHER IS BETTER (IN THIS EXAMPLE CASE)
 
         if best_case_score == current_case_score:  # Tie of scores
             self.ties_add_from_term_schedule(current)  # Add the current TermSchedule as a tied case

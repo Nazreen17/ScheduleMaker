@@ -45,10 +45,14 @@ class DayOff(DualShiftOptimizer):
 
     def compare_for_best(self, best, current):
         """
-        used in optimize
+        compare_for_best() is called by the super class's __optimize() method.
+        __optimize() compares the current and best case TermSchedule
         :param best:
+        TermSchedule -> The best TermSchedule so far
         :param current:
+        TermSchedule -> The current TermSchedule to compare to the best
         :return:
+        TermSchedule -> Return the best case TermSchedule object
         """
         best_day = self.__get_day_off_list(best)
         current_day = self.__get_day_off_list(current)

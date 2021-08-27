@@ -37,14 +37,18 @@ class InPerson(DualShiftOptimizer):
 
     def compare_for_best(self, best, current):
         """
-        Higher in_person_count is better
+        compare_for_best() is called by the super class's __optimize() method.
+        __optimize() compares the current and best case TermSchedule
         :param best:
+        TermSchedule -> The best TermSchedule so far
         :param current:
+        TermSchedule -> The current TermSchedule to compare to the best
         :return:
-        Return the TermSchedule object with the highest in person count, in the case of a tie maintain the current best
+        TermSchedule -> Return the best case TermSchedule object
         """
         best_in_person_count = self.__count_in_person(best)
         current_in_person_count = self.__count_in_person(current)
+        # HIGHER IS BETTER
 
         if best_in_person_count == current_in_person_count:
             self.ties_add_from_term_schedule(current)

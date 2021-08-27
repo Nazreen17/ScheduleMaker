@@ -8,6 +8,7 @@ from Optimizations.EarlyEnd import EarlyEnd
 from Optimizations.InPerson import InPerson
 from Optimizations.InPersonNot import Online
 from Optimizations.OpenSeats import OpenSeats
+from Optimizations.Balanced import Balanced
 
 
 class OptimizerRequest:
@@ -187,6 +188,8 @@ class OptimizerRequest:
             return Online(schedule_list=self._max_schedule)
         elif self._optimizer_name == OpenSeats().name.lower():
             return OpenSeats(schedule_list=self._max_schedule)
+        elif self._optimizer_name == Balanced().name.lower():
+            return Balanced(schedule_list=self._max_schedule)
         else:
             raise ValueError(self._optimizer_name)
 

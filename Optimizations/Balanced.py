@@ -12,7 +12,7 @@ class Balanced(DualShiftOptimizer):
 
     @property
     def description(self):
-        return "Balanced number of hours of school a day"
+        return "Most balanced amount of time in class a day"
 
     @property
     def result(self):

@@ -33,10 +33,10 @@ class OptimizationCog(commands.Cog):
                                                          user_discord_id=ctx.message.author.id)
 
             optimal_term_schedule = last_optimizer_obj.ties[0]  # Set first optimizer TermSchedule as the best optimal
-            result_txt = f"OPTIMIZER.result =\n{last_optimizer_obj.result}\n"  # Set the result text for results.txt
+            result_text = self.__result_text(last_optimizer_obj)
 
             # Generate a png and txt
-            generate_png_and_txt(single_term_schedule=optimal_term_schedule, result_txt_header_str=result_txt,
+            generate_png_and_txt(single_term_schedule=optimal_term_schedule, result_txt_header_str=result_text,
                                  user_id=ctx.message.author.id)
 
             # Discord send schedule.png
@@ -60,6 +60,24 @@ class OptimizationCog(commands.Cog):
         except Exception as e:
             await ctx.reply(f"Something went wrong", mention_author=False)
             raise e
+
+    @staticmethod
+    def __result_text(last_optimizer_obj):
+        result_txt = ""
+
+        # Ties Count
+        result_txt += f"OPTIMIZER.result =\n{last_optimizer_obj.result}\n"  # Set the result text for results.txt
+
+        # Combine all Ties as CRN codes if there are less than or equal to 50
+        if len(last_optimizer_obj.ties) <= 50:
+            crn_code_str = ""
+
+            for term_schedule in last_optimizer_obj.ties:
+                crn_code_str += "\n" + (" ".join([str(class_obj.crn) for class_obj in term_schedule.classes]))
+
+            result_txt += f"\nTies as CRN Codes:{crn_code_str}"
+
+        return result_txt
 
 
 def setup(client):

@@ -11,7 +11,7 @@ BODY_FONT = ImageFont.truetype("FullProcess/PNGMaker/roboto-mono/RobotoMono-Medi
 WEEKDAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
 
 
-def draw_png_schedule(schedule_obj, user_id):
+def draw_png_schedule(schedule_obj, user_id=None):
     """
     draws a .png image of a TermSchedule object
     :param schedule_obj:

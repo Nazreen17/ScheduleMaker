@@ -4,10 +4,12 @@ import errno
 from constants import CACHE_FILE_PATH
 
 
-def get_cache_path(file_name, user_id):
+def get_cache_path(file_name, user_id=None):
     __make_sure_path_exists(CACHE_FILE_PATH)
 
     path, extension = os.path.splitext(file_name)
+
+    user_id = "" if user_id is None else user_id
 
     combined_path = f"{CACHE_FILE_PATH}{path}{user_id}{extension}"  # Combine paths
 

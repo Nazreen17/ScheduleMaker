@@ -1,10 +1,10 @@
 import discord
 from discord.ext import commands
 
-from constants import SCHEDULE_PNG_FILENAME, RESULT_TXT_FILENAME
+from constants import SCHEDULE_PNG_FILENAME, RESULT_TXT_FILENAME, CALENDAR_CVS_FILENAME
 from CacheFilePathManipulation import get_cache_path
 from Optimizations.EnabledOptimizers import ENABLED_OPTIMIZER_OBJECT_LIST
-from FullProcess.CallPngAndTextGenerate import generate_png_and_txt
+from FullProcess.CallPngTxtCvsGenerate import generate_triple_png_txt_cvs
 from FullProcess.CallOptimizers import get_requested_optimizer
 from CacheFilePathManipulation import remove_file_path
 
@@ -36,8 +36,8 @@ class OptimizationCog(commands.Cog):
             result_text = self.__result_text(last_optimizer_obj)
 
             # Generate a png and txt
-            generate_png_and_txt(single_term_schedule=optimal_term_schedule, result_txt_header_str=result_text,
-                                 user_id=ctx.message.author.id)
+            generate_triple_png_txt_cvs(single_term_schedule=optimal_term_schedule, result_txt_header_str=result_text,
+                                        user_id=ctx.message.author.id)
 
             # Discord send schedule.png
             path1 = get_cache_path(SCHEDULE_PNG_FILENAME, ctx.message.author.id)
@@ -50,6 +50,12 @@ class OptimizationCog(commands.Cog):
             with open(path2, "rb") as file:
                 await ctx.message.author.send(file=discord.File(file, RESULT_TXT_FILENAME))
             remove_file_path(path2)
+
+            # Discord send calendar.cvs
+            path3 = get_cache_path(CALENDAR_CVS_FILENAME, ctx.message.author.id)
+            with open(path3, "rb") as cvs_file:
+                await ctx.message.author.send(file=discord.File(cvs_file, CALENDAR_CVS_FILENAME))
+            remove_file_path(path3)
 
         except ValueError as e:
             await ctx.reply(f"ValueError -> {e}", mention_author=False)

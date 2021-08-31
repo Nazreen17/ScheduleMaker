@@ -28,6 +28,7 @@ class OptimizationCog(commands.Cog):
         # <SINGLE_REQUEST#1> format: <OptimizerName>, <ExtraValue#n>, <ExtraValue#n+1>
 
         try:
+            # Don't call clean() for optimization_requests since it uses ","
             last_optimizer_obj = get_requested_optimizer(template_id=template_id,
                                                          request_list=list(optimization_requests),
                                                          user_discord_id=ctx.message.author.id)

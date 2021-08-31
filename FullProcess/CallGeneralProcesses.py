@@ -5,16 +5,16 @@ from COREDB.ClassPull import classes_from_course_count
 def get_clean_courses_list(course_inputs):
     """
     :param course_inputs:
-    STR Course inputs or a single Course input
+    str -> Course inputs or a single Course input
     Example: "Math1010U, %! MATH 1850 U" -> Returns [ACourse("MATH1010U"), ACourse("MATH1850U")]
     :return:
-    A list of Course objects
+    list -> of ACourse objects
     """
     all_courses_list = []
 
+    # Clean up the string
     course_inputs = course_inputs.lower().replace(" ", "")  # Lower case and remove spaces
-    course_inputs = course_inputs.translate({ord(c): "" for c in "!@#$%^&*()[]{};:,./<>?\\|`~-=_+"})
-    # Remove all special characters
+    course_inputs = clean(course_inputs)
 
     course_str_list = []
     i = 1
@@ -48,7 +48,7 @@ def raise_value_error_for_unknown_course_on_db(course_objects_list):
     """
     Void function, raises a ValueError for an unknown course not listed on the DB
     :param course_objects_list:
-    List -> List of ACourse objects
+    list -> of ACourse objects
     """
     for course_object in course_objects_list:
         if not isinstance(course_object, ACourse):
@@ -57,3 +57,36 @@ def raise_value_error_for_unknown_course_on_db(course_objects_list):
         if classes_from_course_count(course_object) <= 0:
             raise ValueError(f"Unknown Course: '{course_object.get_raw_str()}'\n"
                              f"Please send a course update request if needed")
+
+
+def clean(to_clean):
+    """
+    Remove special characters from a str. Only keeps nums and alpha. int is preserved as int. Tuples are preserved as
+    tuples
+    :param to_clean:
+    str, int, tuple, list -> of the dirty to clean
+    :return:
+    str, int, tuple, list -> cleaned up version of the dirty input
+    """
+    if isinstance(to_clean, list):  # list
+        for i, dirty_string in enumerate(to_clean):
+            to_clean[i] = clean(dirty_string)  # Recursion call, since this function controls str as well
+
+        return to_clean
+
+    elif isinstance(to_clean, tuple):  # tuple
+        to_clean = list(to_clean)  # Cast as list for tuple
+
+        for i, dirty_string in enumerate(to_clean):
+            to_clean[i] = clean(dirty_string)  # Recursion call, since this function controls str as well
+
+        return tuple(to_clean)
+
+    elif isinstance(to_clean, str):  # str
+        return "".join(char for char in to_clean if char.isalnum())
+
+    elif isinstance(to_clean, int):  # int
+        return to_clean
+
+    else:  # TypeError
+        raise TypeError("Expected str type")

@@ -3,6 +3,7 @@ from discord.ext import commands
 
 from constants import SCHEDULE_PNG_FILENAME, RESULT_TXT_FILENAME, CALENDAR_CVS_FILENAME
 from CacheFilePathManipulation import get_cache_path
+from FullProcess.CallGeneralProcesses import clean
 from FullProcess.CallPngTxtCvsGenerate import generate_triple_png_txt_cvs
 from FullProcess.CallDirectScheduleFromCRNs import generate_term_schedule_from_crn_list
 from CacheFilePathManipulation import remove_file_path
@@ -13,6 +14,7 @@ class DirectCRNScheduleCog(commands.Cog):
     @commands.command(aliases=["display"])
     async def display_from_crn(self, ctx, *crn_codes):
         try:
+            crn_codes = clean(crn_codes)
             single_term_schedule = generate_term_schedule_from_crn_list(crn_codes)
 
             warning_message = ""

@@ -6,6 +6,7 @@ from CacheFilePathManipulation import get_cache_path
 from FullProcess.CallGeneralProcesses import clean
 from FullProcess.CallPngTxtCsvGenerate import generate_triple_png_txt_csv
 from FullProcess.CallDirectScheduleFromCRNs import generate_term_schedule_from_crn_list
+from FullProcess.CallResultTextGenerate import full_result_text
 from CacheFilePathManipulation import remove_file_path
 
 
@@ -17,35 +18,8 @@ class DirectCRNScheduleCog(commands.Cog):
             crn_codes = clean(crn_codes)
             single_term_schedule = generate_term_schedule_from_crn_list(crn_codes)
 
-            warning_message = ""
-
-            # Check for possible bad crn codes
-            if len(single_term_schedule.classes) != len(crn_codes):
-                warning_message += f"WARNING! Could not find all originally specified CRN codes.\n"
-
-            # Check for possible time conflict
-            if not single_term_schedule.is_time_valid():
-                warning_message += "WARNING! Time conflict detected.\n"
-
-            # Check for link satisfaction
-            if not single_term_schedule.all_links_satisfied():
-                warning_message += "WARNING! Class links are unsatisfied.\n"
-
-            # Check for open seats
-            if not single_term_schedule.all_open_seats():
-                warning_message += "WARNING! Some classes may have no seats left.\n"
-
-            # Send possible error messages
-            if len(warning_message) > 0:
-                await ctx.message.author.send(warning_message)
-
-            # Generate Result text
-            found_crn_code_matches = []
-            for class_object in single_term_schedule.classes:
-                found_crn_code_matches.append(str(class_object.crn))  # Cast as str to ensure .join works
-
-            crn_codes_str = ", ".join(found_crn_code_matches)  # Join as a string
-            result_txt = f"Display Source CRNs =\n{crn_codes_str}\n{warning_message}"
+            # Generate result text
+            result_txt = full_result_text(term_schedule=single_term_schedule, search_crn_codes=crn_codes)
 
             # Generate a png and txt
             generate_triple_png_txt_csv(single_term_schedule=single_term_schedule, result_txt_header_str=result_txt,

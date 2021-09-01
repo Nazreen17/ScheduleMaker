@@ -6,6 +6,7 @@ from CacheFilePathManipulation import get_cache_path
 from Optimizations.EnabledOptimizers import ENABLED_OPTIMIZER_OBJECT_LIST
 from FullProcess.CallPngTxtCsvGenerate import generate_triple_png_txt_csv
 from FullProcess.CallOptimizers import get_requested_optimizer
+from FullProcess.CallResultTextGenerate import full_result_text
 from CacheFilePathManipulation import remove_file_path
 
 
@@ -28,13 +29,13 @@ class OptimizationCog(commands.Cog):
         # <SINGLE_REQUEST#1> format: <OptimizerName>, <ExtraValue#n>, <ExtraValue#n+1>
 
         try:
-            # Don't call clean() for optimization_requests since it uses ","
+            # Don't call clean() for optimization_requests since it uses "," in the command
             last_optimizer_obj = get_requested_optimizer(template_id=template_id,
                                                          request_list=list(optimization_requests),
                                                          user_discord_id=ctx.message.author.id)
 
             optimal_term_schedule = last_optimizer_obj.ties[0]  # Set first optimizer TermSchedule as the best optimal
-            result_text = self.__result_text(last_optimizer_obj)
+            result_text = self.__result_text(last_optimizer_obj, optimal_term_schedule)
 
             # Generate a png and txt
             generate_triple_png_txt_csv(single_term_schedule=optimal_term_schedule, result_txt_header_str=result_text,
@@ -60,8 +61,7 @@ class OptimizationCog(commands.Cog):
 
         except ValueError as e:
             await ctx.reply(f"ValueError -> {e}", mention_author=False)
-        except TypeError as e:
-            await ctx.reply(f"TypeError -> {e}", mention_author=False)
+
         except RuntimeError as e:
             await ctx.reply(f"RuntimeError -> {e}", mention_author=False)
         except Exception as e:
@@ -69,20 +69,23 @@ class OptimizationCog(commands.Cog):
             raise e
 
     @staticmethod
-    def __result_text(last_optimizer_obj):
+    def __result_text(last_optimizer_obj, result_term_schedule):
         result_txt = ""
 
         # Ties Count
-        result_txt += f"OPTIMIZER.result =\n{last_optimizer_obj.result}\n"  # Set the result text for results.txt
+        result_txt += f"Optimizer Result Data:\n{last_optimizer_obj.result}\n\n"  # Set the result text for results.txt
+
+        # Generate result text
+        result_txt += full_result_text(term_schedule=result_term_schedule)
 
         # Combine all Ties as CRN codes if there are less than or equal to 50
-        if len(last_optimizer_obj.ties) <= 50:
-            crn_code_str = ""
+        crn_code_str = ""
+        max_show_results = 10
 
-            for term_schedule in last_optimizer_obj.ties:
-                crn_code_str += "\n" + (" ".join([str(class_obj.crn) for class_obj in term_schedule.classes]))
+        for i, term_schedule in enumerate(last_optimizer_obj.ties[:max_show_results]):
+            crn_code_str += f"\n{i + 1}) " + (", ".join([str(class_obj.crn) for class_obj in term_schedule.classes]))
 
-            result_txt += f"\nTies as CRN Codes:{crn_code_str}"
+        result_txt += f"\nTop {max_show_results} results:{crn_code_str}"
 
         return result_txt
 

@@ -1,12 +1,12 @@
 from constants import RESULT_TXT_FILENAME
 from CacheFilePathManipulation import get_cache_path
 from FullProcess.PNGMaker.CallPillow import draw_png_schedule
-from FullProcess.CVSManipulation import create_csv
+from FullProcess.CSVManipulation import create_csv
 
 
-def generate_triple_png_txt_cvs(single_term_schedule, result_txt_header_str=None, user_id=None):
+def generate_triple_png_txt_csv(single_term_schedule, result_txt_header_str=None, user_id=None):
     """
-    void -> Generate schedule.png, results.txt, calendar.cvs
+    void -> Generate schedule.png, results.txt, calendar.csv
     :param single_term_schedule:
     :param result_txt_header_str:
     :param user_id:
@@ -18,7 +18,7 @@ def generate_triple_png_txt_cvs(single_term_schedule, result_txt_header_str=None
     # generate results.txt
     write_results_txt(single_term_schedule, result_txt_header_str, user_id)
 
-    # generate calendar.cvs
+    # generate calendar.csv
     create_csv(single_term_schedule, user_id)
 
 

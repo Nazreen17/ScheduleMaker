@@ -1,5 +1,5 @@
 """
-Create a cvs file intended to be used as a calendar, generated from a TermSchedule object.
+Create a csv file intended to be used as a calendar, generated from a TermSchedule object.
 The calendar will avoid a specified exclusion times set by constants.py
 """
 
@@ -7,17 +7,17 @@ import csv
 from datetime import datetime, timedelta
 
 from COREClassStructure.TermScheduleStructure import TermSchedule
-from constants import CALENDAR_CVS_FILENAME, SEMESTER_EXCLUSION_TIMES, SEMESTER_START, SEMESTER_END
+from constants import CALENDAR_CSV_FILENAME, SEMESTER_EXCLUSION_TIMES, SEMESTER_START, SEMESTER_END
 from CacheFilePathManipulation import get_cache_path
 
 
 def create_csv(term_schedule, user_id=None):
     """
-    void -> create a calendar cvs file from a TermSchedule
+    void -> create a calendar csv file from a TermSchedule
     :param term_schedule:
-    TermSchedule -> schedule to convert into a cvs calendar
+    TermSchedule -> schedule to convert into a csv calendar
     :param user_id:
-    str or int -> identifies user for cvs file creation
+    str or int -> identifies user for csv file creation
     """
 
     # Ensure Object Type
@@ -33,22 +33,22 @@ def create_csv(term_schedule, user_id=None):
               "Description",
               "Location"]
 
-    # Generating cvs Row Data
-    row_data_2d = []  # final result must be a 2d list to prevent cvs writer error
+    # Generating csv Row Data
+    row_data_2d = []  # final result must be a 2d list to prevent csv writer error
 
-    if len(term_schedule.classes) == 0:  # if there are no classes ensure 2d list to prevent cvs writer error
+    if len(term_schedule.classes) == 0:  # if there are no classes ensure 2d list to prevent csv writer error
         row_data_2d = [[]]
     else:  # if there are classes continue as usual
         for a_class in term_schedule.classes:
             row_data_2d += __translate_class_to_lists(a_class)
 
     # Writing to csv File
-    with open(get_cache_path(CALENDAR_CVS_FILENAME, user_id), 'w') as cvs:
-        cvs_writer = csv.writer(cvs)  # create a csv writer object
+    with open(get_cache_path(CALENDAR_CSV_FILENAME, user_id), 'w') as csv_path:
+        csv_writer = csv.writer(csv_path)  # create a csv writer object
 
-        cvs_writer.writerow(fields)  # writing headers (field names)
+        csv_writer.writerow(fields)  # writing headers (field names)
 
-        cvs_writer.writerows(row_data_2d)  # writing the data rows
+        csv_writer.writerows(row_data_2d)  # writing the data rows
 
 
 def __translate_class_to_lists(a_class):
@@ -60,7 +60,7 @@ def __translate_class_to_lists(a_class):
     """
     if a_class.is_biweekly_specific():  # if the class shows biweekly specific behaviour, assume all class times are
         # specified just check for exclusions
-        return [__cvs_row_event(a_class, meet_time[0], meet_time[1])
+        return [__row_event(a_class, meet_time[0], meet_time[1])
                 for meet_time in a_class.class_time
                 if not __is_exclusion_meet_time(meet_time)]
 
@@ -73,7 +73,7 @@ def __translate_class_to_lists(a_class):
             if __is_exclusion_meet_time(meet_time_tuple):
                 meet_time_tuples.remove(meet_time_tuple)
 
-        master_list += [__cvs_row_event(a_class, meet_time[0], meet_time[1]) for meet_time in meet_time_tuples]
+        master_list += [__row_event(a_class, meet_time[0], meet_time[1]) for meet_time in meet_time_tuples]
 
     return master_list
 
@@ -128,7 +128,7 @@ def __is_exclusion_meet_time(meet_time_tuple):
     return False  # default is False
 
 
-def __cvs_row_event(a_class, start_datetime, end_datetime):
+def __row_event(a_class, start_datetime, end_datetime):
     """
     :param a_class:
     AClass -> class object from a TermSchedule's classes

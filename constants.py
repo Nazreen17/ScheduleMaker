@@ -16,9 +16,9 @@ SINGLE_PROCESS_COMBOS = 500000
 CACHE_FILE_PATH = "Cache/"
 SCHEDULE_PNG_FILENAME = "schedule.png"
 RESULT_TXT_FILENAME = "result.txt"
-CALENDAR_CVS_FILENAME = "calendar.cvs"
+CALENDAR_CSV_FILENAME = "calendar.csv"
 
-# Semester Start End as datetime objects (CVSManipulation.py)
+# Semester Start End as datetime objects (CSVManipulation.py)
 # TODO ADJUST WITH NEW SEMESTER
 SEMESTER_START = datetime(2021, 9, 7, 0, 0)
 SEMESTER_END = datetime(2021, 12, 6, 23, 59)

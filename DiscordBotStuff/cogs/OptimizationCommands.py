@@ -7,6 +7,7 @@ from Optimizations.EnabledOptimizers import ENABLED_OPTIMIZER_OBJECT_LIST
 from FullProcess.CallPngTxtCsvGenerate import generate_triple_png_txt_csv
 from FullProcess.CallOptimizers import get_requested_optimizer
 from FullProcess.CallResultTextGenerate import full_result_text
+from FullProcess.CallGeneralProcesses import remove_dupes
 from CacheFilePathManipulation import remove_file_path
 
 
@@ -29,6 +30,8 @@ class OptimizationCog(commands.Cog):
         # <SINGLE_REQUEST#1> format: <OptimizerName>, <ExtraValue#n>, <ExtraValue#n+1>
 
         try:
+            optimization_requests = remove_dupes(optimization_requests)
+
             # Don't call clean() for optimization_requests since it uses "," in the command
             last_optimizer_obj = get_requested_optimizer(template_id=template_id,
                                                          request_list=list(optimization_requests),

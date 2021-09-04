@@ -2,7 +2,7 @@ from discord.ext import commands
 
 from FullProcess.CallCourseRequester import add_course_requests_via_list, drop_course_requests_via_list, \
     pull_course_requests_as_str
-from FullProcess.CallGeneralProcesses import get_clean_courses_list
+from FullProcess.CallGeneralProcesses import get_clean_courses_list, remove_dupes
 
 
 class CourseRequestCog(commands.Cog):
@@ -10,6 +10,8 @@ class CourseRequestCog(commands.Cog):
     @commands.command(aliases=["request"])
     async def add_course_requests(self, ctx, *course_inputs):
         try:
+            course_inputs = remove_dupes(course_inputs)
+
             course_object_list = get_clean_courses_list("".join(course_inputs))
             add_course_requests_via_list(courses_list=course_object_list)
 

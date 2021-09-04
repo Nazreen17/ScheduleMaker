@@ -89,4 +89,15 @@ def clean(to_clean):
         return to_clean
 
     else:  # TypeError
-        raise TypeError("Expected str type")
+        raise TypeError("Unexpected type")
+
+
+def remove_dupes(to_clean):
+    """
+    Remove duplicates from a list
+    :param to_clean:
+    list -> to remove duplicates from
+    :return:
+    list -> with duplicates removed
+    """
+    return list(set(to_clean))

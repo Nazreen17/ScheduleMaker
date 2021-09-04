@@ -1,6 +1,7 @@
 from discord.ext import commands
 
-from FullProcess.CallGeneralProcesses import get_clean_courses_list, clean, raise_value_error_for_unknown_course_on_db
+from FullProcess.CallGeneralProcesses import get_clean_courses_list, clean, remove_dupes, \
+    raise_value_error_for_unknown_course_on_db
 from FullProcess.CallMaxTemplateProcessing import generate_and_update_db_public_template, pull_public_details_str, \
     drop_public_templates
 
@@ -11,6 +12,8 @@ class PublicMaxScheduleCog(commands.Cog):
     @commands.is_owner()
     async def dev_generate_public_max_template(self, ctx, description, *course_inputs):
         try:
+            course_inputs = remove_dupes(course_inputs)
+
             course_object_list = get_clean_courses_list("".join(course_inputs))
             raise_value_error_for_unknown_course_on_db(course_object_list)
 

@@ -3,7 +3,7 @@ from discord.ext import commands
 
 from constants import SCHEDULE_PNG_FILENAME, RESULT_TXT_FILENAME, CALENDAR_CSV_FILENAME
 from CacheFilePathManipulation import get_cache_path
-from FullProcess.CallGeneralProcesses import clean
+from FullProcess.CallGeneralProcesses import clean, remove_dupes
 from FullProcess.CallPngTxtCsvGenerate import generate_triple_png_txt_csv
 from FullProcess.CallDirectScheduleFromCRNs import generate_term_schedule_from_crn_list
 from FullProcess.CallResultTextGenerate import full_result_text
@@ -15,6 +15,7 @@ class DirectCRNScheduleCog(commands.Cog):
     @commands.command(aliases=["display"])
     async def display_from_crn(self, ctx, *crn_codes):
         try:
+            crn_codes = remove_dupes(crn_codes)
             crn_codes = clean(crn_codes)
             single_term_schedule = generate_term_schedule_from_crn_list(crn_codes)
 

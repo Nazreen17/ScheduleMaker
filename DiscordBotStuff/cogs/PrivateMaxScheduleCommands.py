@@ -1,5 +1,6 @@
 from discord.ext import commands
 
+from FullProcess.CallGeneralProcesses import remove_dupes
 from FullProcess.CallMaxTemplateProcessing import generate_and_update_db_private_template, \
     pull_private_details_str
 from FullProcess.CallGeneralProcesses import get_clean_courses_list, raise_value_error_for_unknown_course_on_db
@@ -10,6 +11,8 @@ class PrivateMaxScheduleCog(commands.Cog):
     @commands.command(aliases=["personal"])
     async def generate_private_max_template(self, ctx, *course_inputs):
         try:
+            course_inputs = remove_dupes(course_inputs)
+
             course_object_list = get_clean_courses_list("".join(course_inputs))
             raise_value_error_for_unknown_course_on_db(course_object_list)
 

@@ -16,14 +16,12 @@ SINGLE_PROCESS_COMBOS = 500000
 CACHE_FILE_PATH = "Cache/"
 SCHEDULE_PNG_FILENAME = "schedule.png"
 RESULT_TXT_FILENAME = "result.txt"
-CALENDAR_CSV_FILENAME = "calendar.csv"
+CALENDAR_ICS_FILENAME = "calendar.ics"
 
 # Semester Start End as datetime objects (CSVManipulation.py)
 # TODO ADJUST WITH NEW SEMESTER
 SEMESTER_START = datetime(2021, 9, 7, 0, 0)
 SEMESTER_END = datetime(2021, 12, 6, 23, 59)
-__READING_WEEK = (datetime(2021, 10, 11, 0, 0), datetime(2021, 10, 15, 23, 59))  # Thanksgiving Fall 2021 Reading Week
-SEMESTER_EXCLUSION_TIMES = [__READING_WEEK]  # excluded meet time tuples, such as reading week
 
 # Used in internal computation for determining if an AClass object is in person (Compares to AClass.instruction str)
 # TODO DEV ADJUST

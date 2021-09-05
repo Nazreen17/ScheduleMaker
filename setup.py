@@ -32,7 +32,8 @@ setup(
     install_requires=[
         "Pillow",
         "discord",
-        "mysql-connector-python"
+        "mysql-connector-python",
+        "icalendar"
     ],
 
     # Here are the packages I want build.

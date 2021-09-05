@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 
-from constants import SCHEDULE_PNG_FILENAME, RESULT_TXT_FILENAME, CALENDAR_CSV_FILENAME
+from constants import SCHEDULE_PNG_FILENAME, RESULT_TXT_FILENAME, CALENDAR_ICS_FILENAME
 from CacheFilePathManipulation import get_cache_path
 from Optimizations.EnabledOptimizers import ENABLED_OPTIMIZER_OBJECT_LIST
 from FullProcess.CallPngTxtCsvGenerate import generate_triple_png_txt_csv
@@ -57,9 +57,9 @@ class OptimizationCog(commands.Cog):
             remove_file_path(path2)
 
             # Discord send calendar.csv
-            path3 = get_cache_path(CALENDAR_CSV_FILENAME, ctx.message.author.id)
+            path3 = get_cache_path(CALENDAR_ICS_FILENAME, ctx.message.author.id)
             with open(path3, "rb") as csv_file:
-                await ctx.message.author.send(file=discord.File(csv_file, CALENDAR_CSV_FILENAME))
+                await ctx.message.author.send(file=discord.File(csv_file, CALENDAR_ICS_FILENAME))
             remove_file_path(path3)
 
         except ValueError as e:

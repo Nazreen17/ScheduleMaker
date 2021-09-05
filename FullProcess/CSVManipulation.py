@@ -147,10 +147,12 @@ def __row_event(a_class, start_datetime, end_datetime):
 
             datetime.strftime(end_datetime, "%H:%M:%S"),
 
-            f"Professor: {' | '.join(a_class.prof) if len(a_class.prof) > 0 else 'N/A'} & "
-            f"CRN: {a_class.crn} & "
-            f"Section: {a_class.section}",
+            f"Professor: {' | '.join(a_class.prof) if len(a_class.prof) > 0 else 'N/A'}\n"
+            f"CRN: {a_class.crn}\n"
+            f"Section: {a_class.section}"
+            f"Campus: {' | '.join(a_class.campus)}\n"
+            f"Building: {' | '.join(a_class.building)}\n"
+            f"Room: {' | '.join(a_class.room)}",
 
-            f"Campus: {' | '.join(a_class.campus)} & "
-            f"Building: {' | '.join(a_class.building)} & "
+            f"Campus: {' | '.join(a_class.campus)} & Building: {' | '.join(a_class.building)} & "
             f"Room: {' | '.join(a_class.room)}"]

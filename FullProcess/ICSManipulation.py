@@ -7,7 +7,7 @@ from icalendar import Calendar, Event
 from datetime import datetime
 
 from constants import SEMESTER_START, SEMESTER_END, CALENDAR_ICS_FILENAME
-from SemesterExclusion.EnabledExclusions import ENABLED_EXCLUSIONS_LIST
+from SemesterExclusion.enabledExclusions import ENABLED_EXCLUSIONS_LIST
 from CacheFilePathManipulation import get_cache_path
 from COREClassStructure.CourseClassStructure import AClass
 

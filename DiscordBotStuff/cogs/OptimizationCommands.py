@@ -21,8 +21,8 @@ class OptimizationCog(commands.Cog):
             if ENABLED_OPTIMIZER_OBJECT_LIST.index(optimizer) != len(ENABLED_OPTIMIZER_OBJECT_LIST) - 1:
                 optimizer_text += "\n"
 
-        await ctx.reply(f"**Optimizers ({len(ENABLED_OPTIMIZER_OBJECT_LIST)})**\n{optimizer_text}",
-                        mention_author=False)
+        await ctx.send(f"**Optimizers ({len(ENABLED_OPTIMIZER_OBJECT_LIST)})**\n{optimizer_text}",
+                       mention_author=False)
 
     @commands.command(aliases=["make"])
     async def optimize_max(self, ctx, template_id, *optimization_requests):
@@ -63,14 +63,16 @@ class OptimizationCog(commands.Cog):
             remove_file_path(path3)
 
         except ValueError as e:
-            await ctx.reply(f"ValueError -> {e}", mention_author=False)
+            await ctx.send(f"ValueError -> {e}")
         except TypeError as e:
-            await ctx.reply(f"TypeError -> {e}", mention_author=False)
+            await ctx.send(f"TypeError -> {e}")
         except RuntimeError as e:
-            await ctx.reply(f"RuntimeError -> {e}", mention_author=False)
+            await ctx.send(f"RuntimeError -> {e}")
         except Exception as e:
-            await ctx.reply(f"Something went wrong", mention_author=False)
+            await ctx.send(f"Something went wrong")
             raise e
+
+        await ctx.message.delete()  # Delete original message
 
     @staticmethod
     def __result_text(last_optimizer_obj, result_term_schedule):

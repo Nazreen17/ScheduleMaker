@@ -19,16 +19,16 @@ class PublicMaxScheduleCog(commands.Cog):
 
             generate_and_update_db_public_template(course_object_list=course_object_list, description=description)
 
-            await ctx.reply(f"Successfully generated public template", mention_author=False)
+            await ctx.reply(f"Successfully generated public template", mention_author=True)
 
         except ValueError as e:
-            await ctx.reply(f"ValueError -> {e}", mention_author=False)
+            await ctx.reply(f"ValueError -> {e}", mention_author=True)
         except TypeError as e:
-            await ctx.reply(f"TypeError -> {e}", mention_author=False)
+            await ctx.reply(f"TypeError -> {e}", mention_author=True)
         except RuntimeError as e:
-            await ctx.reply(f"RuntimeError -> {e}", mention_author=False)
+            await ctx.reply(f"RuntimeError -> {e}", mention_author=True)
         except Exception as e:
-            await ctx.reply(f"Something went wrong", mention_author=False)
+            await ctx.reply(f"Something went wrong", mention_author=True)
             raise e
 
     @commands.command(aliases=["templates", "public", "vpublic", "viewpublic"])
@@ -54,16 +54,16 @@ class PublicMaxScheduleCog(commands.Cog):
             id_nums = clean(id_nums)
             drop_public_templates(id_nums)
 
-            await ctx.reply(f"Successfully dropped public template(s) id = {', '.join(id_nums)}", mention_author=False)
+            await ctx.reply(f"Successfully dropped public template(s) id = {', '.join(id_nums)}", mention_author=True)
 
         except ValueError as e:
-            await ctx.reply(f"ValueError -> {e}", mention_author=False)
+            await ctx.reply(f"ValueError -> {e}", mention_author=True)
         except TypeError as e:
-            await ctx.reply(f"TypeError -> {e}", mention_author=False)
+            await ctx.reply(f"TypeError -> {e}", mention_author=True)
         except RuntimeError as e:
-            await ctx.reply(f"RuntimeError -> {e}", mention_author=False)
+            await ctx.reply(f"RuntimeError -> {e}", mention_author=True)
         except Exception as e:
-            await ctx.reply(f"Something went wrong", mention_author=False)
+            await ctx.reply(f"Something went wrong", mention_author=True)
             raise e
 
 

@@ -29,8 +29,7 @@ def pull_course_requests_as_str():
 
     return_str = ""
     for detail in details_list:
-        return_str += (f"Course: {detail[0]}\n"
-                       f"Updated: {detail[1].strftime('%Y/%m/%d %H:%M:%S')}\n\n")
+        return_str += f"Course: {detail[0]} | Updated: {detail[1].strftime('%Y/%m/%d %H:%M:%S')}\n"
 
     return_str += "" if len(return_str) > 0 else "No Request details found"
 

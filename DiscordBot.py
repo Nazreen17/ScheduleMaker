@@ -7,7 +7,7 @@ from discord.ext import commands
 from datetime import datetime
 
 from redacted import CLIENT_TOKEN
-from constants import PUBLIC_USER_DOCUMENTATION_LINK, CURRENT_TERM
+from constants import PUBLIC_USER_DOCUMENTATION_LINK, CURRENT_TERM, GITHUB_REPO
 from DiscordBotStuff.BotConstants import PREFIX, DEV_IDS
 
 # CLIENT_TOKEN = STR Discord dev bot token
@@ -75,6 +75,11 @@ async def about(ctx):
                     f"Uptime Start = `{start_datetime}`\n"
                     f"Uptime = `{datetime.now() - start_datetime}`\n"
                     f"Ping = `{round(client.latency * 1000)} ms`", mention_author=False)
+
+
+@client.command()
+async def github(ctx):
+    await ctx.reply(f"__**Github**__\n{GITHUB_REPO}", mention_author=False)
 
 
 @client.command()

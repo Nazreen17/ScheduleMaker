@@ -21,14 +21,15 @@ class CustomHelpCommand(commands.MinimalHelpCommand):
         super().__init__()
 
     async def send_bot_help(self, mapping):
-        beta_help = ("__**Step 1:Make an ICS file**__"
+        beta_help = ("__**Step 1: Make an ICS file**__"
                      "```.display <CRN_1> <CRN_2> <CRN_3> ...```\n"
                      "> Find your CRN codes on MyCampus -> Student Schedule -> Banner Website (Same site you "
                      "registered for your classes)\n"
                      "\n"
                      "__**Step 2: Import ICS to Google Calendar (Or wherever you prefer)**__\n"
                      "Google it or check the quick documentation:\n"
-                     "https://docs.google.com/document/d/1zgVHCSHJoIqeGINdOmOBZsoW-tphYWR38JG_btiSBpA/edit#heading=h.1kjb12kquobi\n")
+                     "https://docs.google.com/document/d/1zgVHCSHJoIqeGINdOmOBZsoW-tphYWR38JG_btiSBpA/"
+                     "edit#heading=h.1kjb12kquobi\n")
 
         await self.get_destination().send(beta_help)
 

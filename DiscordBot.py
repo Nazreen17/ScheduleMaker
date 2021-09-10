@@ -7,7 +7,7 @@ from discord.ext import commands
 from datetime import datetime
 
 from redacted import CLIENT_TOKEN
-from constants import PUBLIC_USER_DOCUMENTATION_LINK, CURRENT_TERM, GITHUB_REPO
+from constants import CURRENT_TERM, GITHUB_REPO
 from DiscordBotStuff.BotConstants import PREFIX, DEV_IDS
 
 # CLIENT_TOKEN = STR Discord dev bot token
@@ -29,8 +29,14 @@ class CustomHelpCommand(commands.MinimalHelpCommand):
                      "__**Step 2: Import ICS to Google Calendar (Or wherever you prefer)**__\n"
                      "Google it or check the quick documentation:\n"
                      "https://docs.google.com/document/d/1zgVHCSHJoIqeGINdOmOBZsoW-tphYWR38JG_btiSBpA/"
-                     "edit#heading=h.1kjb12kquobi\n")
-
+                     "edit#heading=h.1kjb12kquobi\n"
+                     "\n"
+                     "**__Note: CRN Not found__**\n"
+                     "If your CRN codes are not being recognised, you may need to send a course update request for "
+                     "that CRN's parent course:\n"
+                     "```.request <Course_1> <Course_2> <Course_3> ...```\n"
+                     "After a request is submitted please wait as the database updates, after which you can use the "
+                     "bot normally.\n")
         await self.get_destination().send(beta_help)
 
     # Using default discord.ext.commands.MinimalHelpCommand

@@ -21,22 +21,22 @@ class CustomHelpCommand(commands.MinimalHelpCommand):
         super().__init__()
 
     async def send_bot_help(self, mapping):
-        beta_help = ("__**Step 1: Make an ICS file**__"
-                     "```.display <CRN_1> <CRN_2> <CRN_3> ...```\n"
-                     "> Find your CRN codes on MyCampus -> Student Schedule -> Banner Website (Same site you "
-                     "registered for your classes)\n"
-                     "\n"
-                     "__**Step 2: Import ICS to Google Calendar (Or wherever you prefer)**__\n"
-                     "Google it or check the quick documentation:\n"
-                     "https://docs.google.com/document/d/1zgVHCSHJoIqeGINdOmOBZsoW-tphYWR38JG_btiSBpA/"
-                     "edit#heading=h.1kjb12kquobi\n"
-                     "\n"
-                     "**__Note: CRN Not found__**\n"
-                     "If your CRN codes are not being recognised, you may need to send a course update request for "
-                     "that CRN's parent course:\n"
-                     "```.request <Course_1> <Course_2> <Course_3> ...```\n"
-                     "After a request is submitted please wait as the database updates, after which you can use the "
-                     "bot normally.\n")
+        beta_help = (f"__**Step 1: Make an ICS file**__"
+                     f"```{PREFIX}display <CRN_1> <CRN_2> <CRN_3> ...```\n"
+                     f"> Find your CRN codes on MyCampus -> Student Schedule -> Banner Website (Same site you "
+                     f"registered for your classes)\n"
+                     f"\n"
+                     f"__**Step 2: Import ICS to Google Calendar (Or wherever you prefer)**__\n"
+                     f"Google it or check the quick documentation:\n"
+                     f"https://docs.google.com/document/d/1zgVHCSHJoIqeGINdOmOBZsoW-tphYWR38JG_btiSBpA/"
+                     f"edit#heading=h.1kjb12kquobi\n"
+                     f"\n"
+                     f"**__Note: CRN Not found__**\n"
+                     f"If your CRN codes are not being recognised, you may need to send a course update request for "
+                     f"that CRN's parent course:\n"
+                     f"```{PREFIX}request <Course_1> <Course_2> <Course_3> ...```\n"
+                     f"After a request is submitted please wait as the database updates, after which you can use the "
+                     f"bot normally.\n")
         await self.get_destination().send(beta_help)
 
     # Using default discord.ext.commands.MinimalHelpCommand

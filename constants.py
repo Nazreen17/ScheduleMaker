@@ -32,7 +32,10 @@ RGB_ONLINE_BLUE = (157, 162, 233)
 RGB_IN_PERSON_PEACH = (255, 223, 182)
 
 # Public User Documentation - Google Doc
-PUBLIC_USER_DOCUMENTATION_LINK = "https://docs.google.com/document/d/1zgVHCSHJoIqeGINdOmOBZsoW-tphYWR38JG_btiSBpA"
+PUBLIC_USER_DOCUMENTATION_LINK = "https://tinyurl.com/4nrjc9hb"
 
 # Github Link
 GITHUB_REPO = "https://github.com/danielljeon/ScheduleMaker"
+
+# Dev Server Invite Link
+DEV_DISCORD_SERVER_LINK = "https://discord.gg/rg2gPxrgbg"

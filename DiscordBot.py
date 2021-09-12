@@ -7,7 +7,7 @@ from discord.ext import commands
 from datetime import datetime
 
 from redacted import CLIENT_TOKEN
-from constants import CURRENT_TERM, GITHUB_REPO
+from constants import CURRENT_TERM, GITHUB_REPO, PUBLIC_USER_DOCUMENTATION_LINK, DEV_DISCORD_SERVER_LINK
 from DiscordBotStuff.BotConstants import PREFIX, DEV_IDS
 
 # CLIENT_TOKEN = STR Discord dev bot token
@@ -21,22 +21,22 @@ class CustomHelpCommand(commands.MinimalHelpCommand):
         super().__init__()
 
     async def send_bot_help(self, mapping):
-        beta_help = (f"__**Step 1: Make an ICS file**__"
-                     f"```{PREFIX}display <CRN_1> <CRN_2> <CRN_3> ...```\n"
-                     f"> Find your CRN codes on MyCampus -> Student Schedule -> Banner Website (Same site you "
-                     f"registered for your classes)\n"
+        beta_help = (f"__**Step 1: Make an ICS file**__\n"
+                     f"**Format:** `{PREFIX}display <CRN_1> <CRN_2> <CRN_3> ...`\n"
+                     f"**Example:** `{PREFIX}display 11111 22222 33333`\n"
                      f"\n"
                      f"__**Step 2: Import ICS to Google Calendar (Or wherever you prefer)**__\n"
-                     f"Google it or check the quick documentation:\n"
-                     f"https://docs.google.com/document/d/1zgVHCSHJoIqeGINdOmOBZsoW-tphYWR38JG_btiSBpA/"
-                     f"edit#heading=h.1kjb12kquobi\n"
+                     f"Google it or check the quick documentation: \"2.2.A) Importing to Google Calendar\" @ "
+                     f"{PUBLIC_USER_DOCUMENTATION_LINK}\n"
                      f"\n"
-                     f"**__Note: CRN Not found__**\n"
-                     f"If your CRN codes are not being recognised, you may need to send a course update request for "
-                     f"that CRN's parent course:\n"
-                     f"```{PREFIX}request <Course_1> <Course_2> <Course_3> ...```\n"
+                     f"__Note: CRN Not found Warning__\n"
+                     f"If your CRN codes are not being recognised, send a update request for that CRN's course:\n"
+                     f"**Format:** `{PREFIX}request <Course_1> <Course_2> <Course_3> ...`\n"
+                     f"**Example:** `{PREFIX}request math1111u engr2222u infr3333u`\n"
                      f"After a request is submitted please wait as the database updates, after which you can use the "
-                     f"bot normally.\n")
+                     f"bot normally.\n"
+                     f"\n"
+                     f"*For more help go to the developer server:* {DEV_DISCORD_SERVER_LINK}")
         await self.get_destination().send(beta_help)
 
     # Using default discord.ext.commands.MinimalHelpCommand

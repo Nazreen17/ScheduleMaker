@@ -21,15 +21,15 @@ class CustomHelpCommand(commands.MinimalHelpCommand):
         super().__init__()
 
     async def send_bot_help(self, mapping):
-        beta_help = (f"__**Step 1: Make an ICS file**__\n"
-                     f"**Format:** `{PREFIX}display <CRN_1> <CRN_2> <CRN_3> ...`\n"
+        beta_help = (f"__**Step 1: Make an ICS Google Calendar file**__\n"
+                     f"**Format:** `{PREFIX}display <CRN_1> <CRN_2> <CRN_3> ...` (CRN codes for your classes)\n"
                      f"**Example:** `{PREFIX}display 11111 22222 33333`\n"
                      f"\n"
-                     f"__**Step 2: Import ICS to Google Calendar (Or wherever you prefer)**__\n"
+                     f"__**Step 2: Import the ICS file to Google Calendar (Or wherever you prefer)**__\n"
                      f"Google it or check the quick documentation: \"2.2.A) Importing to Google Calendar\" @ "
                      f"{PUBLIC_USER_DOCUMENTATION_LINK}\n"
                      f"\n"
-                     f"__Note: CRN Not found Warning__\n"
+                     f"__**Note: CRN Not found Warning**__\n"
                      f"If your CRN codes are not being recognised, send a update request for that CRN's course:\n"
                      f"**Format:** `{PREFIX}request <Course_1> <Course_2> <Course_3> ...`\n"
                      f"**Example:** `{PREFIX}request math1111u engr2222u infr3333u`\n"

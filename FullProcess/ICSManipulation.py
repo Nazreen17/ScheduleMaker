@@ -106,18 +106,27 @@ def __initialize_event(a_class):
     event = Event()
 
     # Summary setting
-    summary = f"{a_class.title} {a_class.class_type} ({a_class.fac}{a_class.uid})"
+    summary = f"{a_class.title} {a_class.class_type[:3].upper()} ({a_class.fac}{a_class.uid})"
     event.add("summary", summary)
 
-    # Format str data used more than once
-    campus_str_data = ' | '.join(a_class.campus) if a_class.campus is not None and len(a_class.campus) > 0 else 'N/A'
-    building_str_data = (' | '.join(a_class.building) if a_class.building is not None and len(a_class.building) > 0
-                         else 'N/A')
-    room_str_data = ' | '.join(a_class.room) if a_class.building is not None and len(a_class.room) > 0 else 'N/A'
+    # Format str data
+    if a_class.room is not None and 1 < len(a_class.room) == a_class.room.count(a_class.room[0]):
+        # All repeating classes (more than 1) in same room
+        campus_str_data = a_class.campus[0]
+        building_str_data = a_class.building[0]
+        room_str_data = a_class.room[0]
+    elif a_class.campus is not None and len(a_class.campus) > 0:
+        campus_str_data = ", ".join(a_class.campus)
+        building_str_data = ", ".join(a_class.building)
+        room_str_data = ", ".join(a_class.room)
+    else:
+        campus_str_data = "N/A"
+        building_str_data = "N/A"
+        room_str_data = "N/A"
 
     # Description setting
     description = (
-        f"Professor: {' | '.join(a_class.prof) if a_class.prof is not None and len(a_class.prof) > 0 else 'N/A'}\n"
+        f"Instructor: {', '.join(a_class.prof) if a_class.prof is not None and len(a_class.prof) > 0 else 'N/A'}\n"
         f"CRN: {a_class.crn}\n"
         f"Section: {a_class.section}\n"
         f"Campus: {campus_str_data}\n"
@@ -126,10 +135,7 @@ def __initialize_event(a_class):
     event.add("description", description)
 
     # Location setting
-    location = (
-        f"Campus: {campus_str_data} & "
-        f"Building: {building_str_data} & "
-        f"Room: {room_str_data}")
+    location = f"Campus: {campus_str_data}, Building: {building_str_data}, Room: {room_str_data}"
     event.add("location", location)
 
     # Datetime stamp setting

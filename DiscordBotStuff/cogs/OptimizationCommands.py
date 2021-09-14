@@ -8,6 +8,7 @@ from FullProcess.CallPngTxtCsvGenerate import generate_triple_png_txt_csv
 from FullProcess.CallOptimizers import get_requested_optimizer
 from FullProcess.CallResultTextGenerate import full_result_text
 from FullProcess.CallGeneralProcesses import remove_dupes
+from FullProcess.CallStatRecord import call_add_stat
 from CacheFilePathManipulation import remove_file_path
 
 
@@ -43,6 +44,8 @@ class OptimizationCog(commands.Cog):
             # Generate a png and txt
             generate_triple_png_txt_csv(single_term_schedule=optimal_term_schedule, result_txt_header_str=result_text,
                                         user_id=ctx.message.author.id)
+
+            call_add_stat("optimization")  # Add new display stat record
 
             # Discord send schedule.png
             path1 = get_cache_path(SCHEDULE_PNG_FILENAME, ctx.message.author.id)

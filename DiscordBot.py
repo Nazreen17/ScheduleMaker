@@ -9,6 +9,7 @@ from datetime import datetime
 from redacted import CLIENT_TOKEN
 from constants import CURRENT_TERM, GITHUB_REPO, PUBLIC_USER_DOCUMENTATION_LINK, DEV_DISCORD_SERVER_LINK
 from DiscordBotStuff.BotConstants import PREFIX, DEV_IDS
+from FullProcess.CallStatRecord import call_stat_count
 
 # CLIENT_TOKEN = STR Discord dev bot token
 
@@ -84,12 +85,18 @@ async def dev_shutdown_bot(ctx):  # "ctx" is required to be called in all comman
 async def about(ctx):
     global start_datetime
 
+    display_count = call_stat_count('display')
+    optimization_count = call_stat_count('optimization')
+    total = display_count + optimization_count
+
     await ctx.reply(f"__**Program Status**__\n"
                     f"Current Term = `{CURRENT_TERM}`\n"
                     f"Prefix = `{PREFIX}`\n"
                     f"Uptime Start = `{start_datetime}`\n"
                     f"Uptime = `{datetime.now() - start_datetime}`\n"
-                    f"Ping = `{round(client.latency * 1000)} ms`", mention_author=False)
+                    f"Ping = `{round(client.latency * 1000)} ms`\n"
+                    f"Operations stat count: TOTAL = `{total}`, \'display\' = `{display_count}`, "
+                    f"\'optimization\' = `{optimization_count}`", mention_author=True)
 
 
 @client.command()

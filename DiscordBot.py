@@ -7,7 +7,8 @@ from discord.ext import commands
 from datetime import datetime
 
 from redacted import CLIENT_TOKEN
-from constants import CURRENT_TERM, GITHUB_REPO, PUBLIC_USER_DOCUMENTATION_LINK, DEV_DISCORD_SERVER_LINK
+from constants import GITHUB_REPO, PUBLIC_USER_DOCUMENTATION_LINK, DEV_DISCORD_SERVER_LINK
+from config import CURRENT_TERM
 from DiscordBotStuff.BotConstants import PREFIX, DEV_IDS
 from FullProcess.CallStatRecord import call_stat_count
 

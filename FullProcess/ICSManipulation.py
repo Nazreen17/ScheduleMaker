@@ -6,8 +6,8 @@ The calendar will avoid a specified exclusion times set by constants.py
 from icalendar import Calendar, Event
 from datetime import datetime
 
-from constants import SEMESTER_START, SEMESTER_END, CALENDAR_ICS_FILENAME
-from SemesterExclusion.enabledExclusions import ENABLED_EXCLUSIONS_LIST
+from constants import CALENDAR_ICS_FILENAME
+from config import SEMESTER_START, SEMESTER_END, ENABLED_EXCLUSIONS_LIST
 from CacheFilePathManipulation import get_cache_path
 from COREClassStructure.CourseClassStructure import AClass
 

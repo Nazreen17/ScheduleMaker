@@ -1,15 +1,11 @@
-from datetime import datetime
-
-# General Program Status Constants
-# TODO ADJUST WITH NEW SEMESTER
-CURRENT_TERM = "Fall 2021"
-
 # Dev set program limits
-# TODO DEV ADJUST
 MAX_OPTIMIZATIONS_PER_REQUEST = 5
 MAX_COURSE_UPDATE_REQUESTS = 25
 
+# Max schedule generation option combination limit
 MAX_COURSE_COMBOS = 5000000
+
+# Max schedule computation option amount per process
 SINGLE_PROCESS_COMBOS = 500000
 
 # Result generation filenames
@@ -18,13 +14,7 @@ SCHEDULE_PNG_FILENAME = "schedule.png"
 RESULT_TXT_FILENAME = "result.txt"
 CALENDAR_ICS_FILENAME = "calendar.ics"
 
-# Semester Start End as datetime objects (CSVManipulation.py)
-# TODO ADJUST WITH NEW SEMESTER
-SEMESTER_START = datetime(2021, 9, 7, 0, 0)
-SEMESTER_END = datetime(2021, 12, 6, 23, 59)
-
 # Used in internal computation for determining if an AClass object is in person (Compares to AClass.instruction str)
-# TODO DEV ADJUST
 CLASS_INSTRUCTION_IN_PERSON_KEYS = ["In-class"]
 
 # RGB Colour codes used for Pillow PNG schedule generation

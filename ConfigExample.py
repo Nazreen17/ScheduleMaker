@@ -10,9 +10,11 @@ SEMESTER_END = datetime(2021, 12, 6, 23, 59)
 
 """
 # Thanksgiving Fall 2021 Reading Week
-__reading_week = Exclusion("Reading Week", "No class", [(datetime(2021, 10, 11, 0, 0), datetime(2021, 10, 15, 23, 59))])
+__reading_week = Exclusion(name="Reading Week", description="No class",
+                           exclusion_time=[(datetime(2021, 10, 11, 0, 0), datetime(2021, 10, 15, 23, 59))])
 # Fall 2021 Exam Period
-__exams = Exclusion("Exam Period", "Exams", [(datetime(2021, 12, 8, 0, 0), datetime(2021, 12, 19, 23, 59))])
+__exams = Exclusion(name="Exam Period", description="Exams",
+                    exclusion_time=[(datetime(2021, 12, 8, 0, 0), datetime(2021, 12, 19, 23, 59))])
 """
 
 # ICS file enabled exclusion/additional events

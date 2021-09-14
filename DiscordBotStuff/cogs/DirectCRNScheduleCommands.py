@@ -9,6 +9,7 @@ from FullProcess.CallDirectScheduleFromCRNs import generate_term_schedule_from_c
 from FullProcess.CallResultTextGenerate import full_result_text
 from FullProcess.CallStatRecord import call_add_stat
 from CacheFilePathManipulation import remove_file_path
+from DiscordBotStuff.BotConstants import DEV_IDS
 
 
 class DirectCRNScheduleCog(commands.Cog):
@@ -27,7 +28,8 @@ class DirectCRNScheduleCog(commands.Cog):
             generate_triple_png_txt_csv(single_term_schedule=single_term_schedule, result_txt_header_str=result_txt,
                                         user_id=ctx.message.author.id)
 
-            call_add_stat("display")  # Add new display stat record
+            if ctx.message.author.id not in DEV_IDS:
+                call_add_stat("display")  # Add new display stat record
 
             # Discord send schedule.png
             path1 = get_cache_path(SCHEDULE_PNG_FILENAME, ctx.message.author.id)

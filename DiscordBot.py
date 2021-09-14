@@ -95,8 +95,8 @@ async def about(ctx):
                     f"Uptime Start = `{start_datetime}`\n"
                     f"Uptime = `{datetime.now() - start_datetime}`\n"
                     f"Ping = `{round(client.latency * 1000)} ms`\n"
-                    f"Operations stat count: TOTAL = `{total}`, \'display\' = `{display_count}`, "
-                    f"\'optimization\' = `{optimization_count}`", mention_author=True)
+                    f"Operations stat count: TOTAL = `{total}` -> \"display\" = `{display_count}`, "
+                    f"\"optimization\" = `{optimization_count}`", mention_author=True)
 
 
 @client.command()

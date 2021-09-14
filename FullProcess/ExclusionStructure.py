@@ -2,23 +2,21 @@
 Exclusion/Additional events universal to all student schedules
 """
 
-from abc import ABC, abstractmethod
+from abc import ABC
 
 
 class Exclusion(ABC):
-    def __init__(self, name, description, exclusion_time):
-        self._name = name
-        self._description = description
+    def __init__(self, exclusion_time, name=None, description=None):
+        self._name = name if name is not None else "None"
+        self._description = description if description is not None else "None"
         self._exclusion_time = exclusion_time
+        # exclusion time format example: [(datetime(2021, 12, 8, 0, 0), datetime(2021, 12, 19, 23, 59))]
 
-    @abstractmethod
     def get_name(self):
         return self._name
 
-    @abstractmethod
     def get_description(self):
         return self._description
 
-    @abstractmethod
     def get_exclusion_times(self):
         return self._exclusion_time

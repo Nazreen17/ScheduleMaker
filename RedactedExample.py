@@ -9,6 +9,8 @@ SQL_PASSWORD = "SomePassword"
 
 SQL_DB = "DB Name"
 
+SQL_STATS_TABLE = "Table Name"
+
 SQL_CLASS_TABLE = "Table Name"
 SQL_UPDATE_COURSE_REQUEST_TABLE = "Table Name"
 

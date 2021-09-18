@@ -28,25 +28,36 @@ class DirectCRNScheduleCog(commands.Cog):
             generate_triple_png_txt_csv(single_term_schedule=single_term_schedule, result_txt_header_str=result_txt,
                                         user_id=ctx.message.author.id)
 
-            if ctx.message.author.id not in DEV_IDS:
-                call_add_stat("display")  # Add new display stat record
-
-            # Discord send schedule.png
+            # Declare the 3 paths for each result file in Cache
             path1 = get_cache_path(SCHEDULE_PNG_FILENAME, ctx.message.author.id)
-            with open(path1, "rb") as png_file:
-                await ctx.message.author.send(file=discord.File(png_file, SCHEDULE_PNG_FILENAME))
-            remove_file_path(path1)
-
-            # Discord send results.txt
             path2 = get_cache_path(RESULT_TXT_FILENAME, ctx.message.author.id)
-            with open(path2, "rb") as file:
-                await ctx.message.author.send(file=discord.File(file, RESULT_TXT_FILENAME))
-            remove_file_path(path2)
-
-            # Discord send calendar.csv
             path3 = get_cache_path(CALENDAR_ICS_FILENAME, ctx.message.author.id)
-            with open(path3, "rb") as csv_file:
-                await ctx.message.author.send(file=discord.File(csv_file, CALENDAR_ICS_FILENAME))
+
+            try:
+                # Discord send schedule.png
+                with open(path1, "rb") as png_file:
+                    await ctx.message.author.send(file=discord.File(png_file, SCHEDULE_PNG_FILENAME))
+
+                # Discord send results.txt
+                with open(path2, "rb") as file:
+                    await ctx.message.author.send(file=discord.File(file, RESULT_TXT_FILENAME))
+
+                # Discord send calendar.csv
+                with open(path3, "rb") as csv_file:
+                    await ctx.message.author.send(file=discord.File(csv_file, CALENDAR_ICS_FILENAME))
+
+                # Add new display stat record
+                if ctx.message.author.id not in DEV_IDS:
+                    call_add_stat("display")
+
+            except discord.errors.Forbidden:  # User may prevent bot from messaging users
+                await ctx.send(f"ERROR -> Please **enable \"Allow direct messages from server members\"** "
+                               f"(Privacy & Safety User Settings) so that the bot can privately send you your schedule "
+                               f"when you run commands")
+
+            # Clear Cache files via 3 paths made earlier
+            remove_file_path(path1)
+            remove_file_path(path2)
             remove_file_path(path3)
 
         except ValueError as e:

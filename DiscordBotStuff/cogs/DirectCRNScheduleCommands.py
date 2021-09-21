@@ -17,7 +17,7 @@ class DirectCRNScheduleCog(commands.Cog):
     @commands.command(aliases=["crn"])
     async def direct_from_crn(self, ctx, *crn_codes):
         try:
-            crn_codes = remove_dupes(crn_codFes)
+            crn_codes = remove_dupes(crn_codes)
             crn_codes = clean(crn_codes)
             single_term_schedule = generate_term_schedule_from_crn_list(crn_codes)
 

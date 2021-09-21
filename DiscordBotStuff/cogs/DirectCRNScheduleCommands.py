@@ -14,7 +14,7 @@ from DiscordBotStuff.BotConstants import DEV_IDS
 
 class DirectCRNScheduleCog(commands.Cog):
 
-    @commands.command(aliases=["display"])
+    @commands.command(aliases=["crn"])
     async def display_from_crn(self, ctx, *crn_codes):
         try:
             crn_codes = remove_dupes(crn_codes)

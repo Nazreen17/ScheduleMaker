@@ -24,8 +24,8 @@ class CustomHelpCommand(commands.MinimalHelpCommand):
 
     async def send_bot_help(self, mapping):
         beta_help = (f"__**Step 1: Make an ICS Google Calendar file**__\n"
-                     f"**Format:** `{PREFIX}display <CRN_1> <CRN_2> <CRN_3> ...` (CRN codes for your classes)\n"
-                     f"**Example:** `{PREFIX}display 11111 22222 33333`\n"
+                     f"**Format:** `{PREFIX}crn <CRN_1> <CRN_2> <CRN_3> ...` (CRN codes for your classes)\n"
+                     f"**Example:** `{PREFIX}crn 11111 22222 33333`\n"
                      f"\n"
                      f"__**Step 2: Import the ICS file to Google Calendar (Or wherever you prefer)**__\n"
                      f"Google it or check the quick documentation: \"2.2.A) Importing to Google Calendar\" @ "
@@ -33,8 +33,8 @@ class CustomHelpCommand(commands.MinimalHelpCommand):
                      f"\n"
                      f"__**Note: CRN Not found Warning**__\n"
                      f"If your CRN codes are not being recognised, send a update request for that CRN's course:\n"
-                     f"**Format:** `{PREFIX}request <Course_1> <Course_2> <Course_3> ...`\n"
-                     f"**Example:** `{PREFIX}request math1111u engr2222u infr3333u`\n"
+                     f"**Format:** `{PREFIX}update <Course_1> <Course_2> <Course_3> ...`\n"
+                     f"**Example:** `{PREFIX}update math1111u engr2222u infr3333u`\n"
                      f"After a request is submitted please wait as the database updates, after which you can use the "
                      f"bot normally.\n"
                      f"\n"
@@ -86,9 +86,9 @@ async def dev_shutdown_bot(ctx):  # "ctx" is required to be called in all comman
 async def about(ctx):
     global start_datetime
 
-    display_count = call_stat_count('display')
-    optimization_count = call_stat_count('optimization')
-    total = display_count + optimization_count
+    direct_crn_count = call_stat_count("crn")
+    optimization_count = call_stat_count("optimization")
+    total = direct_crn_count + optimization_count
 
     await ctx.reply(f"__**Program Status**__\n"
                     f"Current Term = `{CURRENT_TERM}`\n"
@@ -96,7 +96,7 @@ async def about(ctx):
                     f"Uptime Start = `{start_datetime}`\n"
                     f"Uptime = `{datetime.now() - start_datetime}`\n"
                     f"Ping = `{round(client.latency * 1000)} ms`\n"
-                    f"Operations stat count: TOTAL = `{total}` -> \"display\" = `{display_count}`, "
+                    f"Operations stat count: TOTAL = `{total}` -> \"crn\" = `{direct_crn_count}`, "
                     f"\"optimization\" = `{optimization_count}`", mention_author=True)
 
 

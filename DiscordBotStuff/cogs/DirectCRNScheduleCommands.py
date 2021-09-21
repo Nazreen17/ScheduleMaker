@@ -15,9 +15,9 @@ from DiscordBotStuff.BotConstants import DEV_IDS
 class DirectCRNScheduleCog(commands.Cog):
 
     @commands.command(aliases=["crn"])
-    async def display_from_crn(self, ctx, *crn_codes):
+    async def direct_from_crn(self, ctx, *crn_codes):
         try:
-            crn_codes = remove_dupes(crn_codes)
+            crn_codes = remove_dupes(crn_codFes)
             crn_codes = clean(crn_codes)
             single_term_schedule = generate_term_schedule_from_crn_list(crn_codes)
 
@@ -46,9 +46,9 @@ class DirectCRNScheduleCog(commands.Cog):
                 with open(path3, "rb") as csv_file:
                     await ctx.message.author.send(file=discord.File(csv_file, CALENDAR_ICS_FILENAME))
 
-                # Add new display stat record
+                # Add new direct crn stat record
                 if ctx.message.author.id not in DEV_IDS:
-                    call_add_stat("display")
+                    call_add_stat("crn")
 
             except discord.errors.Forbidden:  # User may prevent bot from messaging users
                 await ctx.send(f"ERROR -> Please **enable \"Allow direct messages from server members\"** "

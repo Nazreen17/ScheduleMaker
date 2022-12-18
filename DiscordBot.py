@@ -118,4 +118,4 @@ if __name__ == "__main__":
         if filename.endswith(".py"):
             client.load_extension(f"DiscordBotStuff.cogs.{filename[:-3]}")
 
-    client.run(CLIENT_TOKEN)
+    client.run('MTA1MTAxMzMzNzU0ODMyOTA1Mg.G-Pftr.iXRbrHuTydVnX3IHjY_steCtVc8IYydqzT4GQk')
